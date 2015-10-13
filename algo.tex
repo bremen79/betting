@@ -1,0 +1,351 @@
+\section{Algorithm}
+
+Define $\theta_{t-1}=\sum_{i=1}^t g_i$ where $|g_t|\leq 1$.
+Predict with $w_t=\beta_t \, (\epsilon+\sum_{i=1}^{t-1} w_i g_i)$ where $\beta_t$ will be defined in the following. Define $L_t=\epsilon + \sum_{i=1}^t w_i g_i$, so that $L_0=\epsilon$.
+We have $L_t= L_{t-1}+w_t g_t =L_{t-1} + \beta_t \, g_t \, L_{t-1} = L_{t-1} (1+\beta_t g_t)$.
+Note that to be a proper betting strategy, $|\beta_t|$ must be strictly less than 1, otherwise the algorithm could lose all the money in one round.
+For the $L_0$ we know, by definition that $L_0=\epsilon$.
+
+We will prove by induction a lower bound on $L_T$.
+
+
+\subsection{Data independent bound}
+
+We will make use of the following lower bound
+\begin{lemma}
+There exist $a,b$ such that 
+$\log(1+x) \geq x - b x^2$, for $-2/a \leq x \leq 2/a$, $a>2$, $a\geq4 b$.
+\end{lemma}
+\begin{proof}
+For example, we can set $a>3.44$ and $b=a/4$ and verify the inequality numerically.
+\end{proof}
+Note that the inequality above is equivalent to $1+x \geq \exp(x - b x^2)$.
+
+Assume that $L_{t-1}\geq \epsilon \exp(\frac{\theta_{t-1}^2}{a(t-1)}-\sum_{i=1}^{t-1} \frac{1}{a i})$.
+We have to prove that $L_{t}\geq \epsilon \exp(\frac{\theta_{t}^2}{a t}-\sum_{i=1}^{t} \frac{1}{a i})$.
+\begin{align}
+L_{t} &= L_{t-1} (1+\beta_t g_t) \\
+&\geq (1+\beta_t g_t) \epsilon \exp(\frac{\theta_{t-1}^2}{a(t-1)}-\sum_{i=1}^{t-1} \frac{1}{a i}) \\
+&=  \epsilon \exp(\frac{\theta_{t-1}^2}{a(t-1)}+\log(1+\beta_t g_t)-\sum_{i=1}^{t-1} \frac{1}{a i}).
+\end{align}
+Hence, we lower bound the quantity $\frac{\theta_{t-1}^2}{a(t-1)}+\log(1+\beta_t g_t) - \frac{\theta_{t}^2}{a t}-\sum_{i=1}^{t-1} \frac{1}{a i}$.
+\begin{align}
+&\frac{\theta_{t-1}^2}{a(t-1)}+\log(1+\beta_t g_t) -\frac{\theta_{t-1}^2 + 2 \theta_{t-1} g_t +g_t^2}{a t} -\sum_{i=1}^{t-1} \frac{1}{a i}\\ 
+& \quad = \frac{\theta_{t-1}^2}{a} (\frac{1}{t-1}-\frac{1}{t}) + \log(1+\beta_t g_t) -\frac{2 \theta_{t-1} g_t +g_t^2}{a t} -\sum_{i=1}^{t-1} \frac{1}{a i}\\
+& \quad \geq \frac{\theta_{t-1}^2}{a\,t\,(t-1)} + \log(1+\beta_t g_t) -\frac{2 \theta_{t-1} g_t}{a t} -\sum_{i=1}^{t} \frac{1}{a i}\\
+& \quad \geq \frac{\theta_{t-1}^2}{a\,t\,(t-1)} + \beta_t g_t - b \, (\beta_t g_t)^2 -\frac{\theta_{t-1} g_t}{a t} -\sum_{i=1}^{t} \frac{1}{a i}.
+\end{align}
+If we set $\beta_t=\frac{2 \theta_{t-1}}{a t}$ we have
+\begin{align}
+&\frac{\theta_{t-1}^2}{a(t-1)}+\log(1+\beta_t g_t) -\frac{\theta_{t-1}^2 + 2 \theta_{t-1} g_t +g_t^2}{a t} -\sum_{i=1}^{t-1} \frac{1}{a i}\\ 
+& \quad \geq \frac{\theta_{t-1}^2}{a\,t\,(t-1)}  - b\frac{4\theta_{t-1}^2}{a^2 t^2} -\sum_{i=1}^{t} \frac{1}{a i} \\
+& \quad \geq -\sum_{i=1}^{t} \frac{1}{a i}
+\end{align}
+where we used the fact that $a>4 b$ that is $1/a> 4 b/ a^2$.
+Hence, by induction, we have
+\begin{align}
+L_{T} &\geq \epsilon \exp(\frac{\theta_{T}^2}{a T}-\sum_{i=1}^{T} \frac{1}{a i}) \\
+&\geq \epsilon \exp(\frac{\theta_{T}^2}{a T} - \frac{1}{a}\log(T) -\frac{1}{a}) \\
+&=\frac{\epsilon \exp(-\frac{1}{a})}{T^\frac{1}{a}}\exp(\frac{\theta_{T}^2}{a T})
+\end{align}
+
+\subsection{Data dependent bound}
+
+Assume that $|g_t|\leq G_t$ and that you receive at each round $t$ the quantity $G_t$ before making the bet.
+
+Define $a_t=2 \max_{i\leq t} G_i$, $S_t = \sum_{i=1}^t |g_i| + \delta$ and $\theta_t=\sum_{i=1}^t g_i$.
+
+Assume that $L_{t-1}\geq \epsilon \exp(\frac{\theta_{t-1}^2}{a_{t-1} S_{t-1}}- \sum_{i=1}^{t-1} \frac{|g_i| G_i}{a_i S_{i-1} + a_i G_i})$.
+We have to prove that $L_{t}\geq \epsilon \exp(\frac{\theta_{t}^2}{a_{t} S_t}- \sum_{i=1}^{t} \frac{|g_i| G_i}{a_i S_{i-1} + a_i G_i}))$.
+\begin{align}
+L_{t} &= L_{t-1} (1+\beta_t g_t) \\
+&\geq (1+\beta_t g_t) \epsilon \exp(\frac{\theta_{t-1}^2}{a_{t-1} S_{t-1}}- \sum_{i=1}^{t-1} \frac{|g_i| G_i}{a_i S_{i-1} + a_i G_i}) \\
+&=  \epsilon \exp(\frac{\theta_{t-1}^2}{a_{t-1} S_{t-1}}+\log(1+\beta_t g_t)- \sum_{i=1}^{t-1} \frac{|g_i| G_i}{a_i S_{i-1} + a_i G_i}) \\
+&\geq  \epsilon \exp(\frac{\theta_{t-1}^2}{a_{t} S_{t-1}}+\log(1+\beta_t g_t)- \sum_{i=1}^{t-1} \frac{|g_i| G_i}{a_i S_{i-1} + a_i G_i}).
+\end{align}
+Consider the function 
+\[
+\phi(x)=-\log(1+\beta_t x) + \frac{(\theta_{t-1}+x)^2}{a_t S_{t-1} + a_t |x|}.
+\]
+We have that $\phi(x)$ is piece-wise convex on $[-\infty,0]$ and $[0,\infty]$. Hence, we have that
+\begin{align}
+&\phi(x) \leq \phi(0)+\frac{x}{G_t} (\phi(G_t)-\phi(0)), \forall 0 \leq x\leq G_t\\
+&\phi(x) \leq \phi(0)+\frac{x}{G_t} (\phi(0)-\phi(-G_t)), \forall -G_t \leq x\leq 0.
+\end{align}
+
+We now use set $\beta_t$ such that $\phi(G_t)=\phi(-G_t)$, that is
+\[
+\beta_t = \frac{1}{G_t} \frac{A_{t-1}-1}{A_{t-1}+1} 
+= \frac{1}{G_t} \left(2 \, sigmoid\left(\frac{4 \theta_{t-1} G_t}{a_{t} S_{t-1} + a_t G_t}\right)-1\right)
+\]
+where $A_{t-1}=\exp\left(\frac{4 \theta_{t-1} G_t}{a_{t} S_{t-1} + a_t G_t}\right)$ and
+$sigmoid (x) =\frac{1}{1+\exp(-x)}$.
+Hence we have
+\[
+\phi(x) \leq \phi(0)+\frac{|x|}{G_t} (\phi(G_t)-\phi(0)), \forall -G_t \leq x\leq G_t
+\]
+that is
+\begin{align}
+&\frac{\theta_{t-1}^2}{a_t S_{t-1}}-\frac{(\theta_{t-1}+x)^2}{a_t S_{t-1}+a_t |x|} + \log(1+\beta_t g_t) = \phi(0) - \phi(x) 
+\geq \frac{|x|}{G_t} (\phi(0) - \phi(G_t)) \\
+&\quad = \frac{|x|}{G_t} (\frac{\theta_{t-1}^2}{a_t S_{t-1}} - \frac{(\theta_{t-1}+G_t)^2}{a_t S_{t-1} + a_t G_t} + \log(1+\beta_t G_t)), \forall -G_t \leq x\leq G_t.
+\end{align}
+
+
+Using this relation we have that
+\begin{align}
+&-\frac{(\theta_{t-1}+g_t)^2}{a_t S_{t-1}+a_t |g_t|} + \frac{\theta_{t-1}^2}{a_t S_{t-1}}+\log(1+\beta_t g_t)-\sum_{i=1}^{t-1} \frac{|g_i| G_i}{a_i S_{i-1} + a_i G_i} \\
+&\quad \geq \frac{|g_t|}{G_t} (\frac{\theta_{t-1}^2}{a_t S_{t-1}} - \frac{(\theta_{t-1}+G_t)^2}{a_t S_{t-1} + a_t G_t} + \log(1+\beta_t G_t)) - \sum_{i=1}^{t-1} \frac{|g_i| G_i}{a_i S_{i-1} + a_i G_i}\\
+&\quad = \frac{|g_t|}{G_t} (\frac{a_t G_t \theta_{t-1}^2 -2 G_t \theta_{t-1} S_{t-1} }{a_t S_{t-1}(a_t S_{t-1} + a_t G_t)} + \log(1+\beta_t G_t)) - \sum_{i=1}^{t} \frac{|g_i|G_i}{a_i S_{i-1} + a_i G_i}\\
+&\quad \geq \frac{|g_t|}{G_t} (\frac{a_t G_t \theta_{t-1}^2}{a_t S_{t-1}(a_t S_{t-1} + a_t G_t)}-\frac{2 G_t \theta_{t-1}}{a_t S_{t-1} + a_t G_t} + \log(1+\beta_t G_t)) - \sum_{i=1}^{t} \frac{|g_i| G_i}{a_i S_{i-1} + a_i G_i}.
+\end{align}
+We now use the Taylor expansion, to obtain
+\[
+\log\left(1+\frac{\exp(x)-1}{\exp(x)+1}\right) \geq \frac{x}{2} -\frac{x^2}{8} \qquad \forall x \in \R
+\]
+and, using the expression of $\beta_t$, have
+\[
+\log\left(1+\beta_t G_t\right) = \log\left(1+\frac{\exp\left(\frac{4 \theta_{t-1} G_t}{a_t S_{t-1} + a_t G_t}\right)-1}{\exp\left(\frac{4 \theta_{t-1} G_t}{a_t S_{t-1} + a_t G_t}\right)+1}\right) \geq \frac{2 \theta_{t-1} G_t}{a_t S_{t-1} + a_t G_t} -\frac{2 \theta_{t-1}^2 G_t^2}{(a_t S_{t-1} + a_t G_t)^2}.
+\]
+Hence the expression 
+\[
+\frac{a_t G_t \theta_{t-1}^2}{a_t S_{t-1}(a_t S_{t-1} + a_t G_t)}-\frac{2 G_t \theta_{t-1}}{a_t S_{t-1} + a_t G_t} + \log(1+\beta_t G_t))
+\]
+is greater than zero if $a_t \geq 2 G_t$, that is true by definition of $a_t$.
+
+By induction, the final lower bound is 
+\[
+L_{T} \geq \epsilon \exp\left(\frac{\theta_{T}^2}{a_T S_{T-1} + a_T G_T}-\sum_{i=1}^{T} \frac{|g_i| G_i}{a_i S_{i-1} + a_i G_i} \right) \\
+\]
+
+\subsection{Data dependent bound, version 2}
+
+Assume that $|g_t|\leq G_t$ and that you receive at each round $t$ the quantity $G_t$ before making the bet.
+
+Define $S_t = \sum_{i=1}^t |g_i| G_i + \delta$ and $\theta_t=\sum_{i=1}^t g_i$.
+
+Assume that $L_{t-1}\geq \epsilon \exp(\frac{\theta_{t-1}^2}{a S_{t-1}}- \sum_{i=1}^{t-1} \frac{|g_i| G_i}{a S_{i-1} + a G^2_i})$.
+We have to prove that $L_{t}\geq \epsilon \exp(\frac{\theta_{t}^2}{a S_t}- \sum_{i=1}^{t} \frac{|g_i| G_i}{a S_{i-1} + a G^2_i}))$.
+\begin{align}
+L_{t} &= L_{t-1} (1+\beta_t g_t) \\
+&\geq (1+\beta_t g_t) \epsilon \exp(\frac{\theta_{t-1}^2}{a S_{t-1}}- \sum_{i=1}^{t-1} \frac{|g_i| G_i}{a S_{i-1} + a G^2_i}) \\
+&=  \epsilon \exp(\frac{\theta_{t-1}^2}{a S_{t-1}}+\log(1+\beta_t g_t)- \sum_{i=1}^{t-1} \frac{|g_i| G_i}{a S_{i-1} + a G^2_i}) .
+\end{align}
+Consider the function 
+\[
+\phi(x)=-\log(1+\beta_t x) + \frac{(\theta_{t-1}+x)^2}{a S_{t-1} + a |x| G_t}.
+\]
+We have that $\phi(x)$ is piece-wise convex on $[-\infty,0]$ and $[0,\infty]$. Hence, we have that
+\begin{align}
+&\phi(x) \leq \phi(0)+\frac{x}{G_t} (\phi(G_t)-\phi(0)), \forall 0 \leq x\leq G_t\\
+&\phi(x) \leq \phi(0)+\frac{x}{G_t} (\phi(0)-\phi(-G_t)), \forall -G_t \leq x\leq 0.
+\end{align}
+
+We now use set $\beta_t$ such that $\phi(G_t)=\phi(-G_t)$, that is
+\[
+\beta_t = \frac{1}{G_t} \frac{A_{t-1}-1}{A_{t-1}+1} 
+= \frac{1}{G_t} \left(2 \, sigmoid\left(\frac{4 \theta_{t-1} G_t}{a S_{t-1} + a G_t^2}\right)-1\right)
+\]
+where $A_{t-1}=\exp\left(\frac{4 \theta_{t-1} G_t}{a_{t} S_{t-1} + a_t G_t}\right)$ and
+$sigmoid (x) =\frac{1}{1+\exp(-x)}$.
+Hence we have
+\[
+\phi(x) \leq \phi(0)+\frac{|x|}{G_t} (\phi(G_t)-\phi(0)), \forall -G_t \leq x\leq G_t
+\]
+that is
+\begin{align}
+&\frac{\theta_{t-1}^2}{a S_{t-1}}-\frac{(\theta_{t-1}+x)^2}{a S_{t-1} + a |x| G_t} + \log(1+\beta_t g_t) = \phi(0) - \phi(x) 
+\geq \frac{|x|}{G_t} (\phi(0) - \phi(G_t)) \\
+&\quad = \frac{|x|}{G_t} (\frac{\theta_{t-1}^2}{a S_{t-1}} - \frac{(\theta_{t-1}+G_t)^2}{a S_{t-1} + a G_t^2} + \log(1+\beta_t G_t)), \forall -G_t \leq x\leq G_t.
+\end{align}
+
+Using this relation we have that
+\begin{align}
+&-\frac{(\theta_{t-1}+g_t)^2}{a S_{t-1}+a |g_t| G_t} + \frac{\theta_{t-1}^2}{a S_{t-1}}+\log(1+\beta_t g_t)-\sum_{i=1}^{t-1} \frac{|g_i| G_i}{a S_{i-1} + a G^2_i} \\
+&\quad \geq \frac{|g_t|}{G_t} (\frac{\theta_{t-1}^2}{a S_{t-1}} - \frac{(\theta_{t-1}+G_t)^2}{a S_{t-1} + a G^2_t} + \log(1+\beta_t G_t)) - \sum_{i=1}^{t-1} \frac{|g_i| G_i}{a_i S_{i-1} + a G^2_i}\\
+&\quad = \frac{|g_t|}{G_t} (\frac{a G^2_t \theta_{t-1}^2 -2 G_t \theta_{t-1} S_{t-1} }{a S_{t-1}(a S_{t-1} + a G^2_t)} + \log(1+\beta_t G_t)) - \sum_{i=1}^{t} \frac{|g_i|G_i}{a S_{i-1} + a G^2_i}\\
+&\quad \geq \frac{|g_t|}{G_t} (\frac{a G^2_t \theta_{t-1}^2}{a S_{t-1}(a S_{t-1} + a G^2_t)}-\frac{2 G_t \theta_{t-1}}{a S_{t-1} + a G^2_t} + \log(1+\beta_t G_t)) - \sum_{i=1}^{t} \frac{|g_i| G_i}{a S_{i-1} + a G^2_i}.
+\end{align}
+We now use the Taylor expansion, to obtain
+\[
+\log\left(1+\frac{\exp(x)-1}{\exp(x)+1}\right) \geq \frac{x}{2} -\frac{x^2}{8} \qquad \forall x \in \R
+\]
+and, using the expression of $\beta_t$, have
+\[
+\log\left(1+\beta_t G_t\right) 
+= \log\left(1+\frac{\exp\left(\frac{4 \theta_{t-1} G_t}{a S_{t-1} + a G^2_t}\right)-1}{\exp\left(\frac{4 \theta_{t-1} G_t}{a S_{t-1} + a G^2_t}\right)+1}\right) 
+\geq \frac{2 \theta_{t-1} G_t}{a S_{t-1} + a G^2_t} -\frac{2 \theta_{t-1}^2 G_t^2}{(a S_{t-1} + a G^2_t)^2}.
+\]
+Hence the expression 
+\[
+\frac{a G^2_t \theta_{t-1}^2}{a S_{t-1}(a S_{t-1} + a G_t^2)}-\frac{2 G_t \theta_{t-1}}{a S_{t-1} + a G^2_t} + \log(1+\beta_t G_t))
+\]
+is greater than zero if $a_t \geq 2$, that is true by definition of $a_t$.
+
+By induction, the final lower bound is 
+\[
+L_{T} \geq \epsilon \exp\left(\frac{\theta_{T}^2}{a S_{T}} - \sum_{i=1}^{T} \frac{|g_i| G_i}{a S_{i-1} + a G^2_i} \right) \\
+\]
+
+
+\subsection{Data dependent bound, version 3}
+
+Assume that $|g_t|\leq G_t$ and that you receive at each round $t$ the quantity $G_t$ before making the bet.
+
+Define $S_t = \sum_{i=1}^t |g_i| G_i$ and $\theta_t=\sum_{i=1}^t g_i$.
+
+Assume that $L_{t-1}\geq \epsilon \exp(\frac{\theta_{t-1}^2}{a (S_{t-1} + \delta_{t-1})}- \frac{1}{a}\sum_{i=1}^{t-1} \frac{|g_i| G_i}{S_{i-1} + G^2_i + \delta_{i}})$.
+We have to prove that $L_{t}\geq \epsilon \exp(\frac{\theta_{t}^2}{a (S_t + \delta_t)}- \frac{1}{a}\sum_{i=1}^{t} \frac{|g_i| G_i}{S_{i-1} + G^2_i + \delta_i}))$.
+\begin{align}
+L_{t} &= L_{t-1} (1+\beta_t g_t) \\
+&\geq (1+\beta_t g_t) \epsilon \exp(\frac{\theta_{t-1}^2}{a (S_{t-1}+\delta_{t-1})}- \frac{1}{a}\sum_{i=1}^{t-1} \frac{|g_i| G_i}{S_{i-1} + G^2_i + \delta_i}) \\
+&=  \epsilon \exp(\frac{\theta_{t-1}^2}{a (S_{t-1}+\delta_{t-1})}+\log(1+\beta_t g_t)- \frac{1}{a}\sum_{i=1}^{t-1} \frac{|g_i| G_i}{S_{i-1} + G^2_i +\delta_i}) .
+\end{align}
+Consider the function 
+\[
+\phi(x)=-\log(1+\beta_t x) + \frac{(\theta_{t-1}+x)^2}{a S_{t-1} + a |x| G_t +a \delta_t}.
+\]
+We have that $\phi(x)$ is piece-wise convex on $[-\infty,0]$ and $[0,\infty]$. Hence, we have that
+\begin{align}
+&\phi(x) \leq \phi(0)+\frac{x}{G_t} (\phi(G_t)-\phi(0)), \forall 0 \leq x\leq G_t\\
+&\phi(x) \leq \phi(0)+\frac{x}{G_t} (\phi(0)-\phi(-G_t)), \forall -G_t \leq x\leq 0.
+\end{align}
+
+We now use set $\beta_t$ such that $\phi(G_t)=\phi(-G_t)$, that is
+\[
+\beta_t = \frac{1}{G_t} \frac{A_{t-1}-1}{A_{t-1}+1} 
+= \frac{1}{G_t} \left(2 \, sigmoid\left(\frac{4 \theta_{t-1} G_t}{a S_{t-1} + a G_t^2 + a \delta_t}\right)-1\right)
+\]
+where $A_{t-1}=\exp\left(\frac{4 \theta_{t-1} G_t}{a_{t} S_{t-1} + a G_t + a \delta_t }\right)$ and
+$sigmoid (x) =\frac{1}{1+\exp(-x)}$.
+Hence we have
+\[
+\phi(x) \leq \phi(0)+\frac{|x|}{G_t} (\phi(G_t)-\phi(0)), \forall -G_t \leq x\leq G_t
+\]
+that is
+\begin{align}
+&\frac{\theta_{t-1}^2}{a (S_{t-1}+\delta_{t-1})}-\frac{(\theta_{t-1}+x)^2}{a S_{t-1} + a |x| G_t + a\delta_t} + \log(1+\beta_t g_t) \\
+&\quad \geq \frac{\theta_{t-1}^2}{a (S_{t-1}+\delta_{t})}-\frac{(\theta_{t-1}+x)^2}{a S_{t-1} + a |x| G_t + a\delta_t} + \log(1+\beta_t g_t) \\
+&\quad = \phi(0) - \phi(x) 
+\geq \frac{|x|}{G_t} (\phi(0) - \phi(G_t)) \\
+&\quad = \frac{|x|}{G_t} (\frac{\theta_{t-1}^2}{a (S_{t-1}+\delta_t)} - \frac{(\theta_{t-1}+G_t)^2}{a S_{t-1} + a G_t^2 + a \delta_t} + \log(1+\beta_t G_t)), \forall -G_t \leq x\leq G_t.
+\end{align}
+
+Using this relation we have that
+\begin{align}
+&-\frac{(\theta_{t-1}+g_t)^2}{a (S_{t-1}+|g_t| G_t+\delta_t)} + \frac{\theta_{t-1}^2}{a (S_{t-1}+\delta_{t-1})}+\log(1+\beta_t g_t)-\frac{1}{a}\sum_{i=1}^{t-1} \frac{|g_i| G_i}{S_{i-1} + G^2_i + \delta_i} \\
+&\quad \geq \frac{|g_t|}{G_t} (\frac{\theta_{t-1}^2}{a (S_{t-1}+\delta_t)} - \frac{(\theta_{t-1}+G_t)^2}{a (S_{t-1} + G^2_t+ \delta_t)} + \log(1+\beta_t G_t)) - \frac{1}{a}\sum_{i=1}^{t-1} \frac{|g_i| G_i}{S_{i-1} + G^2_i + \delta_i}\\
+&\quad = \frac{|g_t|}{G_t} (\frac{G^2_t \theta_{t-1}^2 -2 G_t \theta_{t-1} (S_{t-1} +\delta_t)}{a (S_{t-1}+\delta_t)(S_{t-1} + G^2_t +\delta_t)} + \log(1+\beta_t G_t)) - \frac{1}{a}\sum_{i=1}^{t} \frac{|g_i| G_i}{S_{i-1} + G^2_i + \delta_i}\\
+&\quad = \frac{|g_t|}{G_t} (\frac{G^2_t \theta_{t-1}^2}{a (S_{t-1}+\delta_t)(S_{t-1} + G^2_t +\delta_t)}-\frac{2 G_t \theta_{t-1}}{a (S_{t-1} + G^2_t+\delta_t)} + \log(1+\beta_t G_t)) - \frac{1}{a}\sum_{i=1}^{t} \frac{|g_i| G_i}{S_{i-1} + G^2_i + \delta_i}.
+\end{align}
+We now use the Taylor expansion, to obtain
+\[
+\log\left(1+\frac{\exp(x)-1}{\exp(x)+1}\right) \geq \frac{x}{2} -\frac{x^2}{8} \qquad \forall x \in \R
+\]
+and, using the expression of $\beta_t$, have
+\[
+\log\left(1+\beta_t G_t\right) 
+= \log\left(1+\frac{\exp\left(\frac{4 \theta_{t-1} G_t}{a (S_{t-1} + G^2_t+\delta_t)}\right)-1}{\exp\left(\frac{4 \theta_{t-1} G_t}{a (S_{t-1} + G^2_t+\delta_t)}\right)+1}\right) 
+\geq \frac{2 \theta_{t-1} G_t}{a (S_{t-1} + G^2_t+\delta_t)} -\frac{2 \theta_{t-1}^2 G_t^2}{a^2 (S_{t-1} + G^2_t+\delta_t)^2}.
+\]
+Hence the expression 
+\[
+\frac{G^2_t \theta_{t-1}^2}{a (S_{t-1}+\delta_t)(S_{t-1} + G^2_t +\delta_t)}-\frac{2 G_t \theta_{t-1}}{a (S_{t-1} + G^2_t+\delta_t)} + \log(1+\beta_t G_t))
+\]
+is greater than zero if $a \geq 2$, that is true by definition of $a$.
+
+By induction, the final lower bound is 
+\[
+L_{T} \geq \epsilon \exp\left(\frac{\theta_{T}^2}{a (S_{T}+\delta_T)} - \frac{1}{a}\sum_{i=1}^{T} \frac{|g_i| G_i}{S_{i-1} + G^2_i +\delta_i} \right) \\
+\]
+
+%We now upper bound the last term in the last inequality:
+%\begin{align}
+%\sum_{i=1}^{T} \frac{|g_i| G_i}{S_{i-1} + G^2_i +\delta_i}
+%&\leq \sum_{i=1}^{T} \frac{|g_i| G_i}{S_{i} + \delta_i} \\
+%&\leq \log\left(1+ \frac{\sum_{i=1}^t |g_i| G_i}{\delta_T}\right) + \log\frac{\delta_T}{\delta_1}.
+%\end{align}
+
+We can set $\delta_t$ such that $\frac{|g_i| G_i}{S_{i-1} + G^2_i +\delta_i}\leq \frac{1}{i}$ and $\delta_i$ are increasing.
+
+
+\subsection{Data dependent bound, no $\delta$}
+
+Assume that $|g_t|\leq G_t$ and that you receive at each round $t$ the quantity $G_t$ before making the bet.
+
+Define $a_t=2 \max_{i\leq t} G_i^2$, $S_t = \sum_{i=1}^t \frac{|g_i|}{G_t} + 1$ and $\theta_t=\sum_{i=1}^t g_i$.
+
+Assume that $L_{t-1}\geq \epsilon \exp(\frac{\theta_{t-1}^2}{a_{t-1} S_{t-1}}- \sum_{i=1}^{t-1} \frac{|g_i| G_i}{a_i S_{i-1} + a_i})$.
+We have to prove that $L_{t}\geq \epsilon \exp(\frac{\theta_{t}^2}{a_{t} S_t}- \sum_{i=1}^{t} \frac{|g_i| G_i}{a_i S_{i-1} + a_i}))$.
+\begin{align}
+L_{t} &= L_{t-1} (1+\beta_t g_t) \\
+&\geq (1+\beta_t g_t) \epsilon \exp(\frac{\theta_{t-1}^2}{a_{t-1} S_{t-1}}- \sum_{i=1}^{t-1} \frac{|g_i| G_i}{a_i S_{i-1} + a_i }) \\
+&=  \epsilon \exp(\frac{\theta_{t-1}^2}{a_{t-1} S_{t-1}}+\log(1+\beta_t g_t)- \sum_{i=1}^{t-1} \frac{|g_i| G_i}{a_i S_{i-1} + a_i}) \\
+&\geq  \epsilon \exp(\frac{\theta_{t-1}^2}{a_{t} S_{t-1}}+\log(1+\beta_t g_t)- \sum_{i=1}^{t-1} \frac{|g_i| G_i}{a_i S_{i-1} + a_i}).
+\end{align}
+Consider the function 
+\[
+\phi(x)=-\log(1+\beta_t x) + \frac{(\theta_{t-1}+x)^2}{a_t S_{t-1} + a_t \frac{|x|}{G_t}}.
+\]
+We have that $\phi(x)$ is piece-wise convex on $[-\infty,0]$ and $[0,\infty]$. Hence, we have that
+\begin{align}
+&\phi(x) \leq \phi(0)+\frac{x}{G_t} (\phi(G_t)-\phi(0)), \forall 0 \leq x\leq G_t\\
+&\phi(x) \leq \phi(0)+\frac{x}{G_t} (\phi(0)-\phi(-G_t)), \forall -G_t \leq x\leq 0.
+\end{align}
+
+We now use set $\beta_t$ such that $\phi(G_t)=\phi(-G_t)$, that is
+\[
+\beta_t = \frac{1}{G_t} \frac{A_{t-1}-1}{A_{t-1}+1} 
+= \frac{1}{G_t} \left(2 \, sigmoid\left(\frac{4 \theta_{t-1} G_t}{a_{t} S_{t-1} + a_t}\right)-1\right)
+\]
+where $A_{t-1}=\exp\left(\frac{4 \theta_{t-1} G_t}{a_{t} S_{t-1} + a_t}\right)$ and
+$sigmoid (x) =\frac{1}{1+\exp(-x)}$.
+Hence we have
+\[
+\phi(x) \leq \phi(0)+\frac{|x|}{G_t} (\phi(G_t)-\phi(0)), \forall -G_t \leq x\leq G_t
+\]
+that is
+\begin{align}
+&\frac{\theta_{t-1}^2}{a_t S_{t-1}}-\frac{(\theta_{t-1}+x)^2}{a_t S_{t-1}+a_t \frac{|x|}{G_t}} + \log(1+\beta_t g_t) = \phi(0) - \phi(x) 
+\geq \frac{|x|}{G_t} (\phi(0) - \phi(G_t)) \\
+&\quad = \frac{|x|}{G_t} (\frac{\theta_{t-1}^2}{a_t S_{t-1}} - \frac{(\theta_{t-1}+G_t)^2}{a_t S_{t-1} + a_t} + \log(1+\beta_t G_t)), \forall -G_t \leq x\leq G_t.
+\end{align}
+
+
+Using this relation we have that
+\begin{align}
+&-\frac{(\theta_{t-1}+g_t)^2}{a_t S_{t-1}+a_t \frac{|g_t|}{G_t}} + \frac{\theta_{t-1}^2}{a_t S_{t-1}}+\log(1+\beta_t g_t)-\sum_{i=1}^{t-1} \frac{|g_i| G_i}{a_i S_{i-1} + a_i} \\
+&\quad \geq \frac{|g_t|}{G_t} (\frac{\theta_{t-1}^2}{a_t S_{t-1}} - \frac{(\theta_{t-1}+G_t)^2}{a_t S_{t-1} + a_t} + \log(1+\beta_t G_t)) - \sum_{i=1}^{t-1} \frac{|g_i| G_i}{a_i S_{i-1} + a_i}\\
+&\quad = \frac{|g_t|}{G_t} (\frac{\theta_{t-1}^2 -2 G_t \theta_{t-1} S_{t-1} }{a_t S_{t-1}(S_{t-1} + 1)} + \log(1+\beta_t G_t)) - \sum_{i=1}^{t} \frac{|g_i|G_i}{a_i S_{i-1} + a_i}\\
+&\quad = \frac{|g_t|}{G_t} (\frac{\theta_{t-1}^2}{a_t S_{t-1}(S_{t-1} + 1)}-\frac{2 G_t \theta_{t-1}}{a_t S_{t-1} + a_t} + \log(1+\beta_t G_t)) - \sum_{i=1}^{t} \frac{|g_i| G_i}{a_i S_{i-1} + a_i}.
+\end{align}
+We now use the Taylor expansion, to obtain
+\[
+\log\left(1+\frac{\exp(x)-1}{\exp(x)+1}\right) \geq \frac{x}{2} -\frac{x^2}{8} \qquad \forall x \in \R
+\]
+and, using the expression of $\beta_t$, have
+\[
+\log\left(1+\beta_t G_t\right) = \log\left(1+\frac{\exp\left(\frac{4 \theta_{t-1} G_t}{a_t S_{t-1} + a_t}\right)-1}{\exp\left(\frac{4 \theta_{t-1} G_t}{a_t S_{t-1} + a_t}\right)+1}\right) \geq \frac{2 \theta_{t-1} G_t}{a_t S_{t-1} + a_t} -\frac{2 \theta_{t-1}^2 G_t^2}{(a_t S_{t-1} + a_t)^2}.
+\]
+Hence the expression 
+\[
+\frac{\theta_{t-1}^2}{a_t S_{t-1}(S_{t-1} + 1)}-\frac{2 G_t \theta_{t-1}}{a_t S_{t-1} + a_t} + \log(1+\beta_t G_t))
+\]
+is greater than zero if $a_t \geq 2 G_t^2$, that is true by definition of $a_t$.
+
+By induction, the final lower bound is 
+\begin{align}
+L_{T} 
+&\geq \epsilon \exp\left(\frac{\theta_{T}^2}{a_T S_{T}}-\sum_{i=1}^{T} \frac{|g_i| G_i}{a_i S_{i-1} + a_i} \right) \\
+&\geq \epsilon \exp\left(\frac{\theta_{T}^2}{2 G_T^2 S_{T}}-\frac{1}{2}\sum_{i=1}^{T} \frac{\frac{|g_i|}{G_i}}{S_{i}} \right) \\
+&\geq \epsilon \exp\left(\frac{\theta_{T}^2}{2 G_T^2 S_{T}} - \frac{1}{2} \log\left(1+ \sum_{i=1}^{T} \frac{|g_i|}{G_i} \right) \right)
+\end{align}
+
+It is interesting to note that $\beta_t$ is \emph{not} between $-1$ and $1$, but between $-1/G_t$ and $1/G_t$.
+
+The ideal case of $\exp\left(\frac{\theta_T^2}{\sum_{t=1}^T g_t^2}\right)$ is equal to
+\[
+\exp\left(\frac{\theta_T^2}{T\frac{\sum_{t=1}^T g_t^2}{T}}\right) 
+\approx \exp\left(\frac{\theta_T^2}{\left(\sum_{t=1}^T \frac{|g_t|}{G_t}\right) \frac{\sum_{t=1}^T g_t^2}{T}}\right)
+\approx \exp\left(\frac{\theta_T^2}{\left(\sum_{t=1}^T \frac{|g_t|}{G_t}\right) \max_{t \leq T} g_t^2 }\right)
+\]

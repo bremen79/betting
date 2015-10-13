@@ -1,0 +1,28 @@
+\section{Applications}
+
+
+\subsection{Online Convex Optimization in 1d}
+We use the duality between Regret and Reward in \cite{McMahanO14}.
+In particular, define
+\[
+Regret(u) := \sum_{t=1}^T \langle g_t ,w_t - u \rangle~.
+\]
+and
+\[
+Reward := \sum_{t=1}^T \langle -g_t, w_t \rangle~.
+\]
+We have the following Theorem
+\begin{theorem}\label{thm:rrdual}
+  Let $\Psi:\mathcal{H} \rightarrow (-\inf, +\inf]$ be a lower semicontinuos and convex function, with $dom f \neq \emptyset$. An
+  algorithm for the player guarantees
+  \[
+  Reward \geq \Psi(-g_{1:T}) - \epsilon \quad \quad \quad \textnormal{ for any } g_1, \dots, g_T
+  \]
+  for a constant $\epsilon \in \R$ if and only if it
+  guarantees
+  \begin{equation}\label{eq:regb}
+  \qquad Regret(u) \leq \Psi^*(u) + \epsilon \quad \quad \quad \textnormal{ for all } u \in \mathcal{H}~.
+  \end{equation}
+\end{theorem}
+
+\subsection{Online Convex Optimization in Hilber Spaces}

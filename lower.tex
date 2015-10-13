@@ -1,0 +1,99 @@
+\section{Lower bound}
+
+Consider now that
+\[
+L_t=L_{t-1} + u_t \, g_t = L_{t-1} + \beta \, L_{t-1} \, g_t = L_{t-1} (1+\beta \, g_t)
+\]
+Hence
+\[
+L_T=\epsilon \prod_{t=1}^T (1+\beta g_t) = \epsilon (1+\beta)^\frac{T+G}{2} (1-\beta)^\frac{T-G}{2}
+\]
+Setting $\beta=\frac{G}{T}$ we have
+\begin{align}
+L_T &= \epsilon (1+\frac{G}{T})^\frac{T+G}{2} (1-\frac{G}{T})^\frac{T-G}{2} 
+&= \epsilon \left[(1+\frac{G}{T})^\frac{1+\frac{G}{T}}{2} (1-\frac{G}{T})^\frac{1-\frac{G}{T}}{2}\right]^T 
+&\leq \epsilon \exp \left(\frac{G^2}{2 T} + \frac{G^4}{5 T^3}\right)
+\end{align}
+where we used the fact that
+\[
+\frac{x^2}{2} +\frac{x^4}{12}\leq \frac{1+x}{2} \log(1+x) + \frac{1-x}{2}\log(1-x) \leq \frac{x^2}{2} + \frac{x^4}{5}
+\]
+or 
+\[
+\frac{x^2}{2} +\frac{x^4}{12}\leq \frac{1+x}{2} \log(1+x) + \frac{1-x}{2}\log(1-x) \leq \frac{x^2}{2} + \log(2)-.5
+\]
+where the lhs is given by Taylor expansion.
+
+
+
+\begin{theorem}
+Let the sequence of losses be composed by linear losses in $[-1,1]$. For any sequence of predictions $w_t$ and 
+for any distribution $B$ on $[-1,1]$ with mean 0, we have 
+\[
+\max_u \max_{g_1, \ldots, g_t} \sum_{t=1}^T (w_t-u) g_t - f(u) \geq \E_{g_1, \cdots, g_T \sim B} \left[f^*(-\sum_{t=1}^T g_t)\right]
+\]
+\end{theorem}
+\begin{proof}
+We have
+\begin{align}
+\max_u \max_{g_1,\ldots,g_T} &\sum_{t=1}^T (w_t - u) \, g_t -f(u)\\
+&\geq \max_u \E_{g_1,\ldots,g_T} [\sum_{t=1}^T (w_t - u) \, g_t -f(u)]\\
+&\geq \max_u \E_{g_1,\ldots,g_T} [-\sum_{t=1}^T u \, g_t -f(u)].
+\end{align}
+We now set $u=\nabla f^*(-\sum_{t=1}^T g_t)$ and use the equality $f(\nabla f^*(p) ) + f^*(p) = p\, \nabla f^*(p)$
+\[
+\E_{g_1,\ldots,g_T} [-\sum_{t=1}^T u \, g_t -f(u)] = \E_{g_1,\ldots,g_T} \left[f^*(-\sum_{t=1}^T g_t)\right].
+\]
+\end{proof}
+
+\begin{cor}
+Let the sequence of losses be composed by linear losses in $[-1,1]$.
+For any distribution $B$ on $[-1,1]$ with mean 0, we have 
+\[
+\max_u \max_{g_1, \ldots, g_t} \sum_{t=1}^T (w_t-u) g_t - f^*(u) 
+\geq \epsilon \exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(1+\exp(\frac{-4}{\alpha})\right)^T.
+\]
+Also, for $a\geq1.6411$, the lhs decreases in $T$.
+\end{cor}
+\begin{proof}
+Set $f^*(\theta)=\exp\left(\frac{\theta^2}{\alpha T}\right)$.
+Choose the distribution on $[-1,1]$, to be $1$ with probability 0.5 and -1 otherwise.
+Hence, we have
+\begin{align*}
+\E_{z\sim B(T,0.5)} \left[\exp\left(\frac{(2 z-T)^2}{\alpha T}\right)\right]
+& =\E_{z\sim B(T,0.5)} \left[\exp\left(\frac{T^2 + 4 z^2 - 4 z T }{\alpha T}\right)\right] \\
+& =\exp\left(\frac{T}{\alpha}\right) \E_{z\sim B(T,0.5)} \left[\exp\left(\frac{4 z^2 - 4 z T }{\alpha T}\right)\right] \\
+& \geq\exp\left(\frac{T}{\alpha}\right) \E_{z\sim B(T,0.5)} \left[\exp\left(\frac{- 4 z T }{\alpha T}\right)\right] \\
+& =\exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(1+\exp\left(-\frac{4}{\alpha}\right)\right)^T.
+%& \geq \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) \E_{z\sim B(T,0.5)} \left[\left(\exp\left(\frac{2 \sqrt{2} z}{\alpha T}\right)+\exp\left(\frac{- 2 \sqrt{2} z}{\alpha T}\right) \right)\exp\left(\frac{- 4 z }{\alpha}\right)\right]\\
+%& = \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) \left(\E_{z\sim B(T,0.5)} \left[\exp\left(\frac{2 \sqrt{2} z-4zT}{\alpha T }\right)\right] +\E_{z\sim B(T,0.5)} \left[ \exp\left(\frac{- 2 \sqrt{2} z-4zT}{\alpha T}\right) \right]\right) \\
+%& = \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(  \left(1+\exp(\frac{2 \sqrt{2}-4T}{\alpha T})\right)^T + \left(1+\exp(\frac{-2 \sqrt{2}-4T}{\alpha T})\right)^T\right) \\
+%& \geq \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(1+\exp(\frac{2 \sqrt{2}-4T}{\alpha T})\right)^T\\
+%& \geq \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(1+\exp(\frac{-4}{\alpha})\right)^T.
+\end{align*}
+For the second statement, taking the logarithm of last expression we have
+\begin{align}
+-T\log 2+ \frac{T}{\alpha} + T \log \left(1+\exp\left(-\frac{4}{\alpha}\right)\right),
+\end{align}
+that numerically has a negative coefficient multiplying T iff $a\geq1.6411$.
+\end{proof}
+
+We now state a similar upper bound for the reward
+\begin{theorem}
+Let $z_t$ in $[-1,1]$. For any sequence of predictions $w_t$ and 
+for any distribution $B$ on $[-1,1]$ with mean 0, we have 
+\[
+\min_{z_1, \ldots, z_t} \sum_{t=1}^T w_t z_t - f(\sum_{t=1}^T z_t) \leq -\E_{g_1, \cdots, g_T \sim B} \left[f(\sum_{t=1}^T g_t)\right]
+\]
+\end{theorem}
+
+\begin{cor}
+Let $z_t$ in $[-1,1]$. For any sequence of predictions $w_t$ we have
+\[
+\min_{z_1, \ldots, z_t} \sum_{t=1}^T w_t z_t - \epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{\alpha T}\right) \leq -\epsilon\exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(1+\exp\left(-\frac{4}{\alpha}\right)\right)^T.
+\]
+%Moreover, for $a\geq 1.64101792\cdots$ we have
+%\[
+%\min_{z_1, \ldots, z_t} \sum_{t=1}^T w_t z_t - 2\epsilon \exp\left(\frac{\sum_{t=1}^T z_t}{\alpha T}\right) \leq -\epsilon.
+%\]
+\end{cor}

@@ -1,0 +1,48 @@
+%\documentclass[10pt,onecolumn,a4paper]{article}
+\documentclass{article} % For LaTeX2e
+\usepackage{times}
+\usepackage{url}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{natbib}
+\usepackage{bibentry}
+\usepackage{hyperref}
+
+\input{symbol.tex}
+
+\newcommand{\ignore}[1]{}
+\newcommand{\nobibentry}[1]{{\let\nocite\ignore\bibentry{#1}}}
+
+\begin{document}
+\nobibliography*
+
+%%%%%%%%% TITLE
+\title{Adversarial Betting}
+\author{Francesco Orabona \\ francesco@orabona.com
+\and David Pal \\ dpal@yahoo-inc.com\\
+Yahoo! Labs\\New York, NY, USA}
+
+
+\maketitle
+
+
+
+\begin{abstract}%   <- trailing '%' for backward compatibility of .sty file
+\input{abstract}
+\end{abstract}
+
+\input{intro}
+\input{kelly}
+\input{algo}
+\input{lower}
+\input{applications}
+\input{proofs}
+
+\bibliographystyle{plainnat}
+\bibliography{learning}
+
+\end{document}
