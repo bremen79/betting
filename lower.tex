@@ -1,99 +1,124 @@
-\section{Lower bound}
+\section{Upper Bounds on the Oracle Betting Strategies}
 
-Consider now that
-\[
-L_t=L_{t-1} + u_t \, g_t = L_{t-1} + \beta \, L_{t-1} \, g_t = L_{t-1} (1+\beta \, g_t)
-\]
-Hence
-\[
-L_T=\epsilon \prod_{t=1}^T (1+\beta g_t) = \epsilon (1+\beta)^\frac{T+G}{2} (1-\beta)^\frac{T-G}{2}
-\]
-Setting $\beta=\frac{G}{T}$ we have
-\begin{align}
-L_T &= \epsilon (1+\frac{G}{T})^\frac{T+G}{2} (1-\frac{G}{T})^\frac{T-G}{2} 
-&= \epsilon \left[(1+\frac{G}{T})^\frac{1+\frac{G}{T}}{2} (1-\frac{G}{T})^\frac{1-\frac{G}{T}}{2}\right]^T 
-&\leq \epsilon \exp \left(\frac{G^2}{2 T} + \frac{G^4}{5 T^3}\right)
-\end{align}
-where we used the fact that
-\[
-\frac{x^2}{2} +\frac{x^4}{12}\leq \frac{1+x}{2} \log(1+x) + \frac{1-x}{2}\log(1-x) \leq \frac{x^2}{2} + \frac{x^4}{5}
-\]
-or 
-\[
-\frac{x^2}{2} +\frac{x^4}{12}\leq \frac{1+x}{2} \log(1+x) + \frac{1-x}{2}\log(1-x) \leq \frac{x^2}{2} + \log(2)-.5
-\]
-where the lhs is given by Taylor expansion.
-
-
+We will now upper bound the maximum reward achievable by any betting strategy.
+First we will analyze the class of betting strategy that bets a fixed amount of the current reward for the entire game.
+The following theorem is well-known, and it has been shown, for example, in \cite{}.
 
 \begin{theorem}
-Let the sequence of losses be composed by linear losses in $[-1,1]$. For any sequence of predictions $w_t$ and 
-for any distribution $B$ on $[-1,1]$ with mean 0, we have 
+Define the reward at time $t$ as $L_t=\epsilon + \sum_{i=1}^t w_t z_t$, where $z_t\in \{-1,1\}$, and the algorithm bets a fixed fraction of his current reward, i.e. $w_t=\beta L_{t-1}$. Then, for any sequence $z_1, \ldots, z_T$, we have
 \[
-\max_u \max_{g_1, \ldots, g_t} \sum_{t=1}^T (w_t-u) g_t - f(u) \geq \E_{g_1, \cdots, g_T \sim B} \left[f^*(-\sum_{t=1}^T g_t)\right]
+\sum_{t=1}^T w_t z_t \leq \exp\left(T\, KL\left(\frac{\sum_{t=1}^T z_t}{T},\frac{1}{2}\right)\right) \leq \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{2T}+\frac{(\sum_{t=1}^T z_t)^4}{5 T^3}\right).
 \]
 \end{theorem}
 \begin{proof}
-We have
-\begin{align}
-\max_u \max_{g_1,\ldots,g_T} &\sum_{t=1}^T (w_t - u) \, g_t -f(u)\\
-&\geq \max_u \E_{g_1,\ldots,g_T} [\sum_{t=1}^T (w_t - u) \, g_t -f(u)]\\
-&\geq \max_u \E_{g_1,\ldots,g_T} [-\sum_{t=1}^T u \, g_t -f(u)].
-\end{align}
-We now set $u=\nabla f^*(-\sum_{t=1}^T g_t)$ and use the equality $f(\nabla f^*(p) ) + f^*(p) = p\, \nabla f^*(p)$
+From the betting strategy we have
 \[
-\E_{g_1,\ldots,g_T} [-\sum_{t=1}^T u \, g_t -f(u)] = \E_{g_1,\ldots,g_T} \left[f^*(-\sum_{t=1}^T g_t)\right].
+L_t=L_{t-1} + w_t \, g_t = L_{t-1} + \beta \, L_{t-1} \, z_t = L_{t-1} (1+\beta \, z_t)
 \]
+Hence
+\[
+L_T=\epsilon \prod_{t=1}^T (1+\beta z_t) = \epsilon (1+\beta)^\frac{T+Z}{2} (1-\beta)^\frac{T-Z}{2},
+\]
+where $Z=\sum_{t=1}^T z_t$.
+It is easy to show that the maximum value of $L_T$ w.r.t. $\beta$ is in $\beta=\frac{Z}{T}$. 
+Hence, we have
+\begin{align}
+L_T &= \epsilon (1+\frac{Z}{T})^\frac{T+Z}{2} (1-\frac{Z}{T})^\frac{T-Z}{2} 
+&= \epsilon \left[(1+\frac{Z}{T})^\frac{1+\frac{Z}{T}}{2} (1-\frac{Z}{T})^\frac{1-\frac{Z}{T}}{2}\right]^T 
+&\leq \epsilon \exp \left(\frac{Z^2}{2 T} + \frac{Z^4}{5 T^3}\right)
+\end{align}
+where we used the simple inequalities
+\[
+\frac{x^2}{2} +\frac{x^4}{12}\leq \frac{1+x}{2} \log(1+x) + \frac{1-x}{2}\log(1-x) \leq \frac{x^2}{2} + \frac{x^4}{5}.
+\]
+%or 
+%\[
+%\frac{x^2}{2} +\frac{x^4}{12}\leq \frac{1+x}{2} \log(1+x) + \frac{1-x}{2}\log(1-x) \leq \frac{x^2}{2} + \log(2)-.5
+%\]
+%where the lhs is given by Taylor expansion.
 \end{proof}
 
-\begin{cor}
-Let the sequence of losses be composed by linear losses in $[-1,1]$.
-For any distribution $B$ on $[-1,1]$ with mean 0, we have 
+The second class of betting strategy we consider can bet any amount of money at each round, but we still require to never have a negative total reward. Of course, this class of betting strategies is bigger than the previous one, so we expect a bigger upper bound. Yet, the following theorem shows that the maximum gain one can expect is only in the constant in the denominator of the exponential reward.
+
+% \begin{theorem}
+% Let the sequence of losses be composed by linear losses in $[-1,1]$. For any sequence of predictions $w_t$ and 
+% for any distribution $B$ on $[-1,1]$ with mean 0, we have 
+% \[
+% \max_u \max_{g_1, \ldots, g_t} \sum_{t=1}^T (w_t-u) g_t - f(u) \geq \E_{g_1, \cdots, g_T \sim B} \left[f^*(-\sum_{t=1}^T g_t)\right]
+% \]
+% \end{theorem}
+% \begin{proof}
+% We have
+% \begin{align}
+% \max_u \max_{g_1,\ldots,g_T} &\sum_{t=1}^T (w_t - u) \, g_t -f(u)\\
+% &\geq \max_u \E_{g_1,\ldots,g_T} [\sum_{t=1}^T (w_t - u) \, g_t -f(u)]\\
+% &\geq \max_u \E_{g_1,\ldots,g_T} [-\sum_{t=1}^T u \, g_t -f(u)].
+% \end{align}
+% We now set $u=\nabla f^*(-\sum_{t=1}^T g_t)$ and use the equality $f(\nabla f^*(p) ) + f^*(p) = p\, \nabla f^*(p)$
+% \[
+% \E_{g_1,\ldots,g_T} [-\sum_{t=1}^T u \, g_t -f(u)] = \E_{g_1,\ldots,g_T} \left[f^*(-\sum_{t=1}^T g_t)\right].
+% \]
+% \end{proof}
+% 
+% \begin{cor}
+% Let the sequence of losses be composed by linear losses in $[-1,1]$.
+% For any distribution $B$ on $[-1,1]$ with mean 0, we have 
+% \[
+% \max_u \max_{g_1, \ldots, g_t} \sum_{t=1}^T (w_t-u) g_t - f^*(u) 
+% \geq \epsilon \exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(1+\exp(\frac{-4}{\alpha})\right)^T.
+% \]
+% Also, for $a\geq1.6411$, the lhs decreases in $T$.
+% \end{cor}
+
+% We now state a similar upper bound for the reward
+% \begin{theorem}
+% Let $z_t$ in $[-1,1]$. For any sequence of predictions $w_t$ and 
+% for any distribution $B$ on $[-1,1]$ with mean 0, we have 
+% \[
+% \min_{z_1, \ldots, z_t} \sum_{t=1}^T w_t z_t - f(\sum_{t=1}^T z_t) \leq -\E_{g_1, \cdots, g_T \sim B} \left[f(\sum_{t=1}^T g_t)\right]
+% \]
+% \end{theorem}
+
+\begin{theorem}
+For any sequence of betting $w_t$, there exist a sequence $z_t$ in $\{-1,1\}, t=1,\ldots,T$ that does not depend on the bettings $w_t$ such that
 \[
-\max_u \max_{g_1, \ldots, g_t} \sum_{t=1}^T (w_t-u) g_t - f^*(u) 
-\geq \epsilon \exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(1+\exp(\frac{-4}{\alpha})\right)^T.
+\sum_{t=1}^T w_t z_t \leq \epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{\alpha T}\right) - \epsilon,
 \]
-Also, for $a\geq1.6411$, the lhs decreases in $T$.
-\end{cor}
+where $\alpha \geq 1.64101792\cdots$.
+%Moreover, for $a\geq 1.64101792\cdots$ we have
+%\[
+%\min_{z_1, \ldots, z_t} \sum_{t=1}^T w_t z_t - 2\epsilon \exp\left(\frac{\sum_{t=1}^T z_t}{\alpha T}\right) \leq -\epsilon.
+%\]
+\end{theorem}
 \begin{proof}
-Set $f^*(\theta)=\exp\left(\frac{\theta^2}{\alpha T}\right)$.
-Choose the distribution on $[-1,1]$, to be $1$ with probability 0.5 and -1 otherwise.
+We will consider the following minimization problem
+\[
+\min_{z_t} \ \sum_{t=1}^T w_t z_t - \epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{\alpha T}\right).
+\]
+Our aim is to find a condition on $\alpha$ to have a negative upper bound independent from $T$.
+
+The minimization over $z_1,\ldots, z_t$ can be upper bound with IID variable coming from any stochastic distribution on $\{-1,1\}$. In particular, we choose $z_t$ to be $1$ with probability 0.5 and -1 otherwise. In this way we have that the expectation of $w_t z_t$ is 0 regardless of the choice of $w_t$.
+Also, $Z:=\sum_{t=1}^T z_t$ is a distribuited according to Binomial of parameters $(T,0.5)$.
 Hence, we have
 \begin{align*}
-\E_{z\sim B(T,0.5)} \left[\exp\left(\frac{(2 z-T)^2}{\alpha T}\right)\right]
-& =\E_{z\sim B(T,0.5)} \left[\exp\left(\frac{T^2 + 4 z^2 - 4 z T }{\alpha T}\right)\right] \\
-& =\exp\left(\frac{T}{\alpha}\right) \E_{z\sim B(T,0.5)} \left[\exp\left(\frac{4 z^2 - 4 z T }{\alpha T}\right)\right] \\
-& \geq\exp\left(\frac{T}{\alpha}\right) \E_{z\sim B(T,0.5)} \left[\exp\left(\frac{- 4 z T }{\alpha T}\right)\right] \\
-& =\exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(1+\exp\left(-\frac{4}{\alpha}\right)\right)^T.
+\min_{z_t} \sum_{t=1}^T w_t z_t - \epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{\alpha T}\right) 
+&\leq \E_{z_t} \sum_{t=1}^T w_t z_t -\epsilon \left[\exp\left(\frac{(\sum_{t=1}^T z_t)^2}{\alpha T}\right)\right] \\
+&= -\epsilon \E_{Z \sim B(T,0.5)} \left[\exp\left(\frac{(2 Z-T)^2}{\alpha T}\right)\right] \\
+& =-\epsilon \E_{Z\sim B(T,0.5)} \left[\exp\left(\frac{T^2 + 4 Z^2 - 4 Z T }{\alpha T}\right)\right] \\
+& =-\epsilon \exp\left(\frac{T}{\alpha}\right) \E_{Z\sim B(T,0.5)} \left[\exp\left(\frac{4 Z^2 - 4 Z T }{\alpha T}\right)\right] \\
+& \leq - \epsilon \exp\left(\frac{T}{\alpha}\right) \E_{Z\sim B(T,0.5)} \left[\exp\left(\frac{- 4 Z T }{\alpha T}\right)\right] \\
+& =- \epsilon \exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(1+\exp\left(-\frac{4}{\alpha}\right)\right)^T,
 %& \geq \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) \E_{z\sim B(T,0.5)} \left[\left(\exp\left(\frac{2 \sqrt{2} z}{\alpha T}\right)+\exp\left(\frac{- 2 \sqrt{2} z}{\alpha T}\right) \right)\exp\left(\frac{- 4 z }{\alpha}\right)\right]\\
 %& = \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) \left(\E_{z\sim B(T,0.5)} \left[\exp\left(\frac{2 \sqrt{2} z-4zT}{\alpha T }\right)\right] +\E_{z\sim B(T,0.5)} \left[ \exp\left(\frac{- 2 \sqrt{2} z-4zT}{\alpha T}\right) \right]\right) \\
 %& = \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(  \left(1+\exp(\frac{2 \sqrt{2}-4T}{\alpha T})\right)^T + \left(1+\exp(\frac{-2 \sqrt{2}-4T}{\alpha T})\right)^T\right) \\
 %& \geq \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(1+\exp(\frac{2 \sqrt{2}-4T}{\alpha T})\right)^T\\
 %& \geq \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(1+\exp(\frac{-4}{\alpha})\right)^T.
 \end{align*}
-For the second statement, taking the logarithm of last expression we have
+where in the last equality we used the closed form expression of the moment generating function of the binomial distribution.
+This upper bound holds for any $\alpha>0$. However, we know that the betting strategy $w_t$ never bets more than the actual reward, hence the reward at any time cannot be negative. So, any upper bound that is negative for $T$ big enough is trivial.
+Hence, we select $a$ to have the last expression upper bounded by $-\epsilon$, independent of $T$. Hence, taking the logarithm of negative sign of last expression we have
 \begin{align}
 -T\log 2+ \frac{T}{\alpha} + T \log \left(1+\exp\left(-\frac{4}{\alpha}\right)\right),
 \end{align}
-that numerically has a negative coefficient multiplying T iff $a\geq1.6411$.
+that numerically has a negative coefficient multiplying T iff $\alpha\geq1.64101792\cdots$.
 \end{proof}
-
-We now state a similar upper bound for the reward
-\begin{theorem}
-Let $z_t$ in $[-1,1]$. For any sequence of predictions $w_t$ and 
-for any distribution $B$ on $[-1,1]$ with mean 0, we have 
-\[
-\min_{z_1, \ldots, z_t} \sum_{t=1}^T w_t z_t - f(\sum_{t=1}^T z_t) \leq -\E_{g_1, \cdots, g_T \sim B} \left[f(\sum_{t=1}^T g_t)\right]
-\]
-\end{theorem}
-
-\begin{cor}
-Let $z_t$ in $[-1,1]$. For any sequence of predictions $w_t$ we have
-\[
-\min_{z_1, \ldots, z_t} \sum_{t=1}^T w_t z_t - \epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{\alpha T}\right) \leq -\epsilon\exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(1+\exp\left(-\frac{4}{\alpha}\right)\right)^T.
-\]
-%Moreover, for $a\geq 1.64101792\cdots$ we have
-%\[
-%\min_{z_1, \ldots, z_t} \sum_{t=1}^T w_t z_t - 2\epsilon \exp\left(\frac{\sum_{t=1}^T z_t}{\alpha T}\right) \leq -\epsilon.
-%\]
-\end{cor}
