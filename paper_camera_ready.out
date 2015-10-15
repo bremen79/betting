@@ -1,0 +1,13 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Kelly Betting}{}% 2
+\BOOKMARK [1][-]{section.3}{Algorithm}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Data independent bound}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Data dependent bound}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{Data dependent bound, version 2}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.4}{Data dependent bound, version 3}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.5}{Data dependent bound, no }{section.3}% 8
+\BOOKMARK [1][-]{section.4}{Upper Bounds on the Oracle Betting Strategies}{}% 9
+\BOOKMARK [1][-]{section.5}{Applications}{}% 10
+\BOOKMARK [2][-]{subsection.5.1}{Online Convex Optimization in 1d}{section.5}% 11
+\BOOKMARK [2][-]{subsection.5.2}{Online Convex Optimization in Hilber Spaces}{section.5}% 12
+\BOOKMARK [1][-]{section.6}{Proofs}{}% 13

@@ -5,9 +5,10 @@ First we will analyze the class of betting strategy that bets a fixed amount of 
 The following theorem is well-known, and it has been shown, for example, in \cite{}.
 
 \begin{theorem}
+\label{thm:oracle_fraction}
 Define the reward at time $t$ as $L_t=\epsilon + \sum_{i=1}^t w_t z_t$, where $z_t\in \{-1,1\}$, and the algorithm bets a fixed fraction of his current reward, i.e. $w_t=\beta L_{t-1}$. Then, for any sequence $z_1, \ldots, z_T$, we have
 \[
-\sum_{t=1}^T w_t z_t \leq \exp\left(T\, KL\left(\frac{\sum_{t=1}^T z_t}{T},\frac{1}{2}\right)\right) \leq \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{2T}+\frac{(\sum_{t=1}^T z_t)^4}{5 T^3}\right).
+\sum_{t=1}^T w_t z_t \leq \epsilon \exp\left(T\, KL\left(\frac{\sum_{t=1}^T z_t}{T},\frac{1}{2}\right)\right) \leq \epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{2T}+\frac{(\sum_{t=1}^T z_t)^4}{5 T^3}\right).
 \]
 \end{theorem}
 \begin{proof}
@@ -38,7 +39,7 @@ where we used the simple inequalities
 %where the lhs is given by Taylor expansion.
 \end{proof}
 
-The second class of betting strategy we consider can bet any amount of money at each round, but we still require to never have a negative total reward. Of course, this class of betting strategies is bigger than the previous one, so we expect a bigger upper bound. Yet, the following theorem shows that the maximum gain one can expect is only in the constant in the denominator of the exponential reward.
+The second class of betting strategy we consider can bet any amount of money at each round, but we still require to never have a negative total reward, that is to bet at each round a fraction of the total reward.  Theorem~\ref{thm:oracle_fraction} tells us that the upper bound is at least $\epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{2T}\right)$. Of course, this class of betting strategies is bigger than the previous one, so we expect a bigger upper bound. So, it is natural to investigate the possibility to obtain a reward of the form $\epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{\alpha T}\right)$, for a small $\alpha$. Precisely, the following theorem shows that $\alpha$ cannot be too small.
 
 % \begin{theorem}
 % Let the sequence of losses be composed by linear losses in $[-1,1]$. For any sequence of predictions $w_t$ and 
