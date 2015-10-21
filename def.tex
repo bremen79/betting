@@ -1,0 +1,18 @@
+\section{Definitions}
+We define the KL divergence between two Bernoulli distributions with parameters $p$ and $q$ as
+\[
+KL_{Ber}(p,q)= p \log\frac{p}{q} + (1-p) \log\frac{1-p}{1-q}.
+\]
+Hence, we have, for any $ 0\leq p < 1$
+\[
+KL_{Ber}(\frac{1}{2}+\frac{p}{2},\frac{1}{2}) = KL_{Ber}(\frac{1}{2}-\frac{p}{2},\frac{1}{2})= \frac{1+p}{2} \log(1+p) + \frac{1-p}{2} \log(1-p).
+\]
+The extension for continuity of $KL_{Ber}(\frac{1}{2}+\frac{p}{2},\frac{1}{2})$ in $p=1$ is $log(2)$.
+Also,
+\[
+\left(\frac{n}{n-q}\right)^{n-q} \left(\frac{n}{q}\right)^{q} = 2^n \exp\left(-n KL_{Ber}(\frac{q}{n}||\frac{1}{2})\right),
+\]
+and
+\[
+\left(1+x\right)^\frac{1+x}{2} \left(1-x\right)^\frac{1-x}{2}= \exp\left( KL_{Ber}(\frac{1}{2}+\frac{x}{2},\frac{1}{2}) \right)
+\]

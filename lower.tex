@@ -6,9 +6,11 @@ The following theorem is well-known, and it has been shown, for example, in \cit
 
 \begin{theorem}
 \label{thm:oracle_fraction}
-Define the reward at time $t$ as $L_t=\epsilon + \sum_{i=1}^t w_t z_t$, where $z_t\in \{-1,1\}$, and the algorithm bets a fixed fraction of his current reward, i.e. $w_t=\beta L_{t-1}$. Then, for any sequence $z_1, \ldots, z_T$, we have
+Define the reward at time $t$ as $L_t=\epsilon + \sum_{i=1}^t w_t z_t$, where $z_t\in \{-1,1\}$, and the algorithm bets a fixed fraction of his current reward, i.e. $w_t=\beta L_{t-1}$, where $0\leq\beta\leq1$. Then, for any sequence $z_1, \ldots, z_T$, we have
 \[
-\sum_{t=1}^T w_t z_t \leq \epsilon \exp\left(T\, KL\left(\frac{\sum_{t=1}^T z_t}{T},\frac{1}{2}\right)\right) \leq \epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{2T}+\frac{(\sum_{t=1}^T z_t)^4}{5 T^3}\right).
+\max_{w_t: w_t=\beta L_{t-1}} \sum_{t=1}^T w_t z_t 
+= \epsilon \exp\left(T\, KL_{Ber}\left(\frac{1}{2}+\frac{\sum_{t=1}^T z_t}{2T},\frac{1}{2}\right)\right) 
+%\leq \epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{2T}+\frac{(\sum_{t=1}^T z_t)^4}{5 T^3}\right).
 \]
 \end{theorem}
 \begin{proof}
@@ -39,7 +41,7 @@ where we used the simple inequalities
 %where the lhs is given by Taylor expansion.
 \end{proof}
 
-The second class of betting strategy we consider can bet any amount of money at each round, but we still require to never have a negative total reward, that is to bet at each round a fraction of the total reward.  Theorem~\ref{thm:oracle_fraction} tells us that the upper bound is at least $\epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{2T}\right)$. Of course, this class of betting strategies is bigger than the previous one, so we expect a bigger upper bound. So, it is natural to investigate the possibility to obtain a reward of the form $\epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{\alpha T}\right)$, for a small $\alpha$. Precisely, the following theorem shows that $\alpha$ cannot be too small.
+The second class of betting strategy we consider can bet any amount of money at each round, but we still require to never have a negative total reward, that is to bet at each round a fraction of the total reward. Of course, this class of betting strategies is bigger than the previous one, so we expect a bigger upper bound. Precisely, the following theorem shows that the exponent of the reward is the same, we can only hope for a multiplicative factor of $\sqrt{T}$.
 
 % \begin{theorem}
 % Let the sequence of losses be composed by linear losses in $[-1,1]$. For any sequence of predictions $w_t$ and 
@@ -80,46 +82,153 @@ The second class of betting strategy we consider can bet any amount of money at 
 % \]
 % \end{theorem}
 
+% \begin{theorem}
+% For any sequence of betting $w_t$, there exist a sequence $z_t$ in $\{-1,1\}, t=1,\ldots,T$ that does not depend on the bettings $w_t$ such that
+% \[
+% \sum_{t=1}^T w_t z_t \leq \epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{\alpha T}\right) - \epsilon,
+% \]
+% where $\alpha \geq 1.64101792\cdots$.
+% %Moreover, for $a\geq 1.64101792\cdots$ we have
+% %\[
+% %\min_{z_1, \ldots, z_t} \sum_{t=1}^T w_t z_t - 2\epsilon \exp\left(\frac{\sum_{t=1}^T z_t}{\alpha T}\right) \leq -\epsilon.
+% %\]
+% \end{theorem}
+% \begin{proof}
+% We will consider the following minimization problem
+% \[
+% \min_{z_t} \ \sum_{t=1}^T w_t z_t - \epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{\alpha T}\right).
+% \]
+% Our aim is to find a condition on $\alpha$ to have a negative upper bound independent from $T$.
+% 
+% The minimization over $z_1,\ldots, z_t$ can be upper bound with IID variable coming from any stochastic distribution on $\{-1,1\}$. In particular, we choose $z_t$ to be $1$ with probability 0.5 and -1 otherwise. In this way we have that the expectation of $w_t z_t$ is 0 regardless of the choice of $w_t$.
+% Also, $Z:=\sum_{t=1}^T z_t$ is a distribuited according to Binomial of parameters $(T,0.5)$.
+% Hence, we have
+% \begin{align*}
+% \min_{z_t} \sum_{t=1}^T w_t z_t - \epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{\alpha T}\right) 
+% &\leq \E_{z_t} \sum_{t=1}^T w_t z_t -\epsilon \left[\exp\left(\frac{(\sum_{t=1}^T z_t)^2}{\alpha T}\right)\right] \\
+% &= -\epsilon \E_{Z \sim B(T,0.5)} \left[\exp\left(\frac{(2 Z-T)^2}{\alpha T}\right)\right] \\
+% & =-\epsilon \E_{Z\sim B(T,0.5)} \left[\exp\left(\frac{T^2 + 4 Z^2 - 4 Z T }{\alpha T}\right)\right] \\
+% & =-\epsilon \exp\left(\frac{T}{\alpha}\right) \E_{Z\sim B(T,0.5)} \left[\exp\left(\frac{4 Z^2 - 4 Z T }{\alpha T}\right)\right] \\
+% & \leq - \epsilon \exp\left(\frac{T}{\alpha}\right) \E_{Z\sim B(T,0.5)} \left[\exp\left(\frac{- 4 Z T }{\alpha T}\right)\right] \\
+% & =- \epsilon \exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(1+\exp\left(-\frac{4}{\alpha}\right)\right)^T,
+% %& \geq \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) \E_{z\sim B(T,0.5)} \left[\left(\exp\left(\frac{2 \sqrt{2} z}{\alpha T}\right)+\exp\left(\frac{- 2 \sqrt{2} z}{\alpha T}\right) \right)\exp\left(\frac{- 4 z }{\alpha}\right)\right]\\
+% %& = \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) \left(\E_{z\sim B(T,0.5)} \left[\exp\left(\frac{2 \sqrt{2} z-4zT}{\alpha T }\right)\right] +\E_{z\sim B(T,0.5)} \left[ \exp\left(\frac{- 2 \sqrt{2} z-4zT}{\alpha T}\right) \right]\right) \\
+% %& = \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(  \left(1+\exp(\frac{2 \sqrt{2}-4T}{\alpha T})\right)^T + \left(1+\exp(\frac{-2 \sqrt{2}-4T}{\alpha T})\right)^T\right) \\
+% %& \geq \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(1+\exp(\frac{2 \sqrt{2}-4T}{\alpha T})\right)^T\\
+% %& \geq \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(1+\exp(\frac{-4}{\alpha})\right)^T.
+% \end{align*}
+% where in the last equality we used the closed form expression of the moment generating function of the binomial distribution.
+% We now have to choose $\alpha>0$ such the reward is always positive.
+% Hence, we select $\alpha$ to have the last expression upper bounded by $-\epsilon$, independent of $T$. Hence, taking the logarithm of negative sign of last expression we have
+% \begin{align}
+% -T\log 2+ \frac{T}{\alpha} + T \log \left(1+\exp\left(-\frac{4}{\alpha}\right)\right),
+% \end{align}
+% that numerically has a negative coefficient multiplying T iff $\alpha\geq1.64101792\cdots$.
+% \end{proof}
+
 \begin{theorem}
-For any sequence of betting $w_t$, there exist a sequence $z_t$ in $\{-1,1\}, t=1,\ldots,T$ that does not depend on the bettings $w_t$ such that
+\label{lemma:bin}
+Let $T\geq2$ an even number of Bernoulli random variables $b_i$. Then for any $k \in \Nat_0$ such that $k\leq \frac{1}{2}T-1$, we have
 \[
-\sum_{t=1}^T w_t z_t \leq \epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{\alpha T}\right) - \epsilon,
+P\left( \sum_{i=1}^T b_i \geq \frac{1}{2} T + k\right) 
+\geq  \frac{\exp\left(-T KL_{Ber}(\frac{1}{2}+\frac{k}{T}||\frac{1}{2})\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)y+\sqrt{y^2+2 \pi}},
 \]
-where $\alpha \geq 1.64101792\cdots$.
-%Moreover, for $a\geq 1.64101792\cdots$ we have
-%\[
-%\min_{z_1, \ldots, z_t} \sum_{t=1}^T w_t z_t - 2\epsilon \exp\left(\frac{\sum_{t=1}^T z_t}{\alpha T}\right) \leq -\epsilon.
-%\]
+where $y=\frac{2 k}{\sqrt{T}}$.
 \end{theorem}
 \begin{proof}
-We will consider the following minimization problem
-\[
-\min_{z_t} \ \sum_{t=1}^T w_t z_t - \epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{\alpha T}\right).
-\]
-Our aim is to find a condition on $\alpha$ to have a negative upper bound independent from $T$.
+We use Theorem~2 in \cite{McKay1989}, that specialized to our case says that
+\begin{equation}
+\label{eq:bin_1}
+P\left( \sum_{i=1}^T b_i \geq  \frac{1}{2} T + k  \right) 
+\geq \sqrt{T} \binom{T-1}{ \frac{1}{2} T + k -1} 2^{-T} \frac{Q(y)}{\phi(y)},
+\end{equation}
+where $\phi(x)$ is the unit variance, zero mean Gaussian, $\frac{1}{\sqrt{2 \pi}} \exp(-\frac{x^2}{2})$ and $Q(x)$ is its CDF, $\int_{x}^{+\infty} \phi(u) du$.
 
-The minimization over $z_1,\ldots, z_t$ can be upper bound with IID variable coming from any stochastic distribution on $\{-1,1\}$. In particular, we choose $z_t$ to be $1$ with probability 0.5 and -1 otherwise. In this way we have that the expectation of $w_t z_t$ is 0 regardless of the choice of $w_t$.
-Also, $Z:=\sum_{t=1}^T z_t$ is a distribuited according to Binomial of parameters $(T,0.5)$.
-Hence, we have
+We start lower bounding the ratio $\frac{Q(y)}{\phi(y)}$. Using the inequality in \cite{Boyd59}, that says
+\[
+\frac{Q(y)}{\phi(y)} 
+= \exp\left(\frac{x^2}{2}\right) \int_{x}^{+\infty} \exp\left(-\frac{t^2}{2}\right) dt
+\geq \frac{\pi}{(\pi-1)x+\sqrt{x^2+2 \pi}}.
+\]
+
+To bound the binomial coefficient we make use of the following Stirling approximation, for any $n\geq 1$,
+\[
+\sqrt{2 \pi n} n^n \exp(-n) < n! < \exp\left(\frac{1}{12}\right)\sqrt{2 \pi n} n^n \exp(-n)~.
+\]
+Hence, for any $n \geq 2$ and $1\leq q \leq n-1$, after some algebra we obtain
 \begin{align*}
-\min_{z_t} \sum_{t=1}^T w_t z_t - \epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{\alpha T}\right) 
-&\leq \E_{z_t} \sum_{t=1}^T w_t z_t -\epsilon \left[\exp\left(\frac{(\sum_{t=1}^T z_t)^2}{\alpha T}\right)\right] \\
-&= -\epsilon \E_{Z \sim B(T,0.5)} \left[\exp\left(\frac{(2 Z-T)^2}{\alpha T}\right)\right] \\
-& =-\epsilon \E_{Z\sim B(T,0.5)} \left[\exp\left(\frac{T^2 + 4 Z^2 - 4 Z T }{\alpha T}\right)\right] \\
-& =-\epsilon \exp\left(\frac{T}{\alpha}\right) \E_{Z\sim B(T,0.5)} \left[\exp\left(\frac{4 Z^2 - 4 Z T }{\alpha T}\right)\right] \\
-& \leq - \epsilon \exp\left(\frac{T}{\alpha}\right) \E_{Z\sim B(T,0.5)} \left[\exp\left(\frac{- 4 Z T }{\alpha T}\right)\right] \\
-& =- \epsilon \exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(1+\exp\left(-\frac{4}{\alpha}\right)\right)^T,
-%& \geq \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) \E_{z\sim B(T,0.5)} \left[\left(\exp\left(\frac{2 \sqrt{2} z}{\alpha T}\right)+\exp\left(\frac{- 2 \sqrt{2} z}{\alpha T}\right) \right)\exp\left(\frac{- 4 z }{\alpha}\right)\right]\\
-%& = \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) \left(\E_{z\sim B(T,0.5)} \left[\exp\left(\frac{2 \sqrt{2} z-4zT}{\alpha T }\right)\right] +\E_{z\sim B(T,0.5)} \left[ \exp\left(\frac{- 2 \sqrt{2} z-4zT}{\alpha T}\right) \right]\right) \\
-%& = \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(  \left(1+\exp(\frac{2 \sqrt{2}-4T}{\alpha T})\right)^T + \left(1+\exp(\frac{-2 \sqrt{2}-4T}{\alpha T})\right)^T\right) \\
-%& \geq \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(1+\exp(\frac{2 \sqrt{2}-4T}{\alpha T})\right)^T\\
-%& \geq \frac{1}{2}\exp\left(\frac{T}{\alpha}\right) 2^{-T} \left(1+\exp(\frac{-4}{\alpha})\right)^T.
+{n \choose q} 
+&\geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \left(\frac{n}{n-q}\right)^{n-q} \left(\frac{n}{q}\right)^{q} \sqrt{\frac{n}{q(n-q)}} \\
+&\geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} 2^n \exp\left(-n KL_{Ber}(\frac{q}{n}||\frac{1}{2})\right) \sqrt{\frac{n}{q(n-q)}}.
 \end{align*}
-where in the last equality we used the closed form expression of the moment generating function of the binomial distribution.
-This upper bound holds for any $\alpha>0$. However, we know that the betting strategy $w_t$ never bets more than the actual reward, hence the reward at any time cannot be negative. So, any upper bound that is negative for $T$ big enough is trivial.
-Hence, we select $a$ to have the last expression upper bounded by $-\epsilon$, independent of $T$. Hence, taking the logarithm of negative sign of last expression we have
-\begin{align}
--T\log 2+ \frac{T}{\alpha} + T \log \left(1+\exp\left(-\frac{4}{\alpha}\right)\right),
-\end{align}
-that numerically has a negative coefficient multiplying T iff $\alpha\geq1.64101792\cdots$.
+where in the equality we used the definition of $KL_{Ber}$.
+Also, we have
+\begin{equation}
+\label{eq:bin_3}
+{T-1 \choose \frac{1}{2} T + k - 1} = {T \choose \frac{1}{2} T + k} \left(\frac{1}{2} + \frac{k}{T}\right) .
+\end{equation}
+Putting together \eqref{eq:bin_1}-\eqref{eq:bin_3}, and using the definition of $y$ we have
+\begin{align*}
+P\left( \sum_{i=1}^T b_i \geq \frac{1}{2} T + k \right) 
+&\geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \exp\left(-T KL_{Ber}(\frac{1}{2}+\frac{k}{T}||\frac{1}{2})\right) \sqrt{\frac{\frac{1}{2} + \frac{k}{T}}{\frac{1}{2}-\frac{k}{T}}}  \frac{Q(y)}{\phi(y)} \\
+&\geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \exp\left(-T KL_{Ber}(\frac{1}{2}+\frac{k}{T}||\frac{1}{2})\right) \frac{\pi}{(\pi-1)y+\sqrt{y^2+2 \pi}}. \qedhere
+\end{align*}
 \end{proof}
+
+
+\begin{theorem}
+For $T \in \Nat$ even, any betting strategy $w_t$, and an initial amount of money equal to $\epsilon$, we have
+\[
+\sum_{t=1}^T w_t z_t 
+\leq \epsilon \min\left(\left(\exp\left(\frac{1}{6}\right)\sqrt{2 \pi}\frac{|\sum_{t=1}^T z_t|}{\sqrt{T}} +2\exp\left(\frac{1}{6}\right)-1\right) \exp\left(T KL_{Ber}(\frac{1}{2}+\frac{|\sum_{t=1}^T z_t|}{2T}||\frac{1}{2})\right), 2^T\right).
+\]
+\end{theorem}
+\begin{proof}
+First observe that, even knowing all the outcomes of $z_t$, we cannot gain more than $\epsilon 2^T$, simply betting on each round all the money on the correct outcome.
+
+Then, for a specific function $g(\cdot,\cdot)$ that grows in the first argument, we will show that
+\begin{align*}
+\min_{|\sum_{t=1}^T z_t| \geq 2 k} \sum_{t=1}^T w_t z_t 
+\leq \epsilon \, g(k,T), \ \forall 0 \leq k \leq T-1.
+\end{align*}
+When $k=T/2$, we cannot gain more than $\epsilon 2^T$, this is why we can safely consider only $0\leq k\leq T/2-1$.
+From this we will infer that
+\begin{align*}
+\min_{z_t} \sum_{t=1}^T w_t z_t - \epsilon\min\left(g\left(\frac{|\sum_{t=1}^T z_t|}{2},T\right),2^T\right) \leq 0,
+\end{align*}
+that implies the stated inequality.
+
+Set $r_t$ as independent random variable that assumes the value of 1 with probability 0.5 and -1 with probability 0.5.
+Hence, we have that $\E[ \sum_{t=1}^T w_t r_t ]=0$, and also $\sum_{t=1}^T w_t r_t \geq -\epsilon$ because we never lose more than the initial amount of money.
+
+Hence we have
+\begin{align*}
+\min_{|\sum_{t=1}^T z_t| \geq 2 k} \sum_{t=1}^T w_t z_t 
+\leq \E\left[\sum_{t=1}^T w_t r_t \bigg| \left|\sum_{t=1}^T r_t\right| \geq 2 k\right], \ \forall 0 \leq k \leq T-1.
+\end{align*}
+
+For any $k\geq 0$, it follows that
+\begin{align*}
+0&=\E\left[\sum_{t=1}^T w_t r_t \right] 
+= \E\left[\sum_{t=1}^T w_t r_t \bigg| \left|\sum_{t=1}^T r_t \right|< 2 k\right] P\left(\left|\sum_{t=1}^T r_t\right|< 2k \right)\\
+&\qquad+\E\left[\sum_{t=1}^T w_t r_t \bigg| \left|\sum_{t=1}^T r_t \right| \geq 2 k\right] P\left(\left|\sum_{t=1}^T r_t\right|\geq 2 k\right) \\
+&=\E\left[\sum_{t=1}^T w_t r_t \bigg| \left|\sum_{t=1}^T r_t \right|< 2 k\right] (1-P\left(\left|\sum_{t=1}^T r_t\right|\geq 2 k\right))\\
+&\qquad+\E\left[\sum_{t=1}^T w_t r_t \bigg| \left|\sum_{t=1}^T r_t \right| \geq 2 k\right] P\left(\left|\sum_{t=1}^T r_t\right|\geq 2 k\right) \\
+&\geq -\epsilon (1-P\left(\left|\sum_{t=1}^T r_t\right|\geq 2 k\right))+\E\left[\sum_{t=1}^T w_t r_t \bigg| \left|\sum_{t=1}^T r_t\right| \geq 2 k\right] P\left(\left|\sum_{t=1}^T r_t \right|\geq 2 k\right),
+\end{align*}
+hence
+\begin{align*}
+\E\left[\sum_{t=1}^T w_t r_t \bigg| \left|\sum_{t=1}^T r_t\right| \geq 2 k\right]
+&\leq \frac{\epsilon}{P\left(\left|\sum_{t=1}^T r_t\right|\geq 2 k\right)} -\epsilon
+= \frac{\epsilon}{2 P\left(\sum_{t=1}^T r_t \geq 2 k\right)} -\epsilon\\
+&= \frac{\epsilon}{2 P\left(\sum_{t=1}^T \frac{r_t + 1}{2} \geq \frac{1}{2}T+ k \right)}-\epsilon.
+\end{align*}
+Notice that $\frac{r_t + 1}{2}$ are Bernoulli random variables.
+Using Theorem~\ref{lemma:bin}, we have
+\begin{align*}
+\E\left[\sum_{t=1}^T w_t r_t \bigg| \left|\sum_{t=1}^T r_t\right| \geq 2 k\right]
+&\leq \epsilon \left(\exp\left(\frac{1}{6}\right)\sqrt{2 \pi}\frac{2k}{\sqrt{T}} +2\exp\left(\frac{1}{6}\right)-1\right)\exp\left(T KL_{Ber}(\frac{1}{2}+\frac{k}{T}||\frac{1}{2})\right)
+\end{align*}
+\end{proof}
+
+Hence, in the best case, the non-static betting strategy cannot gain more than a factor $\sqrt{T}$ over the fixed strategy.
