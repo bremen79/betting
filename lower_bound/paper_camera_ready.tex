@@ -19,7 +19,7 @@
 \begin{document}
 
 %%%%%%%%% TITLE
-\title{Simple and Optimal Non-Asymptotic Lower Bound to the Minimax Regret in the Expert Setting}
+\title{Optimal Non-Asymptotic Lower Bound to the Minimax Regret in the Expert Setting}
 %\author{Francesco Orabona }
 %\author{David Pal  }
 %\affil{Yahoo! Labs\\New York, NY, USA}
@@ -36,7 +36,7 @@ Yahoo Labs\\New York, NY, USA
 \maketitle
 
 \begin{abstract}%   <- trailing '%' for backward compatibility of .sty file
-We prove non-asymptotic lower bounds to the expecation of the max of Gaussian and Binomial variables.
+We prove non-asymptotic lower bounds to the expectation of the max of Gaussian and Binomial variables.
 As an application, we prove a very simple non-asymptotic lower bound to the minimax regret of online learning in the experts scenario. The lower bound also recovers the optimal leading constant in the limit.
 \end{abstract}
 
@@ -50,6 +50,8 @@ We will first prove the lower bound for the maximum of Gaussians. The Binomial c
 Then, we will show the lower bound on the minimax regret in the experts setting.
 
 \section{Gaussian Case}
+
+The Gaussian case will be a warm-up for the proof of the Binomial case.
 
 It is well known that the maximum of Gaussian variables converges to a Gumbel distribution. Here we quantify the rate of convergence for the expectation of maximum of independent Gaussian variables.
 
@@ -133,13 +135,13 @@ where in the first inequality we used Lemma~\ref{lemma:boyd}.
 Let $d\geq2$ and $X_i$ independent Gaussian variables $N(0,\sigma^2)$. Then
 \begin{align*}
 E\left[\max_{i=1,\cdots,d} X_i\right] 
-&\geq \sigma \left(1 - \exp\left(-\frac{\sqrt{\log d}}{2.6 \sqrt{2\pi}}\right)\right) \left(\sqrt{2 \log d-\log \log d} +\sqrt\frac{2}{\pi}\right) -\sqrt{\frac{2}{\pi}} \sigma \\
+&\geq \sigma \left(1 - \exp\left(-\frac{\sqrt{\log d}}{2.6 \sqrt{2\pi}}\right)\right) \left(\sqrt{2 \log d-2\log \log d} +\sqrt\frac{2}{\pi}\right) -\sqrt{\frac{2}{\pi}} \sigma \\
 &\geq 0.19 \sigma \sqrt{\log d} - 0.68 \sigma.
 \end{align*}
 \end{theorem}
 \begin{proof}
 
-Define the event $A$ equal to the case that at least one of the $X_i$ is greater or equal than $C \sigma \sqrt{\log d}$, where $C=\sqrt{2-\frac{\log \log d}{\log d}}$. With this choice we have that $d^{1-\frac{C^2}{2}}=\log d$. Also, the function $f(d)=\sqrt{2-\frac{\log \log d}{\log d}}$ has a minimum in $d=e^e$, hence $1.27 \leq f(15) \leq C\leq f(2)\leq 1.6$.
+Define the event $A$ equal to the case that at least one of the $X_i$ is greater or equal than $C \sigma \sqrt{\log d}$, where $C=\sqrt{2-\frac{\log \log d}{\log d}}$. With this choice we have that $d^{1-\frac{C^2}{2}}=\log d$. Also, the function $f(d)=\sqrt{2-\frac{2\log \log d}{\log d}}$ has a minimum in $d=e^e$, hence $1.27 \leq f(15) \leq C\leq f(2)\leq 1.6$.
 %
 \begin{align*}
 E[\max_{i=1,\cdots,d} X_i] 
@@ -165,7 +167,7 @@ P(A)
 &\geq 1 - \exp\left(-\frac{d^{1-\frac{C^2}{2}}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right).
 \end{align*}
 where in the last inequality we used the elementary inequality $\log(1-\frac{1}{x}) \leq -\frac{1}{x}, \forall  0\leq x>1$.
-We now use the fact that $C=\sqrt{2- \frac{\log \log d}{\log d}}$, to have
+We now use the fact that $C=\sqrt{2- \frac{2 \log \log d}{\log d}}$, to have
 \begin{align*}
 P(A) 
 & \geq 1 - \exp\left(-\frac{d^{1-\frac{C^2}{2}}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
@@ -178,6 +180,20 @@ Putting all together, we have the first stated bound.
 \end{proof}
 
 \section{Binomial Case}
+
+In the Binomial case, we expect the discrete nature of the variable to play a role. In fact, we expect it to behave like a Gaussian only when the number of draws goes to infinity.
+We will quantify this intuition with the following function.
+Define the function $\psi:[-\frac{1}{2},\frac{1}{2}] \rightarrow \R$ as
+\[
+\psi(x):=\frac{D(\frac{1}{2}+x||\frac{1}{2})}{2 x^2}~.
+\]
+The function $\psi(x)$ satisfies the following properties
+\begin{itemize}
+\item $\psi(x)=\psi(-x)$
+\item $\psi(x)$ is increasing for $0\leq x \leq\frac{1}{2}$.
+\item $\psi(0)=1$
+\item $\psi(0.5)=2 \log(2) \approx 1.3863$
+\end{itemize}
 
 As in the Gaussian case, for the Binomial case we need lower bound to the probability tail.
 We will use the next Theorem from \cite{nOrabona13}, whose proof is the Appendix for completeness.
@@ -195,17 +211,18 @@ where $D(p||q)=p \log \frac{p}{q}+(1-p) \log\frac{1-p}{1-q}$ and $y=\frac{2 k}{\
 \begin{cor}
 Let $Z \sim B(n, 1/2)$ and $k \geq 1$ and $n\geq2$ even. Then
 \[
-P(Z> \frac{1}{2} n + k-1) \geq \frac{\exp\left(-\frac{1}{6}\right) }{\sqrt{2\pi} \frac{2 k}{\sqrt{n}} + 2 } \exp\left(-\frac{1}{2}\left(\frac{2 k}{\sqrt{n}}\right)^2\right).
+P(Z \geq \frac{1}{2} n + k-1) \geq \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{k}{n}\right) \frac{k^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 k}{\sqrt{n}} + 2 }~.
 \]
 \end{cor}
 \begin{proof}
 \begin{align*}
-P(&Z> \frac{1}{2} n + k-1) \\
-& \geq P(Z> \frac{1}{2} n + \lceil k -1\rceil) \\
+P(&Z \geq  \frac{1}{2} n + k-1) \\
+& = P(Z\geq \frac{1}{2} n + \lceil k -1\rceil) \\
 & \geq \frac{\exp\left(-n D(\frac{1}{2}+\frac{\lceil k -1\rceil}{n}||\frac{1}{2})\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2\lceil k -1\rceil}{\sqrt{n}}+\sqrt{\left(\frac{2\lceil k -1\rceil}{\sqrt{n}}\right)^2+2 \pi}} \\
-& \geq \frac{\exp\left(-\frac{\lceil k-1\rceil^2}{2n}\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2\lceil k -1\rceil}{\sqrt{n}}+\sqrt{\left(\frac{2\lceil k -1\rceil}{\sqrt{n}}\right)^2+2 \pi}} \\
-& \geq \frac{\exp\left(-\frac{k^2}{2n}\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2k}{\sqrt{n}}+\sqrt{\left(\frac{2k}{\sqrt{n}}\right)^2+2 \pi}} \\
-& \geq \exp\left(-\frac{1}{6}\right) \exp\left(-\frac{1}{2}\left(\frac{2 k}{\sqrt{n}}\right)^2\right) \frac{1}{\sqrt{2\pi} \frac{2 k}{\sqrt{n}} + 2 },
+& \geq \frac{\exp\left(-n D(\frac{1}{2}+\frac{k}{n}||\frac{1}{2})\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2k}{\sqrt{n}}+\sqrt{\left(\frac{2k}{\sqrt{n}}\right)^2+2 \pi}} \\
+& = \frac{\exp\left(- 2 \psi(\frac{k}{n}) \frac{k^2}{n} \right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2k}{\sqrt{n}}+\sqrt{\left(\frac{2k}{\sqrt{n}}\right)^2+2 \pi}} \\
+& \geq \frac{\exp\left(- 2 \psi(\frac{k}{n}) \frac{k^2}{n} \right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2k}{\sqrt{n}}+\sqrt{\left(\frac{2k}{\sqrt{n}}\right)^2+2 \pi}} \\
+& \geq \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{k}{n}\right) \frac{k^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 k}{\sqrt{n}} + 2 },
 \end{align*}
 where in the second equality we used Theorem~\ref{lemma:bin}.
 \end{proof}
@@ -215,14 +232,14 @@ where in the second equality we used Theorem~\ref{lemma:bin}.
 Let $2 \leq d \leq \exp(\frac{n}{4})$, $n\geq 10$ even and $Z_i$ independent Binomial variables $B(n,1/2)$. Then
 \begin{align*}
 E\left[ \max_{i=1,\cdots,d} (2 Z_i - n)\right]
-&\geq \sqrt{n}\left(1 - \exp\left(-\frac{\sqrt{\log d}}{3.1 \sqrt{2\pi}}\right)\right) \left(\sqrt{2 \log d -\log \log d}-1\right) -\sqrt{n} \\
-&\geq 0.16 \sqrt{n \log d} - 1.11 \sqrt{n}.
+&\geq \frac{1}{\sqrt{\psi\left(\frac{1.6\sqrt{\log d}}{2 \sqrt{n}}\right)}}\sqrt{n}\left(1 - \exp\left(-\frac{\sqrt{\log d}}{3.1 \sqrt{2\pi}}\right)\right) \left(\sqrt{2 \log d -\log \log d}-1\right) -\sqrt{n} \\
+&\geq 0.13 \sqrt{n \log d} - 2 \sqrt{n}.
 \end{align*}
 \end{theorem}
+%
 \begin{proof}
-
 Define $X_i= 2 Z_i-n$.
-Define the event $A$ equal to the case that at least one of the $X_i$ is greater or equal than $C \sqrt{n \log d}-2$, where $C=\sqrt{2-\frac{\log \log d}{\log d}}$. With this choice we have that $d^{1-\frac{C^2}{2}}=\log d$. Also, the function $f(d)=\sqrt{2-\frac{\log \log d}{\log d}}$ has a minimum in $d=e^e$, hence $1.27 \leq f(15) \leq C\leq f(2)\leq 1.6$.
+Define the event $A$ equal to the case that at least one of the $X_i$ is greater or equal than $C \sqrt{n \log d}-2$, where $C=\frac{1}{\sqrt{\psi\left(\frac{\sqrt{\log d}}{2 \sqrt{n}}\right)}}\sqrt{2-\frac{\log \log d}{\log d}}$. Also, the function $f(d)=\sqrt{2-\frac{\log \log d}{\log d}}$ has a minimum in $d=e^e$, hence $1.08 \leq \frac{f(15)}{\sqrt{2 \log 2}} \leq C\leq f(2)\leq 1.6$.
 
 Notice that the condition on $n$ and $d$ assures that $\frac{C \sqrt{n \log d}}{2}>1$ and $\frac{C \sqrt{n \log d}}{2}\leq \frac{1}{2} n -1$.
 %
@@ -236,7 +253,7 @@ E[\max_{i=1,\cdots,d} X_i]
 &\geq (C \sigma \sqrt{n \log d} -2) P(A) + E[X_1| X_1\leq 0] (1-P(A)).
 \end{align*}
 
-First, we lower bound $E[X_1| X_1\leq 0]$. Using the fact that $X_1$ is simmetric and with zero mean, we have
+First, we lower bound $E[X_1| X_1\leq 0]$. Using the fact that $X_1$ is symmetric and with zero mean, we have
 \begin{align*}
 E[X_1| X_1\leq 0] &= \sum_{k=-n}^0 k P(k | k\leq 0) = 2 \sum_{k=-n}^0 k P(k) \\
 &= - \sum_{k=-n}^n |k| P(k) = - E[|X_1|] \geq - \sqrt{Var[X_1]}\\
@@ -246,20 +263,21 @@ E[X_1| X_1\leq 0] &= \sum_{k=-n}^0 k P(k | k\leq 0) = 2 \sum_{k=-n}^0 k P(k) \\
 Now let's focus on $P(A)$. It is equal to
 \begin{align*}
 P(A) 
-&= 1-P(X_1\leq C \sqrt{n \log d}-2)^d \\
+&= 1-P(X_1 < C \sqrt{n \log d}-2)^d \\
 &= 1-(1-P(X_1\geq C \sqrt{n \log d}-2))^d \\
 &= 1-(1-P(Z_1\geq \frac{C \sqrt{n \log d}}{2} +\frac{n}{2}-1))^d \\
-&\geq 1-\left(1-\exp\left(-\frac{C^2 \log d}{2}\right) \frac{\exp\left(-\frac{1}{6}\right)}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
-&= 1-\left(1-\frac{\exp\left(-\frac{1}{6}\right) d^{-\frac{C^2}{2}}}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
-&= 1- \exp\left(d \log\left(1-\frac{\exp\left(-\frac{1}{6}\right) d^{-\frac{C^2}{2}}}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)\right) \\
-&\geq 1- \exp\left(d \log\left(1-\frac{\exp\left(-\frac{1}{6}\right) d^{-\frac{C^2}{2}}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right)\right) \\
-&\geq 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2}}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right).
+&\geq 1-\left(1-\exp\left(- \psi\left(\frac{C \sqrt{\log d}}{2 \sqrt{n}}\right) \frac{C^2 \log d}{2}\right) \frac{\exp\left(-\frac{1}{6}\right)}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
+&\geq 1-\left(1-\exp\left(- \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right) \frac{C^2 \log d}{2}\right) \frac{\exp\left(-\frac{1}{6}\right)}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
+&= 1-\left(1-\frac{\exp\left(-\frac{1}{6}\right) d^{-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
+&= 1- \exp\left(d \log\left(1-\frac{\exp\left(-\frac{1}{6}\right) d^{-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)\right) \\
+&\geq 1- \exp\left(d \log\left(1-\frac{\exp\left(-\frac{1}{6}\right) d^{-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right)\right) \\
+&\geq 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right).
 \end{align*}
 where in the last inequality we used the elementary inequality $\log(1-\frac{1}{x}) \leq -\frac{1}{x}, \forall  0\leq x>1$.
-We now use the fact that $C=\sqrt{2- \frac{\log \log d}{\log d}}$, to have
+We now use the fact that $C=\frac{1}{\sqrt{\psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}\sqrt{2- \frac{\log \log d}{\log d}}$ that implies $d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}=\log d$. Hence, we obtain
 \begin{align*}
 P(A) 
-& \geq 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2}}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
+& \geq 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
 & = 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) \log d}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
 & \geq 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) \sqrt{\log d}}{2.6 \sqrt{2\pi}}\right)\\
 & \geq 1 - \exp\left(-\frac{\sqrt{\log d}}{3.1 \sqrt{2\pi}}\right),
@@ -277,7 +295,7 @@ We present here our main result.
 Let the outcome space $\mathcal{Y}=\{0,1\}$, and the decision space $\mathcal{D}=[0,1]$, and $\ell$ the absolute loss, $\ell(p,q)=|p-q|$. Let $n\geq4$ and even, and $2\leq d \leq \exp(\frac{n}{4})$.
 Define
 \[
-f(n,d)=\frac{1}{2}\sqrt{n}\left(1 - \exp\left(-\frac{\sqrt{\log d}}{3.1 \sqrt{2\pi}}\right)\right) \left(\sqrt{2 \log d -\log \log d}-1\right) - \frac{1}{2}\sqrt{n}~.
+f(n,d)=\frac{1}{2}\frac{1}{\sqrt{\psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}\sqrt{n}\left(1 - \exp\left(-\frac{\sqrt{\log d}}{3.1 \sqrt{2\pi}}\right)\right) \left(\sqrt{2 \log d -\log \log d}-1\right) -\frac{1}{2}\sqrt{n}~.
 \]
 Then
 \[
@@ -285,7 +303,7 @@ Regret^{(d)}(n)\geq f(n,d)
 \]
 and
 \[
-\sup_{d} \frac{f(n,d)}{\sqrt{\frac{n}{2} \log d}} \geq 1~.
+\sup_{n,d} \frac{f(n,d)}{\sqrt{\frac{n}{2} \log d}} \geq 1~.
 \]
 \end{theorem}
 %
@@ -295,10 +313,10 @@ Proceeding as in the proof of Theorem~3.7 in~\citep{Cesa-BianchiL06} we only nee
 \frac{1}{2} E\left[ \max_{i=1,\cdots,d} Z_i\right] \geq f(n,d),
 \]
 where $Z_i= 2 X_i - n$ and $X_i \sim B(n, \frac{1}{2})$. We simply do it through Theorem~\ref{theo:max_bin}.
-For the second statement it is enough to calculate the limit.
+For the second statement, we use the fact that $\lim_{n\rightarrow\infty} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right) = 1$.
 \end{proof}
 
-The theorem proves a non-asymptotic lower bounds, while at the same time revoring the optimal constant of the asymptotic one in \citet{Cesa-BianchiL06}. Also, differently from the asymptotic lower bound in \citet{Cesa-BianchiL06}, we do not need to take the limit for $n$ that goes to infinity.
+The theorem proves a non-asymptotic lower bounds, while at the same time recovering the optimal constant of the asymptotic one in \citet{Cesa-BianchiL06}. Also, differently from the asymptotic lower bound in \citet{Cesa-BianchiL06}, we do not need to take the limit for $n$ that goes to infinity.
 
 \bibliographystyle{plainnat}
 \bibliography{learning}
