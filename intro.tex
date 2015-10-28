@@ -1,1 +1,28 @@
 \section{Introduction}
+
+\ac{OLO} is a problem where an algorithm repeatedly
+chooses a point $w_t$ from a convex decision set $K$, observes an arbitrary, or
+even adversarially chosen, loss vector $\ell_t$ and suffers loss $\langle
+\ell_t, w_t \rangle$.  The goal of the algorithm is to have a small cumulative
+loss. Performance of an algorithm is evaluated by the so-called regret, which
+is the difference of cumulative losses of the algorithm and of the
+(hypothetical) strategy that would choose in every round the same best point in
+hindsight.
+Typically, one tries to prove that the regret grows at most sub-linearly in time, that is, the average regret vanishes over time.
+
+\ac{OLO} is a fundamental problem in machine
+learning~\cite{Cesa-Bianchi-Lugosi-2006,Shalev-Shwartz-2011}.  Many learning
+problems can be directly phrased as \ac{OLO}, e.g., learning with expert
+advice~\cite{Littlestone-Warmuth-1994,Vovk-1998,Cesa-Bianchi-Haussler-Helmbold-Schapire-Warmuth-1997}, online combinatorial
+optimization~\cite{Koolen-Warmuth-Kivinen-2010}. Other
+problems can be reduced to \ac{OLO}, e.g. online convex
+optimization~\cite[Chapter~2]{Shalev-Shwartz-2011}, online classification and
+regression~\cite[Chapters~11~and~12]{Cesa-Bianchi-Lugosi-2006}, multi-armed
+problems~\cite[Chapter~6]{Cesa-Bianchi-Lugosi-2006}, and batch and stochastic
+optimization of convex functions~\cite{NemirovskyY83}.  Hence, a result in \ac{OLO}
+immediately implies other results in all these domains.
+
+The regret minimization view on online learning is the prevalent one, however in \cite{}, it was proven that achieving a small regret is equivalent to have an algorithm that can guarantee a minimum \emph{reward}, that is a small cumulative loss.
+This alternative view proves that it is striclty non-necessary to consider an hypothetical optimal strategy to compare with. On the other hand, it becomes important to guarantee a reward that depends on the characteristics on the sequence.
+
+In this paper, we will use this alternative interpretation to argue that a recent class of adaptive online learning algorithms has a much more natural interpretation in terms of reward. In particular, we will show that an algorithm that guarantees a reward close to the optimal sequence of bets also guarantees optimal regret in \ac{OLO} and automatic model selection in regularized \ac{ERM}. Moreover, we will show connections between the optimal Kelly-betting strategy \cite{} and online learning, and hence indirectly with stochastic optimization and statistical learning.

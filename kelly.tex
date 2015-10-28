@@ -1,1 +1,17 @@
-\section{Kelly Betting}
+\section{Kelly Betting, Mixture Forecasters and Portfolio Selection}
+
+In probability theory and intertemporal portfolio choice, the Kelly criterion is a formula used to determine the optimal size of a series of bets. In most gambling scenarios, and some investing scenarios under some simplifying assumptions, the Kelly strategy will do better than any essentially different strategy in the long run \cite{}. It was described by J. L. Kelly, Jr in 1956.[1] The practical use of the formula has been demonstrated.[2][3][4]
+
+Part of Kelly's insight was to have the gambler maximize the expectation of the logarithm of his capital, rather than the expected profit from each bet. This is important, since in the latter case, one would be led to gamble all he had when presented with a favorable bet, and if he lost, would have no capital with which to place subsequent bets. Kelly realized that it was the logarithm of the gambler's capital which is additive in sequential bets, and "to which the law of large numbers applies."
+
+Practically speaking, the Kelly criterion applied to a coin that has probability $p$ for tail and $1-p$ for head, with $p> \frac{1}{2}$, and with equal wins corresponds in betting on each round on tail a fraction of the current money equal to $2p-1$. This simple rule assures that in expectation the growth rate will be exponential.
+
+However, the Kelly criterion can be used only if the coin is stochastic and if we knew the probability of tail beforehand. One might ask what is the optimal strategy in the case that the sequence of outcomes of the coin is non-stochastic.
+A little known result by Krichevsky and Trofimov~\cite{}, says that above procedure can still be used, substituiting the  unknown probability with a biased running estimate. In particular, the probability of tails at time $t$ is estimated with 
+\[
+\hat{p_t}=\frac{\text{number of tails in the previous } t-1 \text{ rounds}}{t}.
+\]
+They proved that this simple procedure guarantees an exponential reward as well, only a factor $\sqrt{T}$ less than having known in advance the total number of heads in the sequence of $T$ rounds. It is also known that this factor cannot be improved.
+
+\textbf{Betting on a Continuos Coin.}
+Hence, the problem of betting on a coin is solved. However, the following problem cannot be solved with the Krichevsky-Trofimov forecaster. Consider the same betting scenario as before, with the only difference that the outcome of the coin is now a real number between $+1$ and $-1$. We can interpret this as a betting scenario in which the maximum amount of money that can be won or lost in each bet is fixed, but the actual winnings is shown only after the bet is done. The formalism is still the same, because $w_t g_t$ is still the amount of money won. However, the simple change makes this problem much harder than before. Indeed, to solve it we now have to use a Universal Portfolio algorithm. In fact, it is possible to consider the following equivalent problem. On each time step, we have to divide our wealth between two stocks. The gains given by the market are coded in the vector $m_t$ that is equal to $[1+g_t, 1, 1-g_t]$ and the player bets $[|\beta|,1-|\beta|,0]$ or  $[0,1-|\beta|,|\beta|]$ if $\beta$ is positive or negative respectevely.

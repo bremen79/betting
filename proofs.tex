@@ -1,10 +1,7 @@
 \section{Proofs}
 
 \begin{lemma}
-The Lambert function satisfies
-\[
-W(x) \geq 0.6321 \log(x+1).
-\]
+The Lambert function satisfies $W(x) \geq 0.6321 \log(x+1), \forall x\geq0$.
 \end{lemma}
 \begin{proof}
 The Lambert function that satisfies
@@ -26,17 +23,17 @@ that is
 W(x) \leq \left(\frac{1}{a\, e}\right)^\frac{1}{1+a} x^\frac{a}{1+a}.
 \end{equation}
 Using \eqref{eq:lm_lambert_2} in \eqref{eq:lm_lambert_1}, we have
-\begin{align}
+\begin{align*}
 W(x) 
-&\geq \log\left(\frac{x}{\left(\frac{1}{a\, e}\right)^\frac{1}{1+a} x^\frac{a}{1+a}}\right) \\
-&= \frac{1}{1+a}\log\left(a \, e\, x\right).
-\end{align}
+\geq \log\left(\frac{x}{\left(\frac{1}{a\, e}\right)^\frac{1}{1+a} x^\frac{a}{1+a}}\right) 
+= \frac{1}{1+a}\log\left(a \, e\, x\right)~.
+\end{align*}
 Consider now the function $g(x)=\frac{x}{x+1} - \frac{b}{\log(1+b) (b+1)} \log(x+1), x\geq b$. This function has a maximum in $x^*=(1+\frac{1}{b}) \log(1+b)-1$, the derivative is positive in $[0,x^*]$ and negative in $[x^*,b]$. Hence the minimum is in $x=0$ and in $x=b$, where it is equal to $0$.
 Using the property just proved on $g$, we have that for $x\leq b$, setting $a=\frac{1}{x}$, we have
-\begin{align}
+\begin{align*}
 W(x) 
-&\geq \frac{x}{x+1} \geq \frac{b}{\log(1+b) (b+1)} \log(x+1).
-\end{align}
+\geq \frac{x}{x+1} \geq \frac{b}{\log(1+b) (b+1)} \log(x+1)~.
+\end{align*}
 For $x>b$, setting $a=\frac{x+1}{e x}$, we have
 \begin{align}
 W(x) 
@@ -47,9 +44,9 @@ Hence, we set $b$ such that
 \frac{e\, b}{(e+1)b + 1} = \frac{b}{\log(1+b) (b+1)}
 \]
 Numberically, $b=1.71825...$, so
-\begin{align}
-W(x) &\geq 0.6321 \log(x+1)
-\end{align}
+\[
+W(x) \geq 0.6321 \log(x+1)~. \qedhere
+\]
 \end{proof}
 
 \begin{lemma}

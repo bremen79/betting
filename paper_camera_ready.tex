@@ -2,17 +2,20 @@
 \documentclass{article} % For LaTeX2e
 \usepackage{times}
 \usepackage{url}
-\usepackage{times}
 \usepackage{epsfig}
 \usepackage{graphicx}
+
+\usepackage{algorithm, algorithmic}
 \usepackage{amsmath, amsthm, amssymb}
-\usepackage{algorithm}
-\usepackage{algorithmic}
+
 \usepackage{natbib}
 \usepackage{bibentry}
 \usepackage{hyperref}
+\usepackage[nolist]{acronym}
+\usepackage{fullpage}
 
 \input{symbol.tex}
+\input{acronym.tex}
 
 \newcommand{\ignore}[1]{}
 \newcommand{\nobibentry}[1]{{\let\nocite\ignore\bibentry{#1}}}
@@ -21,10 +24,16 @@
 \nobibliography*
 
 %%%%%%%%% TITLE
-\title{Adversarial Kelly Betting}
-\author{Francesco Orabona \\ francesco@orabona.com
-\and David Pal \\ dpal@yahoo-inc.com\\
-Yahoo! Labs\\New York, NY, USA}
+\title{Betting against a Continuos Coin}
+\author{
+\begin{tabular}{c@{\hskip 1in}c}
+  Francesco Orabona & David Pal \\
+  francesco@orabona.com & dpal@yahoo-inc.com \\
+\end{tabular}
+\\\\
+Yahoo Labs \\
+New York, NY, USA
+}
 
 
 \maketitle
@@ -37,10 +46,10 @@ Yahoo! Labs\\New York, NY, USA}
 
 \input{intro}
 \input{def}
+\input{applications}
 \input{kelly}
 \input{algo}
 \input{lower}
-\input{applications}
 \input{proofs}
 
 \bibliographystyle{plainnat}
