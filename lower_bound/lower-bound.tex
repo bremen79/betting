@@ -138,8 +138,8 @@ where in the first inequality we used Lemma~\ref{lemma:boyd}.
 Let $d \ge 2$ and $X_1, X_2, \dots, X_d$ be independent Gaussian random variables $N(0,\sigma^2)$. Then
 \begin{align*}
 \Exp \left[\max_{1 \le i \le d} X_i\right]
-& \ge \sigma \left(1 - \exp\left(-\frac{\sqrt{\log d}}{2.6 \sqrt{2\pi}}\right)\right) \left(\sqrt{2 \log d-2\log \log d} +\sqrt\frac{2}{\pi}\right) -\sqrt{\frac{2}{\pi}} \sigma \\
-& \ge 0.19 \sigma \sqrt{\log d} - 0.68 \sigma.
+& \ge \sigma \left(1 - \exp\left(-\frac{\sqrt{\ln d}}{2.6 \sqrt{2\pi}}\right)\right) \left(\sqrt{2 \ln d - 2 \ln \ln d} +\sqrt\frac{2}{\pi}\right) -\sqrt{\frac{2}{\pi}} \sigma \\
+& \ge 0.19 \sigma \sqrt{\ln d} - 0.68 \sigma.
 \end{align*}
 \end{theorem}
 
@@ -154,9 +154,9 @@ denote by $\overline{A}$ the complement of this event.
 & \ge \Exp \left[ \max_{1 \le i \le d} X_i ~\bigg|~ A \right] \cdot \Pr[A] + \Exp \left[ X_1 ~\big|~ \overline{A} \right] \cdot \Pr[\overline{A}] \\
 & = \Exp \left[ \max_{1 \le i \le d} X_i~\bigg|~ A \right] \cdot \Pr[A] + \Exp \left[ X_1~|~ X_1 \le C \sigma \sqrt{\ln d} \right] \cdot \Pr[\overline{A}] \\
 & \ge \Exp \left[ \max_{1 \le i \le d} X_i~\bigg|~ A \right] \cdot \Pr[A] + \Exp[X_1| X_1 \le 0] \cdot \Pr[\overline{A}] \\
-& \ge \Exp \left[ \max_{1 \le i \le d} X_i~\bigg|~ A \right] \cdot \Pr[A] - \sqrt{\frac{2}{\pi}} \cdot \Pr[\overline{A}] \\
-& \ge C \sigma \sqrt{\ln d} \cdot \Pr(A) - \sqrt{\frac{2}{\pi}} \\
-& = \sigma \left(C\sqrt{\ln d} + \sqrt{\frac{2}{\pi}}\right) \Pr(A) -  \sqrt{\frac{2}{\pi}} \sigma \; .
+& \ge \Exp \left[ \max_{1 \le i \le d} X_i~\bigg|~ A \right] \cdot \Pr[A] - \sigma \sqrt{\frac{2}{\pi}} \cdot \Pr[\overline{A}] \\
+& \ge C \sigma \sqrt{\ln d} \cdot \Pr[A] - \sigma \sqrt{\frac{2}{\pi}} (1 - \Pr[A]) \\
+& = \sigma \left(C\sqrt{\ln d} + \sqrt{\frac{2}{\pi}}\right) \Pr[A] -  \sigma \sqrt{\frac{2}{\pi}} \; .
 \end{align*}
 
 It remains to lower bound $\Pr[A]$, which we do as follows
@@ -176,21 +176,17 @@ $d^{1-\frac{C^2}{2}} = \ln d$. We have
 \Pr[A]
 & \ge 1 - \exp\left(-\frac{d^{1-\frac{C^2}{2}}}{C \sqrt{2\pi \ln d} +2}\right) \\
 & = 1 - \exp\left(-\frac{\ln d}{C \sqrt{2\pi \ln d}+2}\right) \\
-& = 1 - \exp\left(-\frac{\sqrt{\ln d}}{C \sqrt{2\pi}+2}\right) \\
-& \ge 1 - \exp\left(-\frac{\sqrt{\ln d}}{2.6 \sqrt{2\pi}}\right),
+& = 1 - \exp\left(-\frac{\sqrt{\ln d}}{C \sqrt{2\pi}+2}\right) \; .
 \end{align*}
-where in the last equality we used the fact that $\sqrt{2\pi} \sqrt{\ln d} > 2$ for $d\ge 2$.
-
-The function $C(d)$ is decreasing on the interval $[1,e^e]$ and increasing on $[e^e, \infty)$.
-Since $e^e \approx 15.1542 \in [15, 16]$, we can deduce that $C(d) \ge \min\{C(15), C(16)\} = $
-Also, clearly $\lim_{d \to \infty} C(d) = \sqrt{2}$. 
-\begin{align*}
-C(d) \ge C(e^e) =
-\end{align*}
-
-Also, the function $C(d)=\sqrt{2-\frac{2\ln \ln d}{\ln d}}$ has global minimum at $d=e^e$ with value $C(e^e) = 2 - 2/e \approx 1.2642$.
-Hence $1.27 \le C(d) \le C(d) \le C(2)\leq 1.6$.
-
+The function $C(d)$ is decreasing on the interval $[1,e^e]$, increasing on $[e^e, \infty)$, and $\lim_{d \to \infty} C(d) = \sqrt{2}$. From these properties
+we can deduce an upper bound on $C(d)$. For any $d \in [2,\infty)$, we have
+$$
+C(d) \le \max\{C(2), \sqrt{2}\} \le 1.75 \; .
+$$
+Therefore $C\sqrt{2 \pi} + 2 \le 6.35$ and hence
+$$
+\Pr[A] \ge 1 - \exp\left(-\frac{\sqrt{\ln d}}{6.35}\right) \; .
+$$
 Putting all together, we have the first stated bound.
 \end{proof}
 
