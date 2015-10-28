@@ -61,7 +61,7 @@ It easy to prove that
 It is also well known that
 \begin{equation}
 \label{equation:limit-maximum-of-gaussians}
-\lim_{d \to \infty} \frac{\Exp[\max_{1 \le i \le d} X_i]}{\sigma \sqrt{2 \ln d}} = 1 \; .
+\lim_{d \to \infty} \frac{\Exp \left[ \max_{1 \le i \le d} X_i \right]}{\sigma \sqrt{2 \ln d}} = 1 \; .
 \end{equation}
 In section~\ref{section:maximum-of-gaussians}, we prove a non-asymptotic
 $\Omega(\sigma \sqrt{\log d})$ lower bound on $\Exp[\max_{1 \le i \le d} X_i]$. The leading term
@@ -75,19 +75,19 @@ Anologously to \eqref{equation:upper-bound-on-maximum-of-gaussians}, it is easy 
 \label{equation:upper-bound-on-maximum-of-random-walks}
 \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i \right] \le \sqrt{2 n \ln d} \qquad \text{for any $n \ge 0$ and any $d \ge 1$}\; .
 \end{equation}
-Note that $\sigma^2$ in is replaced by $\Var(Z^{(n)}_i) = n$. By central limit theorem $Z^{(n)}_i/\sqrt{n}$
-converges in distribution to a $N(0,1)$. From this fact, it possible to prove
+Note that $\sigma^2$ in is replaced by $\Var(Z^{(n)}_i) = n$. By central limit theorem $\frac{Z^{(n)}_i}{\sqrt{n}}$
+as $n \to \infty$ converges in distribution to $N(0,1)$. From this fact, it possible to prove
 the analog of \eqref{equation:limit-maximum-of-gaussians},
 \begin{equation}
 \label{equation:limit-maximum-of-random-walks}
-\lim_{d \to \infty} \lim_{n \to \infty} \frac{\Exp[\max_{1 \le i \le d} Z^{(n)}_i]}{\sqrt{2 n \ln d}} = 1 \; .
+\lim_{d \to \infty} \lim_{n \to \infty} \frac{\Exp\left[ \max_{1 \le i \le d} Z^{(n)}_i \right]}{\sqrt{2 n \ln d}} = 1 \; .
 \end{equation}
-We prove a non-asymptotic $\Omega(\sqrt{n \log d})$ lower bound on $\Exp[\max_{1 \le i \le d} Z^{(n)}_i]$.
+We prove a non-asymptotic $\Omega(\sqrt{n \log d})$ lower bound on $\Exp\left[ \max_{1 \le i \le d} Z^{(n)}_i \right]$.
 Same as for the Gaussian case, the leading term of the lower bound is asymptotically $\sqrt{2 n \ln d}$
 matching~\eqref{equation:limit-maximum-of-random-walks}.
 
 In section~\ref{section:experts}, we show a simple application of the lower
-bound on $\Exp[\max_{1 \le i \le d} Z^{(n)}_i]$ to the problem of learning with
+bound on $\Exp\left[\max_{1 \le i \le d} Z^{(n)}_i \right]$ to the problem of learning with
 expert advice.  This problem was extensively studied in the online learning
 literature; see~\citep{Cesa-BianchiL06}.  Our bound is optimal in the sense
 that for larg $d$ and large $n$ it recovers the right leading constant.
@@ -99,126 +99,94 @@ It is well known that the maximum of Gaussian variables converges to a Gumbel
 distribution. Here we quantify the rate of convergence for the expectation of
 maximum of independent Gaussian variables.
 
-We will make use of the following technical Lemma on the Mill's ratio of Gaussian variables.
-\begin{lemma}[\cite{Boyd59}]
+We start with a lower bound on the Mill's ratio of Gaussian variables. Recall that Mill's ratio of a random variable $X$
+with density function $f(x)$ is the ratio $\frac{\Pr[X > x]}{f(x)}$ and that density function of $X \sim N(0,\sigma^2)$
+is $f(x) = \frac{1}{\sigma \sqrt{2 \pi}} \exp\left( - \frac{x^2}{2 \sigma^2} \right)$.
+
+\begin{lemma}[Mill's ratio for a Gaussian; see~\cite{Boyd59}]
 \label{lemma:boyd}
-Let $x\geq0$, then
+For any $x \ge 0$,
 \[
-\exp\left(\frac{x^2}{2}\right) \int_{x}^{+\infty} \exp\left(-\frac{t^2}{2}\right) dt
-\geq \frac{\pi}{(\pi-1)x+\sqrt{x^2+2 \pi}}.
+\exp\left(\frac{x^2}{2}\right) \int_x^{\infty} \exp\left(-\frac{t^2}{2}\right) dt
+\ge \frac{\pi}{(\pi-1)x+\sqrt{x^2+2 \pi}}.
 \]
 \end{lemma}
-%
-\begin{corrollary}
-Let $X \sim N(\mu, \sigma^2)$ and $t \geq 0$. Then
-\[
-P(X>t) \geq \exp\left(-\frac{(t-\mu)^2}{2 \sigma^2}\right) \frac{1}{\sqrt{2\pi}\frac{t-\mu}{\sigma}+2}.
-\]
+
+The bound on Mill's ratio can be turned into a lower bound on the tail of the distribution.
+
+\begin{corrollary}[Lower Bound on Gaussian Tail]
+Let $X \sim N(\mu, \sigma^2)$ and $t \ge 0$. Then,
+$$
+\Pr[X \ge t] \geq \exp\left(-\frac{t^2}{2 \sigma^2}\right) \frac{1}{\sqrt{2\pi}\frac{t}{\sigma}+2}.
+$$
 \end{corrollary}
-%
+
 \begin{proof}
+We have
 \begin{align*}
-P(X>t)
-&= \frac{1}{\sigma \sqrt{2 \pi}} \int_t^{\infty} \exp(-\frac{(x-\mu)^2}{2 \sigma^2}) d x
-= \frac{1}{\sqrt{2 \pi}} \int_\frac{t-\mu}{\sigma}^{\infty} \exp(-\frac{x}{2}) d x \\
-&\geq \frac{1}{\sqrt{2 \pi}} \exp\left(-\frac{(t-\mu)^2}{2 \sigma^2}\right) \frac{\pi}{(\pi-1)\frac{t-\mu}{\sigma}+\sqrt{\frac{(t-\mu)^2}{\sigma^2}+2 \pi}} \\
-&\geq \frac{1}{\sqrt{2}} \exp\left(-\frac{(t-\mu)^2}{2 \sigma^2}\right) \frac{\sqrt{\pi}}{\pi\frac{t-\mu}{\sigma}+\sqrt{2 \pi}} \\
-&= \exp\left(-\frac{(t-\mu)^2}{2 \sigma^2}\right) \frac{1}{\sqrt{2\pi}\frac{t-\mu}{\sigma}+2},
+\Pr[X \ge t]
+& = \frac{1}{\sigma \sqrt{2 \pi}} \int_t^{\infty} \exp \left( -\frac{x^2}{2 \sigma^2} \right) d x \\
+& = \frac{1}{\sqrt{2 \pi}} \int_\frac{t}{\sigma}^{\infty} \exp \left( -\frac{x^2}{2} \right) d x \\
+& \ge \frac{1}{\sqrt{2 \pi}} \exp\left(-\frac{t^2}{2 \sigma^2}\right) \frac{\pi}{(\pi-1)\frac{t}{\sigma}+\sqrt{\frac{t^2}{\sigma^2}+2 \pi}} \\
+& \ge \frac{1}{\sqrt{2}} \exp\left(-\frac{t^2}{2 \sigma^2}\right) \frac{\sqrt{\pi}}{\pi\frac{t}{\sigma}+\sqrt{2 \pi}} \\
+& = \exp\left(-\frac{t^2}{2 \sigma^2}\right) \frac{1}{\sqrt{2\pi}\frac{t}{\sigma}+2} \; ,
 \end{align*}
 where in the first inequality we used Lemma~\ref{lemma:boyd}.
 \end{proof}
 
-
-% \begin{theorem}
-% \[
-% E[\max_{i=1,\cdots,d} X_i] \geq \sigma 0.28 \sqrt{\log d} -\sqrt{\frac{2}{\pi}} \sigma
-% \]
-% \end{theorem}
-% \begin{proof}
-% Define the event $A$ equal to the case that at least one of the $X_i$ is greater or equal than $C \sigma \sqrt{\log d}$.
-% \begin{align}
-% E[\max_{i=1,\cdots,d} X_i]
-% &= E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[\max_{i=1,\cdots,d} X_i| not A ] P( not A) \\
-% &\geq E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[\max_{i=1,\cdots,d} X_i| not A ]\\
-% &\geq E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[X_1| not A ]\\
-% &= E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[X_1| X_1\leq C \sigma \sqrt{\log d}]\\
-% &\geq E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[X_1| X_1\leq 0]\\
-% &\geq E[\max_{i=1,\cdots,d} X_i| A ] P(A) - \sqrt{\frac{2}{\pi}} \sigma\\
-% &\geq C \sigma \sqrt{\log d} P(A) - \sqrt{\frac{2}{\pi}} \sigma.
-% \end{align}
-%
-% Now let's focus on $P(A)$. It is equal to
-% \begin{align}
-% P(A)
-% &= 1-P(X_1\leq C \sigma \sqrt{\log d})^d \\
-% &= 1-(1-P(X_1\geq C \sigma \sqrt{\log d}))^d \\
-% &\geq 1-\left(1-\exp\left(-\frac{C^2 \log d}{2}\right) \frac{1}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
-% &= 1-\left(1-\frac{d^{-\frac{C^2}{2}}}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
-% &= 1- \exp\left(d \log\left(1-\frac{d^{-\frac{C^2}{2}}}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)\right) \\
-% &\geq 1 - \exp\left(-\frac{d^{1-\frac{C^2}{2}}}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)\\
-% &\geq 1 - \exp\left(-\frac{d^{1-\frac{C^2}{2}}}{\sqrt{\frac{2\pi}{e}}d^\frac{C^2}{2}+2}\right)\\
-% \end{align}
-% where in the second to last inequality we used the elementary inequality $\log(1-\frac{1}{x}) \leq -\frac{1}{x}, \forall  0\leq x<1$ and in the last inequality we used $\log(x) \leq \frac{1}{a e} x^a, \forall x,a>0$.
-% We need this last expression to be increasing in $d$, that is we need $\frac{d^{1-\frac{C^2}{2}}}{\sqrt{\frac{2\pi}{e}}d^\frac{C^2}{2}+2}$ to be increasing in $d$.
-% From the derivative, we have that this is true iff
-% \[
-% \sqrt(2 e \pi) (1-C^2) d^{\frac{C^2}{2}}+e (2-C^2) \geq 0, \forall d\geq2.
-% \]
-% Considering only $0 \leq  C\leq \sqrt{2}$, the stricter condition is with $d=2$ and numerically we have $C\leq 1.138$.
-% So, we have
-% \begin{align}
-% P(A)
-% &\geq 1 - \exp\left(-\frac{d^{1-\frac{C^2}{2}}}{\sqrt{\frac{2\pi}{e}}d^\frac{C^2}{2}+2}\right)\\
-% &\geq 1 - \exp\left(-\frac{2^{1-\frac{C^2}{2}}}{\sqrt{\frac{2\pi}{e}}2^\frac{C^2}{2}+2}\right)\\
-% &\geq 0.25278
-% \end{align}
-% Putting all together, we have the stated bound.
-% \end{proof}
-
 \begin{theorem}
-Let $d\geq2$ and $X_i$ independent Gaussian variables $N(0,\sigma^2)$. Then
+Let $d \ge 2$ and $X_1, X_2, \dots, X_d$ be independent Gaussian random variables $N(0,\sigma^2)$. Then
 \begin{align*}
-E\left[\max_{i=1,\cdots,d} X_i\right]
-&\geq \sigma \left(1 - \exp\left(-\frac{\sqrt{\log d}}{2.6 \sqrt{2\pi}}\right)\right) \left(\sqrt{2 \log d-2\log \log d} +\sqrt\frac{2}{\pi}\right) -\sqrt{\frac{2}{\pi}} \sigma \\
-&\geq 0.19 \sigma \sqrt{\log d} - 0.68 \sigma.
+\Exp \left[\max_{1 \le i \le d} X_i\right]
+& \ge \sigma \left(1 - \exp\left(-\frac{\sqrt{\ln d}}{2.6 \sqrt{2\pi}}\right)\right) \left(\sqrt{2 \ln d - 2 \ln \ln d} +\sqrt\frac{2}{\pi}\right) -\sqrt{\frac{2}{\pi}} \sigma \\
+& \ge 0.19 \sigma \sqrt{\ln d} - 0.68 \sigma.
 \end{align*}
 \end{theorem}
+
 \begin{proof}
+Let $A$ be the event that at least one of the $X_i$ is greater than $C \sigma
+\sqrt{\ln d}$ where $C = C(d) = \sqrt{2 - \frac{2 \ln \ln d}{\ln d}}$. We
+denote by $\overline{A}$ the complement of this event.
 
-Define the event $A$ equal to the case that at least one of the $X_i$ is greater or equal than $C \sigma \sqrt{\log d}$, where $C=\sqrt{2-\frac{\log \log d}{\log d}}$. With this choice we have that $d^{1-\frac{C^2}{2}}=\log d$. Also, the function $f(d)=\sqrt{2-\frac{2\log \log d}{\log d}}$ has a minimum in $d=e^e$, hence $1.27 \leq f(15) \leq C\leq f(2)\leq 1.6$.
-%
 \begin{align*}
-E[\max_{i=1,\cdots,d} X_i]
-&= E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[\max_{i=1,\cdots,d} X_i| not A ] (1-P(A)) \\
-&\geq E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[\max_{i=1,\cdots,d} X_i| not A ] (1-P(A))\\
-&\geq E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[X_1| not A ](1-P(A)) \\
-&= E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[X_1| X_1\leq C \sigma \sqrt{\log d}] (1-P(A))\\
-&\geq E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[X_1| X_1\leq 0](1-P(A)) \\
-&\geq E[\max_{i=1,\cdots,d} X_i| A ] P(A) - \sqrt{\frac{2}{\pi}} \sigma (1-P(A))\\
-&\geq C \sigma \sqrt{\log d} P(A) - \sqrt{\frac{2}{\pi}} \sigma (1-P(A))\\
-&= \sigma \left(C\sqrt{\log d} +\sqrt{\frac{2}{\pi}}\right)P(A) -  \sqrt{\frac{2}{\pi}} \sigma.
+\Exp \left[ \max_{1 \le i \le d} X_i \right]
+& = \Exp \left[ \max_{1 \le i \le d} X_i ~\bigg|~ A \right] \cdot \Pr[A] + \Exp \left[ \max_{1 \le i \le d} X_i ~\bigg|~ \overline{A} \right] \cdot \Pr \left[ \overline{A} \right] \\
+& \ge \Exp \left[ \max_{1 \le i \le d} X_i ~\bigg|~ A \right] \cdot \Pr[A] + \Exp \left[ X_1 ~\big|~ \overline{A} \right] \cdot \Pr[\overline{A}] \\
+& = \Exp \left[ \max_{1 \le i \le d} X_i~\bigg|~ A \right] \cdot \Pr[A] + \Exp \left[ X_1~|~ X_1 \le C \sigma \sqrt{\ln d} \right] \cdot \Pr[\overline{A}] \\
+& \ge \Exp \left[ \max_{1 \le i \le d} X_i~\bigg|~ A \right] \cdot \Pr[A] + \Exp[X_1| X_1 \le 0] \cdot \Pr[\overline{A}] \\
+& \ge \Exp \left[ \max_{1 \le i \le d} X_i~\bigg|~ A \right] \cdot \Pr[A] - \sigma \sqrt{\frac{2}{\pi}} \cdot \Pr[\overline{A}] \\
+& \ge C \sigma \sqrt{\ln d} \cdot \Pr[A] - \sigma \sqrt{\frac{2}{\pi}} (1 - \Pr[A]) \\
+& = \sigma \left(C\sqrt{\ln d} + \sqrt{\frac{2}{\pi}}\right) \Pr[A] -  \sigma \sqrt{\frac{2}{\pi}} \; .
 \end{align*}
 
-Now let's focus on $P(A)$. It is equal to
+It remains to lower bound $\Pr[A]$, which we do as follows
 \begin{align*}
-P(A)
-&= 1-P(X_1\leq C \sigma \sqrt{\log d})^d \\
-&= 1-(1-P(X_1\geq C \sigma \sqrt{\log d}))^d \\
-&\geq 1-\exp\left(-d P(X_1\geq C \sigma \sqrt{\log d})\right) \\
-&\geq 1 - \exp\left(-d \exp\left(-\frac{C^2 \log d}{2}\right) \frac{1}{\sqrt{2\pi}C \sqrt{\log d}+2} \right) \\
-&= 1 - \exp\left(-\frac{d^{1-\frac{C^2}{2}}}{C \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
-&\geq 1 - \exp\left(-\frac{d^{1-\frac{C^2}{2}}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right).
+\Pr[A]
+& = 1 - \Pr[\overline{A}] \\
+& = 1 - \prod_{i=1}^d \Pr \left[ X_i \leq C \sigma \sqrt{\ln d} \right] \\
+& = 1 - \left(1 - \Pr\left[ X_1 > C \sigma \sqrt{\ln d} \right] \right)^d \\
+& \ge 1 - \exp\left(-d \cdot \Pr\left[X_1\geq C \sigma \sqrt{\ln d} \right]\right) \\
+& \ge 1 - \exp\left(-d \exp\left(-\frac{C^2 \ln d}{2}\right) \frac{1}{\sqrt{2\pi}C \sqrt{\ln d}+2} \right) \\
+& = 1 - \exp\left(-\frac{d^{1-\frac{C^2}{2}}}{C \sqrt{2\pi \ln d}+2}\right) \; .
 \end{align*}
-where in the first inequality we used the elementary inequality $1-x \leq \exp(-x), \forall x \in \R$.
-We now use the fact that $C=\sqrt{2- \frac{2 \log \log d}{\log d}}$, to have
+where in the first inequality we used the elementary inequality $1 - x \le \exp(-x)$ valid for all $x \in \R$.
+We use that $C = \sqrt{2 - \frac{2 \ln \ln d}{\ln d}}$ to lower bound the last expression. In particular, we use that
+$d^{1-\frac{C^2}{2}} = \ln d$. We have
 \begin{align*}
-P(A)
-& \geq 1 - \exp\left(-\frac{d^{1-\frac{C^2}{2}}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
-& = 1 - \exp\left(-\frac{\log d}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
-& \geq 1 - \exp\left(-\frac{\sqrt{\log d}}{2.6 \sqrt{2\pi}}\right),
+\Pr[A]
+& \ge 1 - \exp\left(-\frac{d^{1-\frac{C^2}{2}}}{C \sqrt{2\pi \ln d} +2}\right) \\
+& = 1 - \exp\left(-\frac{\ln d}{C \sqrt{2\pi \ln d}+2}\right) \\
+& = 1 - \exp\left(-\frac{\sqrt{\ln d}}{C \sqrt{2\pi}+2}\right) \; .
 \end{align*}
-where in the last equality we used the fact that $\sqrt{2\pi} \sqrt{\log d} > 2$ for $d\geq 2$.
-
+The function $C(d)$ is decreasing on the interval $[1,e^e]$, increasing on $[e^e, \infty)$, and $\lim_{d \to \infty} C(d) = \sqrt{2}$. From these properties
+we can deduce an upper bound on $C(d)$. For any $d \in [2,\infty)$, we have
+$$
+C(d) \le \max\{C(2), \sqrt{2}\} \le 1.75 \; .
+$$
+Therefore $C\sqrt{2 \pi} + 2 \le 6.35$ and hence
+$$
+\Pr[A] \ge 1 - \exp\left(-\frac{\sqrt{\ln d}}{6.35}\right) \; .
+$$
 Putting all together, we have the first stated bound.
 \end{proof}
 
@@ -228,15 +196,15 @@ Putting all together, we have the first stated bound.
 In the Binomial case, we expect the discrete nature of the variable to play a role. In fact, we expect it to behave like a Gaussian only when the number of draws goes to infinity.
 We will quantify this intuition with the following function.
 Define the function $\psi:[-\frac{1}{2},\frac{1}{2}] \rightarrow \R$ as
-\[
-\psi(x):=\frac{D(\frac{1}{2}+x||\frac{1}{2})}{2 x^2}~.
-\]
+$$
+\psi(x) = \frac{D(\frac{1}{2}+x||\frac{1}{2})}{2 x^2}~.
+$$
 The function $\psi(x)$ satisfies the following properties
 \begin{itemize}
-\item $\psi(x)=\psi(-x)$
+\item $\psi(x) = \psi(-x)$
 \item $\psi(x)$ is increasing for $0\leq x \leq\frac{1}{2}$.
-\item $\psi(0)=1$
-\item $\psi(0.5)=2 \log(2) \approx 1.3863$
+\item $\psi(0) = 1$
+\item $\psi(0.5) = 2 \log(2) \approx 1.3863$
 \end{itemize}
 
 As in the Gaussian case, for the Binomial case we need lower bound to the probability tail.
