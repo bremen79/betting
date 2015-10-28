@@ -1,59 +1,103 @@
-%\documentclass[10pt,onecolumn,a4paper]{article}
-\documentclass{article} % For LaTeX2e
-\usepackage{times}
-\usepackage{url}
-\usepackage{times}
-\usepackage{epsfig}
-\usepackage{graphicx}
+\documentclass{article}
+
+\usepackage{algorithm, algorithmic}
 \usepackage{amsmath, amsthm, amssymb}
-\usepackage{algorithm}
-\usepackage{algorithmic}
-\usepackage{natbib}
-\usepackage{bibentry}
 \usepackage{fullpage}
-%\usepackage{authblk}
+\usepackage{natbib}
+\usepackage{times}
 
+\DeclareMathOperator*{\Exp}{\mathbf{E}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
 
-\input{symbol.tex}
+\newcommand{\field}[1]{\mathbb{#1}}
+\newcommand{\R}{\field{R}}
+\newcommand{\Nat}{\field{N}}
+\newcommand{\Var}{\mathrm{Var}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corrollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\sign}{{\rm sign}}
 
 \begin{document}
 
-%%%%%%%%% TITLE
-\title{Optimal Non-Asymptotic Lower Bound to the Minimax Regret in the Expert Setting}
-%\author{Francesco Orabona }
-%\author{David Pal  }
-%\affil{Yahoo! Labs\\New York, NY, USA}
+\title{Optimal Non-Asymptotic Lower Bound \\ on the \\ Minimax Regret for Learning with Expert Advice}
 \author{
 \begin{tabular}{c@{\hskip 1in}c}
   Francesco Orabona & David Pal \\
   francesco@orabona.com & dpal@yahoo-inc.com \\
 \end{tabular}
 \\\\
-Yahoo Labs\\New York, NY, USA
+Yahoo Labs \\
+New York, NY, USA
 }
 
 
 \maketitle
 
-\begin{abstract}%   <- trailing '%' for backward compatibility of .sty file
-We prove non-asymptotic lower bounds to the expectation of the max of Gaussian and Binomial variables.
-As an application, we prove a very simple non-asymptotic lower bound to the minimax regret of online learning in the experts scenario. The lower bound also recovers the optimal leading constant in the limit.
+\begin{abstract}
+We prove non-asymptotic lower bounds on the expectation of the maximum of $d$
+independent Gaussian variables and expectation of the maximum of $d$
+independent symmetric random walks. Both lower bound recovers
+the optimal leading constant in the limit.
+
+A simple application of the lower bound for random walks is a non-asymptotic lower
+bound on the minimax regret of online learning with expert advice.
 \end{abstract}
 
 \section{Introduction}
 
-It is known that the lower bound to the regret in the expert setting is $\Omega(\sqrt{n \log d})$. Two proofs are known, one non-asymptotic and one asymptotic, with the latter recovering the optimal leading constant~\citep{Cesa-BianchiL06}.
+Let $X_1, X_2, \dots, X_d$ be i.i.d. Gaussian random variables $N(0,\sigma^2)$.
+It easy to prove that
+\begin{equation}
+\label{equation:upper-bound-on-maximum-of-gaussians}
+\Exp \left[ \max_{1 \le i \le d} X_i \right] \le \sigma \sqrt{2 \ln d} \qquad \text{for any $d \ge 1$} \; .
+\end{equation}
+It is also well known that
+\begin{equation}
+\label{equation:limit-maximum-of-gaussians}
+\lim_{d \to \infty} \frac{\Exp[\max_{1 \le i \le d} X_i]}{\sigma \sqrt{2 \ln d}} = 1 \; .
+\end{equation}
+In section~\ref{section:maximum-of-gaussians}, we prove a non-asymptotic
+$\Omega(\sigma \sqrt{\log d})$ lower bound on $\Exp[\max_{1 \le i \le d} X_i]$. The leading term
+of the lower bound is asymptotically $\sqrt{2 \ln d}$. In other words, the lower bound implies~\eqref{equation:limit-maximum-of-gaussians}.
 
-In this short report we show a simple non-asymptotic lower bound to expectation of Gaussian and Binomial variables and we use it to prove a lower bound that has the best of the best known bounds.
+Discrete analog of a Gaussian random variable is the symmetric random walk. Recall that a random walk $Z^{(n)}$
+of length $n$ is a sum $Z^{(n)} = Y_1 + Y_2 + \dots + Y_n$ of $n$ i.i.d. Rademacher variable, which have probability distribution
+$\Pr[Y_i = +1] = \Pr[Y_i = -1] = 1/2$. We consider $d$ independent symmetric random walks $Z^{(n)}_1, Z^{(n)}_2, \dots, Z^{(n)}_d$ of length $n$.
+Anologously to \eqref{equation:upper-bound-on-maximum-of-gaussians}, it is easy to prove that
+\begin{equation}
+\label{equation:upper-bound-on-maximum-of-random-walks}
+\Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i \right] \le \sqrt{2 n \ln d} \qquad \text{for any $n \ge 0$ and any $d \ge 1$}\; .
+\end{equation}
+Note that $\sigma^2$ in is replaced by $\Var(Z^{(n)}_i) = n$. By central limit theorem $Z^{(n)}_i/\sqrt{n}$
+converges in distribution to a $N(0,1)$. From this fact, it possible to prove
+the analog of \eqref{equation:limit-maximum-of-gaussians},
+\begin{equation}
+\label{equation:limit-maximum-of-random-walks}
+\lim_{d \to \infty} \lim_{n \to \infty} \frac{\Exp[\max_{1 \le i \le d} Z^{(n)}_i]}{\sqrt{2 n \ln d}} = 1 \; .
+\end{equation}
+We prove a non-asymptotic $\Omega(\sqrt{n \log d})$ lower bound on $\Exp[\max_{1 \le i \le d} Z^{(n)}_i]$.
+Same as for the Gaussian case, the leading term of the lower bound is asymptotically $\sqrt{2 n \ln d}$
+matching~\eqref{equation:limit-maximum-of-random-walks}.
 
-We will first prove the lower bound for the maximum of Gaussians. The Binomial case will closely follow it.
-Then, we will show the lower bound on the minimax regret in the experts setting.
+In section~\ref{section:experts}, we show a simple application of the lower
+bound on $\Exp[\max_{1 \le i \le d} Z^{(n)}_i]$ to the problem of learning with
+expert advice.  This problem was extensively studied in the online learning
+literature; see~\citep{Cesa-BianchiL06}.  Our bound is optimal in the sense
+that for larg $d$ and large $n$ it recovers the right leading constant.
 
-\section{Gaussian Case}
+\section{Maximum of Gaussians}
+\label{section:maximum-of-gaussians}
 
-The Gaussian case will be a warm-up for the proof of the Binomial case.
-
-It is well known that the maximum of Gaussian variables converges to a Gumbel distribution. Here we quantify the rate of convergence for the expectation of maximum of independent Gaussian variables.
+It is well known that the maximum of Gaussian variables converges to a Gumbel
+distribution. Here we quantify the rate of convergence for the expectation of
+maximum of independent Gaussian variables.
 
 We will make use of the following technical Lemma on the Mill's ratio of Gaussian variables.
 \begin{lemma}[\cite{Boyd59}]
@@ -65,17 +109,17 @@ Let $x\geq0$, then
 \]
 \end{lemma}
 %
-\begin{cor}
+\begin{corrollary}
 Let $X \sim N(\mu, \sigma^2)$ and $t \geq 0$. Then
 \[
 P(X>t) \geq \exp\left(-\frac{(t-\mu)^2}{2 \sigma^2}\right) \frac{1}{\sqrt{2\pi}\frac{t-\mu}{\sigma}+2}.
 \]
-\end{cor}
+\end{corrollary}
 %
 \begin{proof}
 \begin{align*}
 P(X>t)
-&= \frac{1}{\sigma \sqrt{2 \pi}} \int_t^{\infty} \exp(-\frac{(x-\mu)^2}{2 \sigma^2}) d x 
+&= \frac{1}{\sigma \sqrt{2 \pi}} \int_t^{\infty} \exp(-\frac{(x-\mu)^2}{2 \sigma^2}) d x
 = \frac{1}{\sqrt{2 \pi}} \int_\frac{t-\mu}{\sigma}^{\infty} \exp(-\frac{x}{2}) d x \\
 &\geq \frac{1}{\sqrt{2 \pi}} \exp\left(-\frac{(t-\mu)^2}{2 \sigma^2}\right) \frac{\pi}{(\pi-1)\frac{t-\mu}{\sigma}+\sqrt{\frac{(t-\mu)^2}{\sigma^2}+2 \pi}} \\
 &\geq \frac{1}{\sqrt{2}} \exp\left(-\frac{(t-\mu)^2}{2 \sigma^2}\right) \frac{\sqrt{\pi}}{\pi\frac{t-\mu}{\sigma}+\sqrt{2 \pi}} \\
@@ -91,9 +135,9 @@ where in the first inequality we used Lemma~\ref{lemma:boyd}.
 % \]
 % \end{theorem}
 % \begin{proof}
-% Define the event $A$ equal to the case that at least one of the $X_i$ is greater or equal than $C \sigma \sqrt{\log d}$. 
+% Define the event $A$ equal to the case that at least one of the $X_i$ is greater or equal than $C \sigma \sqrt{\log d}$.
 % \begin{align}
-% E[\max_{i=1,\cdots,d} X_i] 
+% E[\max_{i=1,\cdots,d} X_i]
 % &= E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[\max_{i=1,\cdots,d} X_i| not A ] P( not A) \\
 % &\geq E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[\max_{i=1,\cdots,d} X_i| not A ]\\
 % &\geq E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[X_1| not A ]\\
@@ -102,10 +146,10 @@ where in the first inequality we used Lemma~\ref{lemma:boyd}.
 % &\geq E[\max_{i=1,\cdots,d} X_i| A ] P(A) - \sqrt{\frac{2}{\pi}} \sigma\\
 % &\geq C \sigma \sqrt{\log d} P(A) - \sqrt{\frac{2}{\pi}} \sigma.
 % \end{align}
-% 
+%
 % Now let's focus on $P(A)$. It is equal to
 % \begin{align}
-% P(A) 
+% P(A)
 % &= 1-P(X_1\leq C \sigma \sqrt{\log d})^d \\
 % &= 1-(1-P(X_1\geq C \sigma \sqrt{\log d}))^d \\
 % &\geq 1-\left(1-\exp\left(-\frac{C^2 \log d}{2}\right) \frac{1}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
@@ -123,7 +167,7 @@ where in the first inequality we used Lemma~\ref{lemma:boyd}.
 % Considering only $0 \leq  C\leq \sqrt{2}$, the stricter condition is with $d=2$ and numerically we have $C\leq 1.138$.
 % So, we have
 % \begin{align}
-% P(A) 
+% P(A)
 % &\geq 1 - \exp\left(-\frac{d^{1-\frac{C^2}{2}}}{\sqrt{\frac{2\pi}{e}}d^\frac{C^2}{2}+2}\right)\\
 % &\geq 1 - \exp\left(-\frac{2^{1-\frac{C^2}{2}}}{\sqrt{\frac{2\pi}{e}}2^\frac{C^2}{2}+2}\right)\\
 % &\geq 0.25278
@@ -134,7 +178,7 @@ where in the first inequality we used Lemma~\ref{lemma:boyd}.
 \begin{theorem}
 Let $d\geq2$ and $X_i$ independent Gaussian variables $N(0,\sigma^2)$. Then
 \begin{align*}
-E\left[\max_{i=1,\cdots,d} X_i\right] 
+E\left[\max_{i=1,\cdots,d} X_i\right]
 &\geq \sigma \left(1 - \exp\left(-\frac{\sqrt{\log d}}{2.6 \sqrt{2\pi}}\right)\right) \left(\sqrt{2 \log d-2\log \log d} +\sqrt\frac{2}{\pi}\right) -\sqrt{\frac{2}{\pi}} \sigma \\
 &\geq 0.19 \sigma \sqrt{\log d} - 0.68 \sigma.
 \end{align*}
@@ -144,7 +188,7 @@ E\left[\max_{i=1,\cdots,d} X_i\right]
 Define the event $A$ equal to the case that at least one of the $X_i$ is greater or equal than $C \sigma \sqrt{\log d}$, where $C=\sqrt{2-\frac{\log \log d}{\log d}}$. With this choice we have that $d^{1-\frac{C^2}{2}}=\log d$. Also, the function $f(d)=\sqrt{2-\frac{2\log \log d}{\log d}}$ has a minimum in $d=e^e$, hence $1.27 \leq f(15) \leq C\leq f(2)\leq 1.6$.
 %
 \begin{align*}
-E[\max_{i=1,\cdots,d} X_i] 
+E[\max_{i=1,\cdots,d} X_i]
 &= E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[\max_{i=1,\cdots,d} X_i| not A ] (1-P(A)) \\
 &\geq E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[\max_{i=1,\cdots,d} X_i| not A ] (1-P(A))\\
 &\geq E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[X_1| not A ](1-P(A)) \\
@@ -157,7 +201,7 @@ E[\max_{i=1,\cdots,d} X_i]
 
 Now let's focus on $P(A)$. It is equal to
 \begin{align*}
-P(A) 
+P(A)
 &= 1-P(X_1\leq C \sigma \sqrt{\log d})^d \\
 &= 1-(1-P(X_1\geq C \sigma \sqrt{\log d}))^d \\
 &\geq 1-\left(1-\exp\left(-\frac{C^2 \log d}{2}\right) \frac{1}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
@@ -169,17 +213,18 @@ P(A)
 where in the last inequality we used the elementary inequality $\log(1-\frac{1}{x}) \leq -\frac{1}{x}, \forall  0\leq x>1$.
 We now use the fact that $C=\sqrt{2- \frac{2 \log \log d}{\log d}}$, to have
 \begin{align*}
-P(A) 
+P(A)
 & \geq 1 - \exp\left(-\frac{d^{1-\frac{C^2}{2}}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
 & = 1 - \exp\left(-\frac{\log d}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
 & \geq 1 - \exp\left(-\frac{\sqrt{\log d}}{2.6 \sqrt{2\pi}}\right),
 \end{align*}
 where in the last equality we used the fact that $\sqrt{2\pi} \sqrt{\log d} > 2$ for $d\geq 2$.
- 
+
 Putting all together, we have the first stated bound.
 \end{proof}
 
 \section{Binomial Case}
+\label{section:maximum-of-random-walks}
 
 In the Binomial case, we expect the discrete nature of the variable to play a role. In fact, we expect it to behave like a Gaussian only when the number of draws goes to infinity.
 We will quantify this intuition with the following function.
@@ -202,18 +247,18 @@ We will use the next Theorem from \cite{nOrabona13}, whose proof is the Appendix
 \label{lemma:bin}
 Let $n\geq2$ an even number and $Z$ a Binomial random variable $B(n,\frac{1}{2})$. Then for any $k \in \Nat_0$ such that $k\leq \frac{1}{2}n-1$, we have
 \[
-P\left( Z \geq \frac{1}{2} n + k\right) 
+P\left( Z \geq \frac{1}{2} n + k\right)
 \geq  \frac{\exp\left(-n D(\frac{1}{2}+\frac{k}{n}||\frac{1}{2})\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)y+\sqrt{y^2+2 \pi}},
 \]
 where $D(p||q)=p \log \frac{p}{q}+(1-p) \log\frac{1-p}{1-q}$ and $y=\frac{2 k}{\sqrt{n}}$.
 \end{theorem}
 %
-\begin{cor}
+\begin{corrollary}
 Let $Z \sim B(n, 1/2)$ and $k \geq 1$ and $n\geq2$ even. Then
 \[
 P(Z \geq \frac{1}{2} n + k-1) \geq \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{k}{n}\right) \frac{k^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 k}{\sqrt{n}} + 2 }~.
 \]
-\end{cor}
+\end{corrollary}
 \begin{proof}
 \begin{align*}
 P(&Z \geq  \frac{1}{2} n + k-1) \\
@@ -244,7 +289,7 @@ Define the event $A$ equal to the case that at least one of the $X_i$ is greater
 Notice that the condition on $n$ and $d$ assures that $\frac{C \sqrt{n \log d}}{2}>1$ and $\frac{C \sqrt{n \log d}}{2}\leq \frac{1}{2} n -1$.
 %
 \begin{align*}
-E[\max_{i=1,\cdots,d} X_i] 
+E[\max_{i=1,\cdots,d} X_i]
 &= E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[\max_{i=1,\cdots,d} X_i| not A ] (1-P(A)) \\
 &\geq E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[\max_{i=1,\cdots,d} X_i| not A ] (1-P(A))\\
 &\geq E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[X_1| not A ](1-P(A)) \\
@@ -262,7 +307,7 @@ E[X_1| X_1\leq 0] &= \sum_{k=-n}^0 k P(k | k\leq 0) = 2 \sum_{k=-n}^0 k P(k) \\
 
 Now let's focus on $P(A)$. It is equal to
 \begin{align*}
-P(A) 
+P(A)
 &= 1-P(X_1 < C \sqrt{n \log d}-2)^d \\
 &= 1-(1-P(X_1\geq C \sqrt{n \log d}-2))^d \\
 &= 1-(1-P(Z_1\geq \frac{C \sqrt{n \log d}}{2} +\frac{n}{2}-1))^d \\
@@ -276,7 +321,7 @@ P(A)
 where in the last inequality we used the elementary inequality $\log(1-\frac{1}{x}) \leq -\frac{1}{x}, \forall  0\leq x>1$.
 We now use the fact that $C=\frac{1}{\sqrt{\psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}\sqrt{2- \frac{\log \log d}{\log d}}$ that implies $d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}=\log d$. Hence, we obtain
 \begin{align*}
-P(A) 
+P(A)
 & \geq 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
 & = 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) \log d}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
 & \geq 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) \sqrt{\log d}}{2.6 \sqrt{2\pi}}\right)\\
@@ -288,6 +333,7 @@ Putting all together, we have the stated bound.
 \end{proof}
 
 \section{Lower Bound for Regret in the Experts Setting}
+\label{section:experts}
 
 We present here our main result.
 
@@ -328,14 +374,14 @@ The theorem proves a non-asymptotic lower bounds, while at the same time recover
 We use Theorem~2 in \cite{McKay1989}, that specialized to our case says that
 \begin{equation}
 \label{eq:bin_1}
-P\left( Z \geq  \frac{1}{2} n + k  \right) 
+P\left( Z \geq  \frac{1}{2} n + k  \right)
 \geq \sqrt{n} \binom{n-1}{ \frac{1}{2} n + k -1} 2^{-n} \frac{Q(y)}{\phi(y)},
 \end{equation}
 where $\phi(x)$ is the unit variance, zero mean Gaussian, $\frac{1}{\sqrt{2 \pi}} \exp(-\frac{x^2}{2})$ and $Q(x)$ is its CDF, $\int_{x}^{+\infty} \phi(u) du$.
 
 We lower bounding the ratio $\frac{Q(y)}{\phi(y)}$ using Lemma~\ref{lemma:boyd}:
 \[
-\frac{Q(y)}{\phi(y)} 
+\frac{Q(y)}{\phi(y)}
 = \exp\left(\frac{x^2}{2}\right) \int_{x}^{+\infty} \exp\left(-\frac{t^2}{2}\right) dt
 \geq \frac{\pi}{(\pi-1)x+\sqrt{x^2+2 \pi}}.
 \]
@@ -346,7 +392,7 @@ To bound the binomial coefficient we make use of the following Stirling approxim
 \]
 Hence, for any $n \geq 2$ and $1\leq q \leq n-1$, after some algebra we obtain
 \begin{align*}
-{n \choose q} 
+{n \choose q}
 &\geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \left(\frac{n}{n-q}\right)^{n-q} \left(\frac{n}{q}\right)^{q} \sqrt{\frac{n}{q(n-q)}} \\
 &\geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} 2^n \exp\left(-n D\left(\frac{q}{n}||\frac{1}{2}\right)\right) \sqrt{\frac{n}{q(n-q)}}.
 \end{align*}
@@ -358,7 +404,7 @@ Also, we have
 \end{equation}
 Putting together \eqref{eq:bin_1}-\eqref{eq:bin_3}, and using the definition of $y$ we have
 \begin{align*}
-&P\left( Z \geq \frac{1}{2} n + k \right) 
+&P\left( Z \geq \frac{1}{2} n + k \right)
 \geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \exp\left(-n D\left(\frac{1}{2}+\frac{k}{n}||\frac{1}{2}\right)\right) \sqrt{\frac{\frac{1}{2} + \frac{k}{n}}{\frac{1}{2}-\frac{k}{n}}}  \frac{Q(y)}{\phi(y)} \\
 &\geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \exp\left(-n D\left(\frac{1}{2}+\frac{k}{n}||\frac{1}{2}\right)\right) \frac{\pi}{(\pi-1)y+\sqrt{y^2+2 \pi}}. \qedhere
 \end{align*}
