@@ -204,13 +204,12 @@ Now let's focus on $P(A)$. It is equal to
 P(A)
 &= 1-P(X_1\leq C \sigma \sqrt{\log d})^d \\
 &= 1-(1-P(X_1\geq C \sigma \sqrt{\log d}))^d \\
-&\geq 1-\left(1-\exp\left(-\frac{C^2 \log d}{2}\right) \frac{1}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
-&= 1-\left(1-\frac{d^{-\frac{C^2}{2}}}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
-&= 1- \exp\left(d \log\left(1-\frac{d^{-\frac{C^2}{2}}}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)\right) \\
-&\geq 1- \exp\left(d \log\left(1-\frac{d^{-\frac{C^2}{2}}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right)\right) \\
+&\geq 1-\exp\left(-d P(X_1\geq C \sigma \sqrt{\log d})\right) \\
+&\geq 1 - \exp\left(-d \exp\left(-\frac{C^2 \log d}{2}\right) \frac{1}{\sqrt{2\pi}C \sqrt{\log d}+2} \right) \\
+&= 1 - \exp\left(-\frac{d^{1-\frac{C^2}{2}}}{C \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
 &\geq 1 - \exp\left(-\frac{d^{1-\frac{C^2}{2}}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right).
 \end{align*}
-where in the last inequality we used the elementary inequality $\log(1-\frac{1}{x}) \leq -\frac{1}{x}, \forall  0\leq x>1$.
+where in the first inequality we used the elementary inequality $1-x \leq \exp(-x), \forall x \in \R$.
 We now use the fact that $C=\sqrt{2- \frac{2 \log \log d}{\log d}}$, to have
 \begin{align*}
 P(A)
@@ -305,20 +304,24 @@ E[X_1| X_1\leq 0] &= \sum_{k=-n}^0 k P(k | k\leq 0) = 2 \sum_{k=-n}^0 k P(k) \\
 &= -\sqrt{n}.
 \end{align*}
 
-Now let's focus on $P(A)$. It is equal to
+Now let's focus on $P(A)$. As in the Gaussian case, we can lower bound it as
 \begin{align*}
 P(A)
 &= 1-P(X_1 < C \sqrt{n \log d}-2)^d \\
 &= 1-(1-P(X_1\geq C \sqrt{n \log d}-2))^d \\
 &= 1-(1-P(Z_1\geq \frac{C \sqrt{n \log d}}{2} +\frac{n}{2}-1))^d \\
-&\geq 1-\left(1-\exp\left(- \psi\left(\frac{C \sqrt{\log d}}{2 \sqrt{n}}\right) \frac{C^2 \log d}{2}\right) \frac{\exp\left(-\frac{1}{6}\right)}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
-&\geq 1-\left(1-\exp\left(- \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right) \frac{C^2 \log d}{2}\right) \frac{\exp\left(-\frac{1}{6}\right)}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
-&= 1-\left(1-\frac{\exp\left(-\frac{1}{6}\right) d^{-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
-&= 1- \exp\left(d \log\left(1-\frac{\exp\left(-\frac{1}{6}\right) d^{-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)\right) \\
-&\geq 1- \exp\left(d \log\left(1-\frac{\exp\left(-\frac{1}{6}\right) d^{-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right)\right) \\
+&\geq 1-\exp\left(-d P(Z_1\geq \frac{C \sqrt{n \log d}}{2} +\frac{n}{2}-1) \right) \\
+&\geq 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{C \sqrt{\log d}}{2 \sqrt{n}}\right)}}{C \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
 &\geq 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right).
+% 
+% &\geq 1-\left(1-\exp\left(- \psi\left(\frac{C \sqrt{\log d}}{2 \sqrt{n}}\right) \frac{C^2 \log d}{2}\right) \frac{\exp\left(-\frac{1}{6}\right)}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
+% &\geq 1-\left(1-\exp\left(- \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right) \frac{C^2 \log d}{2}\right) \frac{\exp\left(-\frac{1}{6}\right)}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
+% &= 1-\left(1-\frac{\exp\left(-\frac{1}{6}\right) d^{-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
+% &= 1- \exp\left(d \log\left(1-\frac{\exp\left(-\frac{1}{6}\right) d^{-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)\right) \\
+% &\geq 1- \exp\left(d \log\left(1-\frac{\exp\left(-\frac{1}{6}\right) d^{-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right)\right) \\
+% &\geq 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right).
 \end{align*}
-where in the last inequality we used the elementary inequality $\log(1-\frac{1}{x}) \leq -\frac{1}{x}, \forall  0\leq x>1$.
+%where in the last inequality we used the elementary inequality $\log(1-\frac{1}{x}) \leq -\frac{1}{x}, \forall  0\leq x>1$.
 We now use the fact that $C=\frac{1}{\sqrt{\psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}\sqrt{2- \frac{\log \log d}{\log d}}$ that implies $d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}=\log d$. Hence, we obtain
 \begin{align*}
 P(A)
