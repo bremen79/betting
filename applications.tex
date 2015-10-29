@@ -16,7 +16,7 @@ We have the following Theorem.
   Let $\Psi:\mathcal{H} \rightarrow (-\inf, +\inf]$ be a lower semicontinuos and convex function, with $dom \Psi \neq \emptyset$. An
   algorithm for the player guarantees
   \[
-  Reward \geq \Psi(-g_{1:T}) - \epsilon \quad \quad \quad \textnormal{ for any } g_1, \dots, g_T
+  Reward \geq \Psi(-g_{1:n}) - \epsilon \quad \quad \quad \textnormal{ for any } g_1, \dots, g_n
   \]
   for a constant $\epsilon \in \R$ if and only if it
   guarantees
@@ -33,15 +33,15 @@ It is well known that a regret bound can be transformed into a convergence guara
 In particular, we have the following Theorem from~\citet{Cesa-BianchiCG04}.
 %
 \begin{theorem}
-Let $\bw_1, \cdots, \bw_T \in \fH$ the vector produced by an OLO algorithm $\mathcal{A}$ with a regret guarantee $R_A(T)$.
+Let $\bw_1, \cdots, \bw_n \in \fH$ the vector produced by an OLO algorithm $\mathcal{A}$ with a regret guarantee $R_A(n)$.
 Let $F:\fH\rightarrow\R$ a convex function, and fix the vectors $\bg_t$ to be unbiased estimate of the gradient of $F$ in $\bw_t$. Then, the following holds
 \[
-\E\left[F\left(\frac{1}{T} \bw_t\right)\right] \leq \frac{\E[R_A(T)]}{T}~.
+\E\left[F\left(\frac{1}{n} \bw_t\right)\right] \leq \frac{\E[R_A(n)]}{n}~.
 \]
 \end{theorem}
 
 High probability bounds can be also easily obtained, assuming more on the function $F$~\citep{Cesa-BianchiCG04}.
-The above theorem says that, if the regret grows, for example, as $\scO(\sqrt{T})$, the OLO algorithm can be used as a stochastic optimization algorithm with convergence in expectation $\scO(\frac{1}{\sqrt{T}})$.
+The above theorem says that, if the regret grows, for example, as $\scO(\sqrt{n})$, the OLO algorithm can be used as a stochastic optimization algorithm with convergence in expectation $\scO(\frac{1}{\sqrt{n}})$.
 
 \textbf{Adaptive Algorithms for OLO and Self-tuning Model Selection.}
 In learning theory a key concept is the one of regularization. If the concept class we are learning is too rich, we need to constrain the complexity of the trained predictor. A regularizer is achieving this, biasing the classifieres towards a small region of the space. However, it is known that the optimal amount of regularization is completely problem-dependent. Hence, the regularizer becomes another parameter to be learned.
@@ -51,8 +51,8 @@ Most, if not all, the machine learning algorithms uses a two-stages process to f
 Surprisingly enough, \citep{Orabona14} proved that the above procedure can be avoided with a stochastic learner. In particular, instead of solving a series of regularized ERM problems, with different amounts of regularization, one can use a simple prarameter-free stochastic gradient descent procedure over the training samples and achieve the same performance.
 More rigorously, the follwing theorem holds.
 \begin{theorem}
-Let $\bw_1, \cdots, \bw_T \in \fH$ the vector produced by the PiSTOL algorithm.
-Let $\ell:\R\rightarrow\R$ a convex and Lipschitz function, and fix the vectors $\bg_t$ to be unbiased estimate of the gradient of $F$ in $\bw_t$. Then, the rate of convergence of $\E\left[Risk_F\left(\frac{1}{T} \bw_t\right)\right]$ is the same of regularized ERM algorithm with the (unknown) optimal amount of regularization.
+Let $\bw_1, \cdots, \bw_n \in \fH$ the vector produced by the PiSTOL algorithm.
+Let $\ell:\R\rightarrow\R$ a convex and Lipschitz function, and fix the vectors $\bg_t$ to be unbiased estimate of the gradient of $F$ in $\bw_t$. Then, the rate of convergence of $\E\left[Risk_F\left(\frac{1}{n} \bw_t\right)\right]$ is the same of regularized ERM algorithm with the (unknown) optimal amount of regularization.
 \end{theorem}
 
 Moreover, from \citep{} we can extract the following Theorem.
@@ -65,4 +65,4 @@ In reality, the connection between betting and self-tuning regularized ERM is ac
 If a betting strategy against a coin with outcomes in $[-1,1]$ guarantees an exponential reward, the same algorith used for SGD over the risk of a convex loss will guarantee optimal rate of convergence to the Bayes risk.
 \end{theorem}
 
-To summarize, we have that regret minimization in OLO is equivalent to reward maximization. Moreover, optimal betting algorithms correspond to adaptive OLO algorithms, that guarantees automatic model selection when used in infinite dimensional spaces.
+To summarize, we have that regret minimization in OLO is equivalent to reward maximization. Moreover, optimal betting algorithms correspond to adaptive OLO algorithms, that guarantees automatic model selection when used in infinite dimensional spaces. In the next section we will explain what are the difficulties in designing an optimal betting strategy.

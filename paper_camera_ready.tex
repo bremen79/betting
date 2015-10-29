@@ -9,7 +9,7 @@
 \usepackage{amsmath, amsthm, amssymb}
 
 \usepackage{natbib}
-\usepackage{bibentry}
+%\usepackage{bibentry}
 \usepackage{hyperref}
 \usepackage[nolist]{acronym}
 \usepackage{fullpage}
@@ -17,14 +17,11 @@
 \input{symbol.tex}
 \input{acronym.tex}
 
-\newcommand{\ignore}[1]{}
-\newcommand{\nobibentry}[1]{{\let\nocite\ignore\bibentry{#1}}}
-
 \begin{document}
-\nobibliography*
+%\nobibliography*
 
 %%%%%%%%% TITLE
-\title{One Coin to Rule Them All\\From Betting to Online Learning to Automatic Model Selection with One Algorithm}
+\title{One Coin to Rule Them All\\ \large From Betting to Online Learning to Automatic Model Selection with One Algorithm}
 \author{
 \begin{tabular}{c@{\hskip 1in}c}
   Francesco Orabona & David Pal \\
@@ -46,7 +43,6 @@ New York, NY, USA
 \input{applications}
 \input{kelly}
 \input{algo}
-\input{lower}
 \input{proofs}
 
 \bibliographystyle{plainnat}
