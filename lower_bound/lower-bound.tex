@@ -54,7 +54,7 @@ bound on the minimax regret of online learning with expert advice.
 \section{Introduction}
 
 Let $X_1, X_2, \dots, X_d$ be i.i.d. Gaussian random variables $N(0,\sigma^2)$.
-It easy to prove that
+It easy to prove that (see Appendix~\ref{section:upper-bounds})
 \begin{equation}
 \label{equation:upper-bound-on-maximum-of-gaussians}
 \Exp \left[ \max_{1 \le i \le d} X_i \right] \le \sigma \sqrt{2 \ln d} \qquad \text{for any $d \ge 1$} \; .
@@ -71,12 +71,12 @@ of the lower bound is asymptotically $\sqrt{2 \ln d}$. In other words, the lower
 Discrete analog of a Gaussian random variable is the symmetric random walk. Recall that a random walk $Z^{(n)}$
 of length $n$ is a sum $Z^{(n)} = Y_1 + Y_2 + \dots + Y_n$ of $n$ i.i.d. Rademacher variables, which have probability distribution
 $\Pr[Y_i = +1] = \Pr[Y_i = -1] = 1/2$. We consider $d$ independent symmetric random walks $Z^{(n)}_1, Z^{(n)}_2, \dots, Z^{(n)}_d$ of length $n$.
-Anologously to \eqref{equation:upper-bound-on-maximum-of-gaussians}, it is easy to prove that
+Analogously to \eqref{equation:upper-bound-on-maximum-of-gaussians}, it is easy to prove that (see Appendix~\ref{section:upper-bounds})
 \begin{equation}
 \label{equation:upper-bound-on-maximum-of-random-walks}
 \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i \right] \le \sqrt{2 n \ln d} \qquad \text{for any $n \ge 0$ and any $d \ge 1$}\; .
 \end{equation}
-Note that $\sigma^2$ in is replaced by $\Var(Z^{(n)}_i) = n$. By central limit theorem $\frac{Z^{(n)}_i}{\sqrt{n}}$
+Note that $\sigma^2$ in \eqref{equation:upper-bound-on-maximum-of-gaussians} is replaced by $\Var(Z^{(n)}_i) = n$. By central limit theorem $\frac{Z^{(n)}_i}{\sqrt{n}}$
 as $n \to \infty$ converges in distribution to $N(0,1)$. From this fact, it possible to prove
 the analog of \eqref{equation:limit-maximum-of-gaussians},
 \begin{equation}
@@ -91,7 +91,7 @@ In section~\ref{section:experts}, we show a simple application of the lower
 bound on $\Exp\left[\max_{1 \le i \le d} Z^{(n)}_i \right]$ to the problem of learning with
 expert advice.  This problem was extensively studied in the online learning
 literature; see~\citep{Cesa-BianchiL06}.  Our bound is optimal in the sense
-that for larg $d$ and large $n$ it recovers the right leading constant.
+that for large $d$ and large $n$ it recovers the right leading constant.
 
 \section{Maximum of Gaussians}
 \label{section:maximum-of-gaussians}
@@ -135,8 +135,8 @@ We have
 where in the first inequality we used Lemma~\ref{lemma:boyd}.
 \end{proof}
 
-\begin{theorem}
-Let $X_1, X_2, \dots, X_d$ be independent Gaussian random variables $N(0,\sigma^2)$. For $d \ge 2$,
+\begin{theorem}[Lower Bound on Maximum of Independent Gaussians]
+Let $X_1, X_2, \dots, X_d$ be independent Gaussian random variables $N(0,\sigma^2)$. For any $d \ge 2$,
 \begin{align}
 \Exp \left[\max_{1 \le i \le d} X_i\right]
 & \ge \sigma \left(1 - \exp\left(-\frac{\sqrt{\ln d}}{6.35}\right)\right) \left(\sqrt{2 \ln d - 2 \ln \ln d} +\sqrt\frac{2}{\pi}\right) -\sqrt{\frac{2}{\pi}} \sigma \label{equation:maximum-of-gaussians-lower-bound-1} \\
@@ -199,9 +199,10 @@ Since $C(d)$ has minimum at $d = e^e$, it follows that $C(d) \ge C(e^e) = \sqrt{
 \section{Binomial Case}
 \label{section:maximum-of-random-walks}
 
-In the Binomial case, we expect the discrete nature of the variable to play a role. In fact, we expect it to behave like a Gaussian only when the number of draws goes to infinity.
-We will quantify this intuition with the following function.
-Define the function $\psi:[-\frac{1}{2},\frac{1}{2}] \to \R$ as
+In the Binomial case, we expect the discrete nature of the variable to play a
+role. In fact, we expect it to behave like a Gaussian only when the number of
+draws goes to infinity.  We will quantify this intuition with the following
+function.  Define the function $\psi:[-\frac{1}{2},\frac{1}{2}] \to \R$ as
 $$
 \psi(x) = \frac{D(\frac{1}{2}+x\|\frac{1}{2})}{2 x^2}~.
 $$
@@ -213,36 +214,40 @@ The function $\psi(x)$ satisfies the following properties
 \item $\psi(0.5) = 2 \log(2) \approx 1.3863$
 \end{itemize}
 
-As in the Gaussian case, for the Binomial case we need lower bound to the probability tail.
-We will use the next Theorem from \cite{nOrabona13}, whose proof is the Appendix for completeness.
+As in the Gaussian case, for the Binomial case we need lower bound on the
+probability tail.  We will use the next Theorem from \cite{nOrabona13}, whose
+proof is the Appendix for completeness.
 
 \begin{theorem}
-\label{lemma:bin}
-Let $n \ge 2$ an even number and $Z$ a Binomial random variable $B(n,\frac{1}{2})$. Then for any $k \in \Nat_0$ such that $k\le \frac{1}{2}n-1$, we have
-\[
-P\left( Z \ge \frac{1}{2} n + k\right)
-\ge  \frac{\exp\left(-n D(\frac{1}{2}+\frac{k}{n}\|\frac{1}{2})\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)y+\sqrt{y^2+2 \pi}},
-\]
+\label{theorem:bin}
+Let $n \ge 2$ an even number and $Z$ a Binomial random variable
+$B(n,\frac{1}{2})$. Then for any $k \in \Nat_0$ such that $k\le
+\frac{1}{2}n-1$, we have
+$$
+\Pr \left[ Z \ge \frac{1}{2} n + k\right]
+\ge \frac{\exp\left(-n D(\frac{1}{2}+\frac{k}{n}\|\frac{1}{2})\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)y+\sqrt{y^2+2 \pi}} \; ,
+$$
 where $D(p\|q)=p \log \frac{p}{q}+(1-p) \log\frac{1-p}{1-q}$ and $y=\frac{2 k}{\sqrt{n}}$.
 \end{theorem}
-%
+
 \begin{corrollary}
 Let $Z \sim B(n, 1/2)$ and $k \ge 1$ and $n \ge 2$ even. Then
-\[
-\Pr(Z \ge \frac{1}{2} n + k-1) \ge \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{k}{n}\right) \frac{k^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 k}{\sqrt{n}} + 2 }~.
-\]
+$$
+\Pr \left[ Z \ge \frac{1}{2} n + k-1 \right] \ge \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{k}{n}\right) \frac{k^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 k}{\sqrt{n}} + 2 }~.
+$$
 \end{corrollary}
+
 \begin{proof}
 \begin{align*}
-\Pr(Z \ge  \frac{1}{2} n + k-1)
-& = \Pr(Z \ge \frac{1}{2} n + \lceil k -1\rceil) \\
+\Pr \left[ Z \ge  \frac{1}{2} n + k-1 \right]
+& = \Pr \left[ Z \ge \frac{1}{2} n + \lceil k - 1\rceil \right] \\
 & \ge \frac{\exp\left(-n D(\frac{1}{2}+\frac{\lceil k -1\rceil}{n} \| \frac{1}{2})\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2\lceil k -1\rceil}{\sqrt{n}}+\sqrt{\left(\frac{2\lceil k -1\rceil}{\sqrt{n}}\right)^2+2 \pi}} \\
 & \ge \frac{\exp\left(-n D(\frac{1}{2}+\frac{k}{n} \| \frac{1}{2})\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2k}{\sqrt{n}}+\sqrt{\left(\frac{2k}{\sqrt{n}}\right)^2+2 \pi}} \\
 & = \frac{\exp\left(- 2 \psi(\frac{k}{n}) \frac{k^2}{n} \right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2k}{\sqrt{n}}+\sqrt{\left(\frac{2k}{\sqrt{n}}\right)^2+2 \pi}} \\
 & \ge \frac{\exp\left(- 2 \psi(\frac{k}{n}) \frac{k^2}{n} \right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2k}{\sqrt{n}}+\sqrt{\left(\frac{2k}{\sqrt{n}}\right)^2+2 \pi}} \\
 & \ge \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{k}{n}\right) \frac{k^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 k}{\sqrt{n}} + 2} \; ,
 \end{align*}
-where in the second equality we used Theorem~\ref{lemma:bin}.
+where in the second equality we used Theorem~\ref{theorem:bin}.
 \end{proof}
 
 \begin{theorem}
@@ -254,37 +259,45 @@ Let $2 \le d \le \exp(\frac{n}{4})$, $n\ge 10$ even and $Z_i$ independent Binomi
 & \ge 0.13 \sqrt{n \log d} - 2 \sqrt{n}.
 \end{align*}
 \end{theorem}
-%
-\begin{proof}
-Define $X_i= 2 Z_i-n$.
-Define the event $A$ equal to the case that at least one of the $X_i$ is greater or equal than $C \sqrt{n \log d}-2$, where $C=\frac{1}{\sqrt{\psi\left(\frac{\sqrt{\log d}}{2 \sqrt{n}}\right)}}\sqrt{2-\frac{\log \log d}{\log d}}$. Also, the function $f(d)=\sqrt{2-\frac{\log \log d}{\log d}}$ has a minimum in $d=e^e$, hence $1.08 \le \frac{f(15)}{\sqrt{2 \log 2}} \le C\le f(2)\le 1.6$.
 
-Notice that the condition on $n$ and $d$ assures that $\frac{C \sqrt{n \log d}}{2}>1$ and $\frac{C \sqrt{n \log d}}{2}\le \frac{1}{2} n -1$.
-%
+\begin{proof}
+Define $X_i = 2 Z_i-n$.  Define the event $A$ equal to the case that at least
+one of the $X_i$ is greater or equal than $C \sqrt{n \log d}-2$, where
+$C=\frac{1}{\sqrt{\psi\left(\frac{\sqrt{\log d}}{2
+\sqrt{n}}\right)}}\sqrt{2-\frac{\log \log d}{\log d}}$. Also, the function
+$f(d)=\sqrt{2-\frac{\log \log d}{\log d}}$ has a minimum in $d=e^e$, hence
+$1.08 \le \frac{f(15)}{\sqrt{2 \log 2}} \le C\le f(2)\le 1.6$.
+
+Notice that the condition on $n$ and $d$ assures that $\frac{C \sqrt{n \log d}}{2}>1$ and $\frac{C \sqrt{n \log d}}{2}\le \frac{1}{2} n - 1$.
 \begin{align*}
-\Exp [\max_{1 \le i \le d} X_i]
-& = \Exp [\max_{1 \le i \le d} X_i| A ] \Pr(A) + \Exp [\max_{1 \le i \le d} X_i| \overline{A} ] \Pr(\overline{A}) \\
-& \ge \Exp[\max_{1 \le i \le d} X_i| A ] \Pr(A) + \Exp[\max_{1 \le i \le d} X_i| \overline{A} ] \Pr(\overline{A})\\
-& \ge \Exp[\max_{1 \le i \le d} X_i| A ] \Pr(A) + \Exp[X_1| \overline{A} ] \Pr(\overline{A} ) \\
-& = \Exp[\max_{1 \le i \le d} X_i| A ] \Pr(A) + \Exp[X_1| X_1\le C \sigma \sqrt{\log d}] \Pr(\overline{A})\\
-& \ge \Exp[\max_{1 \le i \le d} X_i| A ] \Pr(A) + \Exp[X_1| X_1\le 0](1-\Pr(A)) \\
-& \ge (C \sigma \sqrt{n \log d} -2) \Pr(A) + \Exp[X_1| X_1\le 0] (1-\Pr(A)).
+\Exp \left[ \max_{1 \le i \le d} X_i \right]
+& = \Exp \left[ \max_{1 \le i \le d} X_i ~\bigg|~ A \right] \cdot \Pr[A] + \Exp \left[ \max_{1 \le i \le d} X_i ~\bigg|~ \overline{A} \right] \cdot \Pr \left[ \overline{A} \right] \\
+& \ge \Exp \left[ \max_{1 \le i \le d} X_i ~\bigg|~ A \right] \cdot \Pr[A] + \Exp \left[ \max_{1 \le i \le d} X_i ~\bigg|~ \overline{A} \right] \cdot \Pr \left[ \overline{A} \right]\\
+& \ge \Exp \left[ \max_{1 \le i \le d} X_i ~\bigg|~ A \right] \cdot \Pr[A] + \Exp\left[ X_1 ~|~ \overline{A} \right] \cdot \Pr \left[ \overline{A} \right] \\
+& = \Exp \left[ \max_{1 \le i \le d} X_i ~\bigg|~ A \right] \cdot \Pr[A] + \Exp \left[ X_1 ~\big|~ X_1 \le C \sigma \sqrt{\log d} \right] \cdot \Pr \left[ \overline{A} \right]\\
+& \ge \Exp \left[ \max_{1 \le i \le d} X_i ~\bigg|~ A \right] \cdot \Pr[A] + \Exp \left[ X_1 ~|~ X_1 < 0 \right] \cdot \Pr \left[ \overline{A} \right] \\
+& \ge (C \sigma \sqrt{n \log d} - 2) \Pr[A] + \Exp \left[ X_1 ~|~ X_1 < 0 \right] (1 - \Pr[A]) \; .
 \end{align*}
 
-First, we lower bound $\Exp[X_1~|~ X_1 \le 0]$. Using the fact that $X_1$ is symmetric and with zero mean, we have
+First, we lower bound $\Exp[X_1~|~ X_1 < 0]$. Using the fact that $X_1$ is symmetric and with zero mean, we have
 \begin{align*}
-\Exp[X_1| X_1\le 0] &= \sum_{k=-n}^0 k \Pr(k | k\le 0) = 2 \sum_{k=-n}^0 k \Pr(k) \\
-& = - \sum_{k=-n}^n |k| \Pr(k) = - \Exp[|X_1|] \ge - \sqrt{\Var[X_1]}\\
+\Exp[X_1 ~|~ X_1 < 0]
+& = \sum_{k=-n}^0 k \cdot \Pr[X_1 = k ~|~ X_1 < 0] \\
+& = \frac{1}{\Pr[X_1 < 0]} \sum_{k=-n}^0 k \cdot \Pr[X_1 = k] \\
+& \ge 2 \sum_{k=-n}^0 k \cdot \Pr[X_1 = k] \\
+& = - \sum_{k=-n}^n |k| \cdot \Pr[X_1 = k] \\
+& = - \Exp[|X_1|] \\
+& \ge - \sqrt{\Exp[X_1^2]}  \ \text{\bf ??? (false) !!!} \\
 & = -\sqrt{n}.
 \end{align*}
 
 Now let's focus on $\Pr[A]$. As in the Gaussian case, we can lower bound it as
 \begin{align*}
 \Pr[A]
-& = 1 - \Pr(X_1 < C \sqrt{n \log d}-2)^d \\
-& = 1 - (1-\Pr(X_1\ge C \sqrt{n \log d}-2))^d \\
-& = 1 - (1-\Pr(Z_1\ge \frac{C \sqrt{n \log d}}{2} +\frac{n}{2}-1))^d \\
-& \ge 1-\exp\left(-d \Pr(Z_1\ge \frac{C \sqrt{n \log d}}{2} +\frac{n}{2}-1) \right) \\
+& = 1 - \Pr[X_1 < C \sqrt{n \log d}-2]^d \\
+& = 1 - (1-\Pr[X_1\ge C \sqrt{n \log d}-2])^d \\
+& = 1 - (1-\Pr[Z_1\ge \frac{C \sqrt{n \log d}}{2} +\frac{n}{2}-1])^d \\
+& \ge 1-\exp\left(-d \Pr[Z_1\ge \frac{C \sqrt{n \log d}}{2} +\frac{n}{2}-1] \right) \\
 & \ge 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{C \sqrt{\log d}}{2 \sqrt{n}}\right)}}{C \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
 & \ge 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right).
 %
@@ -298,7 +311,7 @@ Now let's focus on $\Pr[A]$. As in the Gaussian case, we can lower bound it as
 %where in the last inequality we used the elementary inequality $\log(1-\frac{1}{x}) \le -\frac{1}{x}, \forall  0\le x>1$.
 We now use the fact that $C=\frac{1}{\sqrt{\psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}\sqrt{2- \frac{\log \log d}{\log d}}$ that implies $d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}=\log d$. Hence, we obtain
 \begin{align*}
-\Pr(A)
+\Pr[A]
 & \ge 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
 & = 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) \log d}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
 & \ge 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) \sqrt{\log d}}{2.6 \sqrt{2\pi}}\right)\\
@@ -309,7 +322,7 @@ where in the last equality we used the fact that $\sqrt{2\pi} \sqrt{\log d} > 2$
 Putting all together, we have the stated bound.
 \end{proof}
 
-\section{Lower Bound for Regret in the Experts Setting}
+\section{Learning with Expert Advice}
 \label{section:experts}
 
 We present here our main result.
@@ -334,7 +347,7 @@ and
 \begin{proof}
 Proceeding as in the proof of Theorem~3.7 in~\citep{Cesa-BianchiL06} we only need to show that
 \[
-\frac{1}{2} E\left[ \max_{1 \le i \le d} Z_i\right] \ge f(n,d),
+\frac{1}{2} \Exp \left[ \max_{1 \le i \le d} Z_i\right] \ge f(n,d),
 \]
 where $Z_i= 2 X_i - n$ and $X_i \sim B(n, \frac{1}{2})$. We simply do it through Theorem~\ref{theorem:max_bin}.
 For the second statement, we use the fact that $\lim_{n \to \infty} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right) = 1$.
@@ -352,11 +365,12 @@ infinity.
 \appendix
 
 \section{Proof of Theorem~\ref{theorem:max_bin}}
+
 \begin{proof}
 We use Theorem~2 in \cite{McKay1989}, that specialized to our case says that
 \begin{equation}
 \label{equation:bin-1}
-\Pr \left( Z \ge  \frac{1}{2} n + k  \right)
+\Pr \left[ Z \ge  \frac{1}{2} n + k  \right]
 \ge \sqrt{n} \binom{n-1}{ \frac{1}{2} n + k -1} 2^{-n} \frac{Q(y)}{\phi(y)},
 \end{equation}
 where $\phi(x)$ is the unit variance, zero mean Gaussian, $\frac{1}{\sqrt{2 \pi}} \exp(-\frac{x^2}{2})$ and $Q(x)$ is its CDF, $\int_{x}^{+\infty} \phi(u) du$.
@@ -390,6 +404,65 @@ Putting together \eqref{equation:bin-1}-\eqref{equation:bin-3}, and using the de
 \ge \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \exp\left(-n D\left(\frac{1}{2}+\frac{k}{n} \| \frac{1}{2}\right)\right) \sqrt{\frac{\frac{1}{2} + \frac{k}{n}}{\frac{1}{2}-\frac{k}{n}}}  \frac{Q(y)}{\phi(y)} \\
 &\ge \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \exp\left(-n D\left(\frac{1}{2}+\frac{k}{n} \| \frac{1}{2}\right)\right) \frac{\pi}{(\pi-1)y+\sqrt{y^2+2 \pi}}. \qedhere
 \end{align*}
+\end{proof}
+
+\section{Upper Bounds}
+\label{section:upper-bounds}
+
+We say that a random variable $X$ is \emph{$\sigma^2$-sub-Gaussian} (for some $\sigma \ge 0$) if
+\begin{equation}
+\label{equation:sigma-sub-gaussian}
+\Exp \left[ e^{sX} \right] \le \exp\left( \frac{\sigma^2 s^2}{2} \right) \qquad \text{for all $s \in \R$} \; .
+\end{equation}
+It is straightforward to verify that $X \sim N(0,\sigma^2)$ is $\sigma^2$-sub-Gaussian. Indeed, for any $s \in \R$,
+\begin{align*}
+\Exp \left[ e^{sX} \right]
+& = \int_{-\infty}^\infty \frac{1}{\sigma \sqrt{2\pi}} \exp\left( - \frac{x^2}{2\sigma^2} \right) e^{sx} dx \\
+& = \exp\left( \frac{s^2\sigma^2}{2} \right) \int_{-\infty}^\infty \frac{1}{\sigma \sqrt{2\pi}} \exp\left( - \frac{(x - s\sigma^2)^2}{2\sigma^2} \right) dx \\
+& = \exp\left( \frac{s^2\sigma^2}{2} \right) \; .
+\end{align*}
+We now show that a Rademacher random variable $Y$ (with distribution $\Pr[Y = +1] = \Pr[Y=-1] = \frac{1}{2}$)
+is $1$-sub-Gaussian. Indeed, for any $s \in \R$,
+\begin{align*}
+\Exp \left[ e^{sY} \right]
+= \frac{e^{s} + e^{-s}}{2}
+= \frac{1}{2}\sum_{k=0}^\infty \frac{s^k}{k!}
++ \frac{1}{2}\sum_{k=0}^\infty (-1)^k \frac{s^k}{k!}
+= \sum_{k=0}^\infty \frac{s^{2k}}{(2k)!}
+\le \sum_{k=0}^\infty \frac{s^{2k}}{k! 2^k}
+= \exp\left( \frac{s^2}{2} \right) \; .
+\end{align*}
+If $Y_1, Y_2, \dots, Y_n$ are independent $\sigma$-sub-Gaussian random variables, then $\sum_{i=1}^n Y_i$ is $(n\sigma^2)$-sub-Gaussian.
+This follows from
+$$
+\Exp \left[ e^{s \sum_{i=1} Y_i} \right] = \prod_{i=1}^n \Exp \left[ e^{sY_i} \right] \; .
+$$
+This property proves that the symmetric random walk $Z^{(n)}$ of length $n$ is $n$-sub-Gaussian.
+
+The upper bounds \eqref{equation:upper-bound-on-maximum-of-gaussians} and
+\eqref{equation:upper-bound-on-maximum-of-random-walks} follow directly from
+sub-Gaussianity of the variables involved and the following lemma.
+
+\begin{lemma}[Maximum of sub-Gaussian random variables]
+Let $X_1, X_2, \dots, X_d$ be (possibly dependent) $\sigma^2$-sub-Gaussian condition random variables.
+Then,
+$$
+\Exp\left[ \max_{1 \le i \le d} X_i \right] \le \sigma \sqrt{2 \ln d} \; .
+$$
+\end{lemma}
+
+\begin{proof}
+For any $s > 0$, we have
+\begin{align*}
+\Exp \left[ \max_{1 \le i \le d} X_i \right]
+& = \frac{1}{s} \Exp \left[ \max_{1 \le i \le d} \ln e^{s X_i} \right] \\
+& \le \frac{1}{s} \ln \Exp \left[ \max_{1 \le i \le d} e^{s X_i} \right] \\
+& \le \frac{1}{s} \ln \Exp \left[ \sum_{i=1}^d e^{s X_i} \right] \\
+& = \frac{1}{s} \ln \sum_{i=1}^d \Exp \left[ e^{s X_i} \right] \\
+& \le \frac{1}{s} \ln \left( d  \exp\left( \frac{\sigma^2 s^2}{2} \right) \right) \\
+& = \frac{\ln d}{s} +  \frac{\sigma^2 s}{2} \; .
+\end{align*}
+Substituting $s=\frac{\sqrt{2 \ln d}}{\sigma}$ finishes the proof.
 \end{proof}
 
 \end{document}
