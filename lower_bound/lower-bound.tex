@@ -9,6 +9,7 @@
 \DeclareMathOperator*{\Exp}{\mathbf{E}}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\Regret}{Regret}
 
 \newcommand{\field}[1]{\mathbb{#1}}
 \newcommand{\R}{\field{R}}
@@ -68,7 +69,7 @@ $\Omega(\sigma \sqrt{\log d})$ lower bound on $\Exp[\max_{1 \le i \le d} X_i]$. 
 of the lower bound is asymptotically $\sqrt{2 \ln d}$. In other words, the lower bound implies~\eqref{equation:limit-maximum-of-gaussians}.
 
 Discrete analog of a Gaussian random variable is the symmetric random walk. Recall that a random walk $Z^{(n)}$
-of length $n$ is a sum $Z^{(n)} = Y_1 + Y_2 + \dots + Y_n$ of $n$ i.i.d. Rademacher variable, which have probability distribution
+of length $n$ is a sum $Z^{(n)} = Y_1 + Y_2 + \dots + Y_n$ of $n$ i.i.d. Rademacher variables, which have probability distribution
 $\Pr[Y_i = +1] = \Pr[Y_i = -1] = 1/2$. We consider $d$ independent symmetric random walks $Z^{(n)}_1, Z^{(n)}_2, \dots, Z^{(n)}_d$ of length $n$.
 Anologously to \eqref{equation:upper-bound-on-maximum-of-gaussians}, it is easy to prove that
 \begin{equation}
@@ -103,7 +104,7 @@ We start with a lower bound on the Mill's ratio of Gaussian variables. Recall th
 with density function $f(x)$ is the ratio $\frac{\Pr[X > x]}{f(x)}$ and that density function of $X \sim N(0,\sigma^2)$
 is $f(x) = \frac{1}{\sigma \sqrt{2 \pi}} \exp\left( - \frac{x^2}{2 \sigma^2} \right)$.
 
-\begin{lemma}[Mill's ratio for a Gaussian; see~\cite{Boyd59}]
+\begin{lemma}[Mill's ratio for a Gaussian; see~\cite{Boyd-1959}]
 \label{lemma:boyd}
 For any $x \ge 0$,
 \[
@@ -117,7 +118,7 @@ The bound on Mill's ratio can be turned into a lower bound on the tail of the di
 \begin{corrollary}[Lower Bound on Gaussian Tail]
 Let $X \sim N(\mu, \sigma^2)$ and $t \ge 0$. Then,
 $$
-\Pr[X \ge t] \geq \exp\left(-\frac{t^2}{2 \sigma^2}\right) \frac{1}{\sqrt{2\pi}\frac{t}{\sigma}+2}.
+\Pr[X \ge t] \ge \exp\left(-\frac{t^2}{2 \sigma^2}\right) \frac{1}{\sqrt{2\pi}\frac{t}{\sigma}+2}.
 $$
 \end{corrollary}
 
@@ -135,59 +136,64 @@ where in the first inequality we used Lemma~\ref{lemma:boyd}.
 \end{proof}
 
 \begin{theorem}
-Let $d \ge 2$ and $X_1, X_2, \dots, X_d$ be independent Gaussian random variables $N(0,\sigma^2)$. Then
-\begin{align*}
+Let $X_1, X_2, \dots, X_d$ be independent Gaussian random variables $N(0,\sigma^2)$. For $d \ge 2$,
+\begin{align}
 \Exp \left[\max_{1 \le i \le d} X_i\right]
-& \ge \sigma \left(1 - \exp\left(-\frac{\sqrt{\ln d}}{2.6 \sqrt{2\pi}}\right)\right) \left(\sqrt{2 \ln d - 2 \ln \ln d} +\sqrt\frac{2}{\pi}\right) -\sqrt{\frac{2}{\pi}} \sigma \\
-& \ge 0.19 \sigma \sqrt{\ln d} - 0.68 \sigma.
-\end{align*}
+& \ge \sigma \left(1 - \exp\left(-\frac{\sqrt{\ln d}}{6.35}\right)\right) \left(\sqrt{2 \ln d - 2 \ln \ln d} +\sqrt\frac{2}{\pi}\right) -\sqrt{\frac{2}{\pi}} \sigma \label{equation:maximum-of-gaussians-lower-bound-1} \\
+& \ge 0.13 \sigma \sqrt{\ln d} - 0.7 \sigma \label{equation:maximum-of-gaussians-lower-bound-2} \; .
+\end{align}
 \end{theorem}
 
 \begin{proof}
 Let $A$ be the event that at least one of the $X_i$ is greater than $C \sigma
 \sqrt{\ln d}$ where $C = C(d) = \sqrt{2 - \frac{2 \ln \ln d}{\ln d}}$. We
-denote by $\overline{A}$ the complement of this event.
-
-\begin{align*}
+denote by $\overline{A}$ the complement of this event. We have
+\begin{align}
 \Exp \left[ \max_{1 \le i \le d} X_i \right]
-& = \Exp \left[ \max_{1 \le i \le d} X_i ~\bigg|~ A \right] \cdot \Pr[A] + \Exp \left[ \max_{1 \le i \le d} X_i ~\bigg|~ \overline{A} \right] \cdot \Pr \left[ \overline{A} \right] \\
-& \ge \Exp \left[ \max_{1 \le i \le d} X_i ~\bigg|~ A \right] \cdot \Pr[A] + \Exp \left[ X_1 ~\big|~ \overline{A} \right] \cdot \Pr[\overline{A}] \\
-& = \Exp \left[ \max_{1 \le i \le d} X_i~\bigg|~ A \right] \cdot \Pr[A] + \Exp \left[ X_1~|~ X_1 \le C \sigma \sqrt{\ln d} \right] \cdot \Pr[\overline{A}] \\
-& \ge \Exp \left[ \max_{1 \le i \le d} X_i~\bigg|~ A \right] \cdot \Pr[A] + \Exp[X_1| X_1 \le 0] \cdot \Pr[\overline{A}] \\
-& \ge \Exp \left[ \max_{1 \le i \le d} X_i~\bigg|~ A \right] \cdot \Pr[A] - \sigma \sqrt{\frac{2}{\pi}} \cdot \Pr[\overline{A}] \\
-& \ge C \sigma \sqrt{\ln d} \cdot \Pr[A] - \sigma \sqrt{\frac{2}{\pi}} (1 - \Pr[A]) \\
-& = \sigma \left(C\sqrt{\ln d} + \sqrt{\frac{2}{\pi}}\right) \Pr[A] -  \sigma \sqrt{\frac{2}{\pi}} \; .
-\end{align*}
+& = \Exp \left[ \max_{1 \le i \le d} X_i ~\bigg|~ A \right] \cdot \Pr[A] + \Exp \left[ \max_{1 \le i \le d} X_i ~\bigg|~ \overline{A} \right] \cdot \Pr \left[ \overline{A} \right] \notag \\
+& \ge \Exp \left[ \max_{1 \le i \le d} X_i ~\bigg|~ A \right] \cdot \Pr[A] + \Exp \left[ X_1 ~\big|~ \overline{A} \right] \cdot \Pr[\overline{A}] \notag \\
+& = \Exp \left[ \max_{1 \le i \le d} X_i~\bigg|~ A \right] \cdot \Pr[A] + \Exp \left[ X_1~|~ X_1 \le C \sigma \sqrt{\ln d} \right] \cdot \Pr[\overline{A}] \notag \\
+& \ge \Exp \left[ \max_{1 \le i \le d} X_i~\bigg|~ A \right] \cdot \Pr[A] + \Exp[X_1~|~ X_1 \le 0] \cdot \Pr[\overline{A}] \notag \\
+& \ge \Exp \left[ \max_{1 \le i \le d} X_i~\bigg|~ A \right] \cdot \Pr[A] - \sigma \sqrt{\frac{2}{\pi}} \cdot \Pr[\overline{A}] \notag \\
+& \ge C \sigma \sqrt{\ln d} \cdot \Pr[A] - \sigma \sqrt{\frac{2}{\pi}} (1 - \Pr[A]) \notag \\
+& = \sigma \left(C\sqrt{\ln d} + \sqrt{\frac{2}{\pi}}\right) \Pr[A] -  \sigma \sqrt{\frac{2}{\pi}} \label{equation:maximum-of-gaussians-lower-bound-3}
+\end{align}
+where we used that $\Exp[X_1 ~|~ X_1 \le 0] = 2 \int_{-\infty}^0 x f(x) dx = 2 \int_{-\infty}^0 \frac{x}{\sigma \sqrt{2\pi}} \exp \left(- \frac{x^2}{2\sigma^2} \right) = - \sigma \sqrt{\frac{2}{\pi}}$.
 
 It remains to lower bound $\Pr[A]$, which we do as follows
-\begin{align*}
+\begin{align}
 \Pr[A]
-& = 1 - \Pr[\overline{A}] \\
-& = 1 - \prod_{i=1}^d \Pr \left[ X_i \leq C \sigma \sqrt{\ln d} \right] \\
-& = 1 - \left(1 - \Pr\left[ X_1 > C \sigma \sqrt{\ln d} \right] \right)^d \\
-& \ge 1 - \exp\left(-d \cdot \Pr\left[X_1\geq C \sigma \sqrt{\ln d} \right]\right) \\
-& \ge 1 - \exp\left(-d \exp\left(-\frac{C^2 \ln d}{2}\right) \frac{1}{\sqrt{2\pi}C \sqrt{\ln d}+2} \right) \\
-& = 1 - \exp\left(-\frac{d^{1-\frac{C^2}{2}}}{C \sqrt{2\pi \ln d}+2}\right) \; .
-\end{align*}
+& = 1 - \Pr[\overline{A}] \notag \\
+& = 1 - \prod_{i=1}^d \Pr \left[ X_i \le C \sigma \sqrt{\ln d} \right]  \notag \\
+& = 1 - \left(1 - \Pr\left[ X_1 > C \sigma \sqrt{\ln d} \right] \right)^d \notag \\
+& \ge 1 - \exp\left(-d \cdot \Pr\left[X_1 \ge C \sigma \sqrt{\ln d} \right]\right) \notag \\
+& \ge 1 - \exp\left(-d \exp\left(-\frac{C^2 \ln d}{2}\right) \frac{1}{\sqrt{2\pi}C \sqrt{\ln d}+2} \right) \notag \\
+& = 1 - \exp\left(-\frac{d^{1-\frac{C^2}{2}}}{C \sqrt{2\pi \ln d}+2}\right) \label{equation:maximum-of-gaussians-lower-bound-4} \; .
+\end{align}
 where in the first inequality we used the elementary inequality $1 - x \le \exp(-x)$ valid for all $x \in \R$.
-We use that $C = \sqrt{2 - \frac{2 \ln \ln d}{\ln d}}$ to lower bound the last expression. In particular, we use that
-$d^{1-\frac{C^2}{2}} = \ln d$. We have
-\begin{align*}
-\Pr[A]
-& \ge 1 - \exp\left(-\frac{d^{1-\frac{C^2}{2}}}{C \sqrt{2\pi \ln d} +2}\right) \\
-& = 1 - \exp\left(-\frac{\ln d}{C \sqrt{2\pi \ln d}+2}\right) \\
-& = 1 - \exp\left(-\frac{\sqrt{\ln d}}{C \sqrt{2\pi}+2}\right) \; .
-\end{align*}
+
+Since $C = \sqrt{2 - \frac{2 \ln \ln d}{\ln d}}$ we have $d^{1-\frac{C^2}{2}} = \ln d$. Subtistuting this into \eqref{equation:maximum-of-gaussians-lower-bound-4}, we get
+\begin{equation}
+\label{equation-maximum-of-gaussians-lower-bound-5}
+\Pr[A] \ge 1 - \exp\left(-\frac{\ln d}{C \sqrt{2\pi \ln d}+2}\right) = 1 - \exp\left(-\frac{\sqrt{\ln d}}{C \sqrt{2\pi}+2}\right) \; .
+\end{equation}
 The function $C(d)$ is decreasing on the interval $[1,e^e]$, increasing on $[e^e, \infty)$, and $\lim_{d \to \infty} C(d) = \sqrt{2}$. From these properties
-we can deduce an upper bound on $C(d)$. For any $d \in [2,\infty)$, we have
-$$
-C(d) \le \max\{C(2), \sqrt{2}\} \le 1.75 \; .
-$$
-Therefore $C\sqrt{2 \pi} + 2 \le 6.35$ and hence
-$$
+we can deduce that $C(d) \le \max\{C(2), \sqrt{2}\} \le 1.75$ for any $d \in [2,\infty)$. Therefore, $C\sqrt{2 \pi} + 2 \le 6.35$ and hence
+\begin{equation}
+\label{equation:maximum-of-gaussians-lower-bound-6}
 \Pr[A] \ge 1 - \exp\left(-\frac{\sqrt{\ln d}}{6.35}\right) \; .
-$$
-Putting all together, we have the first stated bound.
+\end{equation}
+Inequalities \eqref{equation:maximum-of-gaussians-lower-bound-3} and \eqref{equation:maximum-of-gaussians-lower-bound-6} together imply bound \eqref{equation:maximum-of-gaussians-lower-bound-1}.
+
+Bound \eqref{equation:maximum-of-gaussians-lower-bound-2} is obtained from \eqref{equation:maximum-of-gaussians-lower-bound-1} by noticing that
+\begin{align*}
+& \sigma \left(1 - \exp\left(-\frac{\sqrt{\ln d}}{6.35}\right)\right) \left(\sqrt{2 \ln d - 2 \ln \ln d} +\sqrt\frac{2}{\pi}\right) -\sqrt{\frac{2}{\pi}} \sigma \\
+& = \sigma \left(1 - \exp\left(-\frac{\sqrt{\ln d}}{6.35}\right)\right) \sqrt{2 \ln d - 2 \ln \ln d} - \exp\left(-\frac{\sqrt{\ln d}}{6.35}\right) \sqrt{\frac{2}{\pi}} \sigma \\
+& \ge 0.1227 \cdot \sigma \sqrt{2 \ln d - 2 \ln \ln d} - 0.7 \sigma \\
+& = 0.1227 \cdot \sigma \sqrt{\ln d} \cdot C(d) - 0.7 \sigma
+\end{align*}
+where we used that $\exp\left(-\frac{\sqrt{\ln d}}{6.35}\right) \le 0.8773$ for any $d \ge 2$.
+Since $C(d)$ has minimum at $d = e^e$, it follows that $C(d) \ge C(e^e) = \sqrt{2 - \frac{2}{e}} \ge 1.1243$ for any $d \ge 2$.
 \end{proof}
 
 \section{Binomial Case}
@@ -195,14 +201,14 @@ Putting all together, we have the first stated bound.
 
 In the Binomial case, we expect the discrete nature of the variable to play a role. In fact, we expect it to behave like a Gaussian only when the number of draws goes to infinity.
 We will quantify this intuition with the following function.
-Define the function $\psi:[-\frac{1}{2},\frac{1}{2}] \rightarrow \R$ as
+Define the function $\psi:[-\frac{1}{2},\frac{1}{2}] \to \R$ as
 $$
-\psi(x) = \frac{D(\frac{1}{2}+x||\frac{1}{2})}{2 x^2}~.
+\psi(x) = \frac{D(\frac{1}{2}+x\|\frac{1}{2})}{2 x^2}~.
 $$
 The function $\psi(x)$ satisfies the following properties
 \begin{itemize}
 \item $\psi(x) = \psi(-x)$
-\item $\psi(x)$ is increasing for $0\leq x \leq\frac{1}{2}$.
+\item $\psi(x)$ is increasing for $0\le x \le \frac{1}{2}$.
 \item $\psi(0) = 1$
 \item $\psi(0.5) = 2 \log(2) \approx 1.3863$
 \end{itemize}
@@ -212,93 +218,93 @@ We will use the next Theorem from \cite{nOrabona13}, whose proof is the Appendix
 
 \begin{theorem}
 \label{lemma:bin}
-Let $n\geq2$ an even number and $Z$ a Binomial random variable $B(n,\frac{1}{2})$. Then for any $k \in \Nat_0$ such that $k\leq \frac{1}{2}n-1$, we have
+Let $n \ge 2$ an even number and $Z$ a Binomial random variable $B(n,\frac{1}{2})$. Then for any $k \in \Nat_0$ such that $k\le \frac{1}{2}n-1$, we have
 \[
-P\left( Z \geq \frac{1}{2} n + k\right)
-\geq  \frac{\exp\left(-n D(\frac{1}{2}+\frac{k}{n}||\frac{1}{2})\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)y+\sqrt{y^2+2 \pi}},
+P\left( Z \ge \frac{1}{2} n + k\right)
+\ge  \frac{\exp\left(-n D(\frac{1}{2}+\frac{k}{n}\|\frac{1}{2})\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)y+\sqrt{y^2+2 \pi}},
 \]
-where $D(p||q)=p \log \frac{p}{q}+(1-p) \log\frac{1-p}{1-q}$ and $y=\frac{2 k}{\sqrt{n}}$.
+where $D(p\|q)=p \log \frac{p}{q}+(1-p) \log\frac{1-p}{1-q}$ and $y=\frac{2 k}{\sqrt{n}}$.
 \end{theorem}
 %
 \begin{corrollary}
-Let $Z \sim B(n, 1/2)$ and $k \geq 1$ and $n\geq2$ even. Then
+Let $Z \sim B(n, 1/2)$ and $k \ge 1$ and $n \ge 2$ even. Then
 \[
-P(Z \geq \frac{1}{2} n + k-1) \geq \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{k}{n}\right) \frac{k^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 k}{\sqrt{n}} + 2 }~.
+\Pr(Z \ge \frac{1}{2} n + k-1) \ge \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{k}{n}\right) \frac{k^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 k}{\sqrt{n}} + 2 }~.
 \]
 \end{corrollary}
 \begin{proof}
 \begin{align*}
-P(&Z \geq  \frac{1}{2} n + k-1) \\
-& = P(Z\geq \frac{1}{2} n + \lceil k -1\rceil) \\
-& \geq \frac{\exp\left(-n D(\frac{1}{2}+\frac{\lceil k -1\rceil}{n}||\frac{1}{2})\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2\lceil k -1\rceil}{\sqrt{n}}+\sqrt{\left(\frac{2\lceil k -1\rceil}{\sqrt{n}}\right)^2+2 \pi}} \\
-& \geq \frac{\exp\left(-n D(\frac{1}{2}+\frac{k}{n}||\frac{1}{2})\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2k}{\sqrt{n}}+\sqrt{\left(\frac{2k}{\sqrt{n}}\right)^2+2 \pi}} \\
+\Pr(Z \ge  \frac{1}{2} n + k-1)
+& = \Pr(Z \ge \frac{1}{2} n + \lceil k -1\rceil) \\
+& \ge \frac{\exp\left(-n D(\frac{1}{2}+\frac{\lceil k -1\rceil}{n} \| \frac{1}{2})\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2\lceil k -1\rceil}{\sqrt{n}}+\sqrt{\left(\frac{2\lceil k -1\rceil}{\sqrt{n}}\right)^2+2 \pi}} \\
+& \ge \frac{\exp\left(-n D(\frac{1}{2}+\frac{k}{n} \| \frac{1}{2})\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2k}{\sqrt{n}}+\sqrt{\left(\frac{2k}{\sqrt{n}}\right)^2+2 \pi}} \\
 & = \frac{\exp\left(- 2 \psi(\frac{k}{n}) \frac{k^2}{n} \right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2k}{\sqrt{n}}+\sqrt{\left(\frac{2k}{\sqrt{n}}\right)^2+2 \pi}} \\
-& \geq \frac{\exp\left(- 2 \psi(\frac{k}{n}) \frac{k^2}{n} \right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2k}{\sqrt{n}}+\sqrt{\left(\frac{2k}{\sqrt{n}}\right)^2+2 \pi}} \\
-& \geq \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{k}{n}\right) \frac{k^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 k}{\sqrt{n}} + 2 },
+& \ge \frac{\exp\left(- 2 \psi(\frac{k}{n}) \frac{k^2}{n} \right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2k}{\sqrt{n}}+\sqrt{\left(\frac{2k}{\sqrt{n}}\right)^2+2 \pi}} \\
+& \ge \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{k}{n}\right) \frac{k^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 k}{\sqrt{n}} + 2} \; ,
 \end{align*}
 where in the second equality we used Theorem~\ref{lemma:bin}.
 \end{proof}
 
 \begin{theorem}
-\label{theo:max_bin}
-Let $2 \leq d \leq \exp(\frac{n}{4})$, $n\geq 10$ even and $Z_i$ independent Binomial variables $B(n,1/2)$. Then
+\label{theorem:max_bin}
+Let $2 \le d \le \exp(\frac{n}{4})$, $n\ge 10$ even and $Z_i$ independent Binomial variables $B(n,1/2)$. Then
 \begin{align*}
-E\left[ \max_{i=1,\cdots,d} (2 Z_i - n)\right]
-&\geq \frac{1}{\sqrt{\psi\left(\frac{1.6\sqrt{\log d}}{2 \sqrt{n}}\right)}}\sqrt{n}\left(1 - \exp\left(-\frac{\sqrt{\log d}}{3.1 \sqrt{2\pi}}\right)\right) \left(\sqrt{2 \log d -\log \log d}-1\right) -\sqrt{n} \\
-&\geq 0.13 \sqrt{n \log d} - 2 \sqrt{n}.
+\Exp \left[ \max_{1 \le i \le d} (2 Z_i - n)\right]
+& \ge \frac{1}{\sqrt{\psi\left(\frac{1.6\sqrt{\log d}}{2 \sqrt{n}}\right)}}\sqrt{n}\left(1 - \exp\left(-\frac{\sqrt{\log d}}{3.1 \sqrt{2\pi}}\right)\right) \left(\sqrt{2 \log d -\log \log d}-1\right) -\sqrt{n} \\
+& \ge 0.13 \sqrt{n \log d} - 2 \sqrt{n}.
 \end{align*}
 \end{theorem}
 %
 \begin{proof}
 Define $X_i= 2 Z_i-n$.
-Define the event $A$ equal to the case that at least one of the $X_i$ is greater or equal than $C \sqrt{n \log d}-2$, where $C=\frac{1}{\sqrt{\psi\left(\frac{\sqrt{\log d}}{2 \sqrt{n}}\right)}}\sqrt{2-\frac{\log \log d}{\log d}}$. Also, the function $f(d)=\sqrt{2-\frac{\log \log d}{\log d}}$ has a minimum in $d=e^e$, hence $1.08 \leq \frac{f(15)}{\sqrt{2 \log 2}} \leq C\leq f(2)\leq 1.6$.
+Define the event $A$ equal to the case that at least one of the $X_i$ is greater or equal than $C \sqrt{n \log d}-2$, where $C=\frac{1}{\sqrt{\psi\left(\frac{\sqrt{\log d}}{2 \sqrt{n}}\right)}}\sqrt{2-\frac{\log \log d}{\log d}}$. Also, the function $f(d)=\sqrt{2-\frac{\log \log d}{\log d}}$ has a minimum in $d=e^e$, hence $1.08 \le \frac{f(15)}{\sqrt{2 \log 2}} \le C\le f(2)\le 1.6$.
 
-Notice that the condition on $n$ and $d$ assures that $\frac{C \sqrt{n \log d}}{2}>1$ and $\frac{C \sqrt{n \log d}}{2}\leq \frac{1}{2} n -1$.
+Notice that the condition on $n$ and $d$ assures that $\frac{C \sqrt{n \log d}}{2}>1$ and $\frac{C \sqrt{n \log d}}{2}\le \frac{1}{2} n -1$.
 %
 \begin{align*}
-E[\max_{i=1,\cdots,d} X_i]
-&= E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[\max_{i=1,\cdots,d} X_i| not A ] (1-P(A)) \\
-&\geq E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[\max_{i=1,\cdots,d} X_i| not A ] (1-P(A))\\
-&\geq E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[X_1| not A ](1-P(A)) \\
-&= E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[X_1| X_1\leq C \sigma \sqrt{\log d}] (1-P(A))\\
-&\geq E[\max_{i=1,\cdots,d} X_i| A ] P(A) + E[X_1| X_1\leq 0](1-P(A)) \\
-&\geq (C \sigma \sqrt{n \log d} -2) P(A) + E[X_1| X_1\leq 0] (1-P(A)).
+\Exp [\max_{1 \le i \le d} X_i]
+& = \Exp [\max_{1 \le i \le d} X_i| A ] \Pr(A) + \Exp [\max_{1 \le i \le d} X_i| \overline{A} ] \Pr(\overline{A}) \\
+& \ge \Exp[\max_{1 \le i \le d} X_i| A ] \Pr(A) + \Exp[\max_{1 \le i \le d} X_i| \overline{A} ] \Pr(\overline{A})\\
+& \ge \Exp[\max_{1 \le i \le d} X_i| A ] \Pr(A) + \Exp[X_1| \overline{A} ] \Pr(\overline{A} ) \\
+& = \Exp[\max_{1 \le i \le d} X_i| A ] \Pr(A) + \Exp[X_1| X_1\le C \sigma \sqrt{\log d}] \Pr(\overline{A})\\
+& \ge \Exp[\max_{1 \le i \le d} X_i| A ] \Pr(A) + \Exp[X_1| X_1\le 0](1-\Pr(A)) \\
+& \ge (C \sigma \sqrt{n \log d} -2) \Pr(A) + \Exp[X_1| X_1\le 0] (1-\Pr(A)).
 \end{align*}
 
-First, we lower bound $E[X_1| X_1\leq 0]$. Using the fact that $X_1$ is symmetric and with zero mean, we have
+First, we lower bound $\Exp[X_1~|~ X_1 \le 0]$. Using the fact that $X_1$ is symmetric and with zero mean, we have
 \begin{align*}
-E[X_1| X_1\leq 0] &= \sum_{k=-n}^0 k P(k | k\leq 0) = 2 \sum_{k=-n}^0 k P(k) \\
-&= - \sum_{k=-n}^n |k| P(k) = - E[|X_1|] \geq - \sqrt{Var[X_1]}\\
-&= -\sqrt{n}.
+\Exp[X_1| X_1\le 0] &= \sum_{k=-n}^0 k \Pr(k | k\le 0) = 2 \sum_{k=-n}^0 k \Pr(k) \\
+& = - \sum_{k=-n}^n |k| \Pr(k) = - \Exp[|X_1|] \ge - \sqrt{\Var[X_1]}\\
+& = -\sqrt{n}.
 \end{align*}
 
-Now let's focus on $P(A)$. As in the Gaussian case, we can lower bound it as
+Now let's focus on $\Pr[A]$. As in the Gaussian case, we can lower bound it as
 \begin{align*}
-P(A)
-&= 1-P(X_1 < C \sqrt{n \log d}-2)^d \\
-&= 1-(1-P(X_1\geq C \sqrt{n \log d}-2))^d \\
-&= 1-(1-P(Z_1\geq \frac{C \sqrt{n \log d}}{2} +\frac{n}{2}-1))^d \\
-&\geq 1-\exp\left(-d P(Z_1\geq \frac{C \sqrt{n \log d}}{2} +\frac{n}{2}-1) \right) \\
-&\geq 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{C \sqrt{\log d}}{2 \sqrt{n}}\right)}}{C \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
-&\geq 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right).
-% 
-% &\geq 1-\left(1-\exp\left(- \psi\left(\frac{C \sqrt{\log d}}{2 \sqrt{n}}\right) \frac{C^2 \log d}{2}\right) \frac{\exp\left(-\frac{1}{6}\right)}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
-% &\geq 1-\left(1-\exp\left(- \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right) \frac{C^2 \log d}{2}\right) \frac{\exp\left(-\frac{1}{6}\right)}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
+\Pr[A]
+& = 1 - \Pr(X_1 < C \sqrt{n \log d}-2)^d \\
+& = 1 - (1-\Pr(X_1\ge C \sqrt{n \log d}-2))^d \\
+& = 1 - (1-\Pr(Z_1\ge \frac{C \sqrt{n \log d}}{2} +\frac{n}{2}-1))^d \\
+& \ge 1-\exp\left(-d \Pr(Z_1\ge \frac{C \sqrt{n \log d}}{2} +\frac{n}{2}-1) \right) \\
+& \ge 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{C \sqrt{\log d}}{2 \sqrt{n}}\right)}}{C \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
+& \ge 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right).
+%
+% &\ge 1-\left(1-\exp\left(- \psi\left(\frac{C \sqrt{\log d}}{2 \sqrt{n}}\right) \frac{C^2 \log d}{2}\right) \frac{\exp\left(-\frac{1}{6}\right)}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
+% &\ge 1-\left(1-\exp\left(- \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right) \frac{C^2 \log d}{2}\right) \frac{\exp\left(-\frac{1}{6}\right)}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
 % &= 1-\left(1-\frac{\exp\left(-\frac{1}{6}\right) d^{-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)^d \\
 % &= 1- \exp\left(d \log\left(1-\frac{\exp\left(-\frac{1}{6}\right) d^{-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{\sqrt{2\pi}C \sqrt{\log d}+2}\right)\right) \\
-% &\geq 1- \exp\left(d \log\left(1-\frac{\exp\left(-\frac{1}{6}\right) d^{-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right)\right) \\
-% &\geq 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right).
+% &\ge 1- \exp\left(d \log\left(1-\frac{\exp\left(-\frac{1}{6}\right) d^{-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right)\right) \\
+% &\ge 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right).
 \end{align*}
-%where in the last inequality we used the elementary inequality $\log(1-\frac{1}{x}) \leq -\frac{1}{x}, \forall  0\leq x>1$.
+%where in the last inequality we used the elementary inequality $\log(1-\frac{1}{x}) \le -\frac{1}{x}, \forall  0\le x>1$.
 We now use the fact that $C=\frac{1}{\sqrt{\psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}\sqrt{2- \frac{\log \log d}{\log d}}$ that implies $d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}=\log d$. Hence, we obtain
 \begin{align*}
-P(A)
-& \geq 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
+\Pr(A)
+& \ge 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
 & = 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) \log d}{1.6 \sqrt{2\pi} \sqrt{\log d}+2}\right) \\
-& \geq 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) \sqrt{\log d}}{2.6 \sqrt{2\pi}}\right)\\
-& \geq 1 - \exp\left(-\frac{\sqrt{\log d}}{3.1 \sqrt{2\pi}}\right),
+& \ge 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) \sqrt{\log d}}{2.6 \sqrt{2\pi}}\right)\\
+& \ge 1 - \exp\left(-\frac{\sqrt{\log d}}{3.1 \sqrt{2\pi}}\right),
 \end{align*}
-where in the last equality we used the fact that $\sqrt{2\pi} \sqrt{\log d} > 2$ for $d\geq 2$.
+where in the last equality we used the fact that $\sqrt{2\pi} \sqrt{\log d} > 2$ for $d\ge 2$.
 
 Putting all together, we have the stated bound.
 \end{proof}
@@ -309,44 +315,49 @@ Putting all together, we have the stated bound.
 We present here our main result.
 
 \begin{theorem}
-Let the outcome space $\mathcal{Y}=\{0,1\}$, and the decision space $\mathcal{D}=[0,1]$, and $\ell$ the absolute loss, $\ell(p,q)=|p-q|$. Let $n\geq4$ and even, and $2\leq d \leq \exp(\frac{n}{4})$.
-Define
+Let the outcome space $\mathcal{Y}=\{0,1\}$, and the decision space
+$\mathcal{D}=[0,1]$, and $\ell$ the absolute loss, $\ell(p,q)=|p-q|$. Let $n
+\ge 4$ and even, and $2\le d \le \exp(\frac{n}{4})$.  Define
 \[
 f(n,d)=\frac{1}{2}\frac{1}{\sqrt{\psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right)}}\sqrt{n}\left(1 - \exp\left(-\frac{\sqrt{\log d}}{3.1 \sqrt{2\pi}}\right)\right) \left(\sqrt{2 \log d -\log \log d}-1\right) -\frac{1}{2}\sqrt{n}~.
 \]
 Then
 \[
-Regret^{(d)}(n)\geq f(n,d)
+\Regret^{(d)}(n)\ge f(n,d)
 \]
 and
 \[
-\sup_{n,d} \frac{f(n,d)}{\sqrt{\frac{n}{2} \log d}} \geq 1~.
+\sup_{n,d} \frac{f(n,d)}{\sqrt{\frac{n}{2} \log d}} \ge 1~.
 \]
 \end{theorem}
 %
 \begin{proof}
 Proceeding as in the proof of Theorem~3.7 in~\citep{Cesa-BianchiL06} we only need to show that
 \[
-\frac{1}{2} E\left[ \max_{i=1,\cdots,d} Z_i\right] \geq f(n,d),
+\frac{1}{2} E\left[ \max_{1 \le i \le d} Z_i\right] \ge f(n,d),
 \]
-where $Z_i= 2 X_i - n$ and $X_i \sim B(n, \frac{1}{2})$. We simply do it through Theorem~\ref{theo:max_bin}.
-For the second statement, we use the fact that $\lim_{n\rightarrow\infty} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right) = 1$.
+where $Z_i= 2 X_i - n$ and $X_i \sim B(n, \frac{1}{2})$. We simply do it through Theorem~\ref{theorem:max_bin}.
+For the second statement, we use the fact that $\lim_{n \to \infty} \psi\left(\frac{1.6 \sqrt{\log d}}{2 \sqrt{n}}\right) = 1$.
 \end{proof}
 
-The theorem proves a non-asymptotic lower bounds, while at the same time recovering the optimal constant of the asymptotic one in \citet{Cesa-BianchiL06}. Also, differently from the asymptotic lower bound in \citet{Cesa-BianchiL06}, we do not need to take the limit for $n$ that goes to infinity.
+The theorem proves a non-asymptotic lower bounds, while at the same time
+recovering the optimal constant of the asymptotic one in
+\citet{Cesa-BianchiL06}. Also, differently from the asymptotic lower bound in
+\citet{Cesa-BianchiL06}, we do not need to take the limit for $n$ that goes to
+infinity.
 
 \bibliographystyle{plainnat}
 \bibliography{learning}
 
 \appendix
 
-\section{Proof of Theorem~\ref{theo:max_bin}}
+\section{Proof of Theorem~\ref{theorem:max_bin}}
 \begin{proof}
 We use Theorem~2 in \cite{McKay1989}, that specialized to our case says that
 \begin{equation}
-\label{eq:bin_1}
-P\left( Z \geq  \frac{1}{2} n + k  \right)
-\geq \sqrt{n} \binom{n-1}{ \frac{1}{2} n + k -1} 2^{-n} \frac{Q(y)}{\phi(y)},
+\label{equation:bin-1}
+\Pr \left( Z \ge  \frac{1}{2} n + k  \right)
+\ge \sqrt{n} \binom{n-1}{ \frac{1}{2} n + k -1} 2^{-n} \frac{Q(y)}{\phi(y)},
 \end{equation}
 where $\phi(x)$ is the unit variance, zero mean Gaussian, $\frac{1}{\sqrt{2 \pi}} \exp(-\frac{x^2}{2})$ and $Q(x)$ is its CDF, $\int_{x}^{+\infty} \phi(u) du$.
 
@@ -354,30 +365,30 @@ We lower bounding the ratio $\frac{Q(y)}{\phi(y)}$ using Lemma~\ref{lemma:boyd}:
 \[
 \frac{Q(y)}{\phi(y)}
 = \exp\left(\frac{x^2}{2}\right) \int_{x}^{+\infty} \exp\left(-\frac{t^2}{2}\right) dt
-\geq \frac{\pi}{(\pi-1)x+\sqrt{x^2+2 \pi}}.
+\ge \frac{\pi}{(\pi-1)x+\sqrt{x^2+2 \pi}}.
 \]
 
-To bound the binomial coefficient we make use of the following Stirling approximation, for any $n\geq 1$,
+To bound the binomial coefficient we make use of the following Stirling approximation, for any $n\ge 1$,
 \[
 \sqrt{2 \pi n} n^n \exp(-n) < n! < \exp\left(\frac{1}{12}\right)\sqrt{2 \pi n} n^n \exp(-n)~.
 \]
-Hence, for any $n \geq 2$ and $1\leq q \leq n-1$, after some algebra we obtain
+Hence, for any $n \ge 2$ and $1\le q \le n-1$, after some algebra we obtain
 \begin{align*}
 {n \choose q}
-&\geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \left(\frac{n}{n-q}\right)^{n-q} \left(\frac{n}{q}\right)^{q} \sqrt{\frac{n}{q(n-q)}} \\
-&\geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} 2^n \exp\left(-n D\left(\frac{q}{n}||\frac{1}{2}\right)\right) \sqrt{\frac{n}{q(n-q)}}.
+& \ge \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \left(\frac{n}{n-q}\right)^{n-q} \left(\frac{n}{q}\right)^{q} \sqrt{\frac{n}{q(n-q)}} \\
+& \ge \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} 2^n \exp\left(-n D\left(\frac{q}{n} \| \frac{1}{2}\right)\right) \sqrt{\frac{n}{q(n-q)}}.
 \end{align*}
 where in the equality we used the definition of $D$.
 Also, we have
 \begin{equation}
-\label{eq:bin_3}
+\label{equation:bin-3}
 {n-1 \choose \frac{1}{2} n + k - 1} = {n \choose \frac{1}{2} n + k} \left(\frac{1}{2} + \frac{k}{n}\right) .
 \end{equation}
-Putting together \eqref{eq:bin_1}-\eqref{eq:bin_3}, and using the definition of $y$ we have
+Putting together \eqref{equation:bin-1}-\eqref{equation:bin-3}, and using the definition of $y$ we have
 \begin{align*}
-&P\left( Z \geq \frac{1}{2} n + k \right)
-\geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \exp\left(-n D\left(\frac{1}{2}+\frac{k}{n}||\frac{1}{2}\right)\right) \sqrt{\frac{\frac{1}{2} + \frac{k}{n}}{\frac{1}{2}-\frac{k}{n}}}  \frac{Q(y)}{\phi(y)} \\
-&\geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \exp\left(-n D\left(\frac{1}{2}+\frac{k}{n}||\frac{1}{2}\right)\right) \frac{\pi}{(\pi-1)y+\sqrt{y^2+2 \pi}}. \qedhere
+&\Pr\left[ Z \ge \frac{1}{2} n + k \right]
+\ge \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \exp\left(-n D\left(\frac{1}{2}+\frac{k}{n} \| \frac{1}{2}\right)\right) \sqrt{\frac{\frac{1}{2} + \frac{k}{n}}{\frac{1}{2}-\frac{k}{n}}}  \frac{Q(y)}{\phi(y)} \\
+&\ge \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \exp\left(-n D\left(\frac{1}{2}+\frac{k}{n} \| \frac{1}{2}\right)\right) \frac{\pi}{(\pi-1)y+\sqrt{y^2+2 \pi}}. \qedhere
 \end{align*}
 \end{proof}
 
