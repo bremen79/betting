@@ -6,12 +6,10 @@
 \caption{The links between the different areas and betting.}
 \end{figure}
 
-In this section we will show the connection between portfolio selection, betting on a continous coin, adaptive OLO, and automatic model selection.
+In this section we will show the connection between portfolio selection, betting on a continous coin, adaptive OLO, and automatic model selection. We will prove that, given an ``optimal'' betting algorithm, the same algorithm can be used to solve all the problems listed above.
 
-First, we have the following Theorem from \cite{}.
-
-\textbf{Reward and OLO.}
-We use the duality between Regret and Reward in \cite{McMahanO14}.
+\textbf{Betting vs. OLO.}
+We use the duality between Regret and Reward in \citet{McMahanO14}.
 We have the following Theorem.
 \begin{theorem}
   \label{thm:rrdual}
@@ -27,13 +25,13 @@ We have the following Theorem.
   \end{equation}
 \end{theorem}
 
-The above Theorem proves that the reward and regret view on online learning are equivalent: an algorithm guarantees low regret iff it guarantees high reward.
-However, as we will show in Section~\ref{}, designing and analysing algorithms in one of the two views could be much easier than in the other one.
+The above Theorem proves that the reward and regret view on online learning are equivalent: an algorithm guarantees low regret iff it guarantees high reward. Hence a betting algorithm can be used for online learning and vice-versa. However, as it was already stressed in \citet{McMahanO14}, the reward view has the big advantage of having one variable less, the competitor $\bu$.
+Moreover, as we will show in Section~\ref{}, designing and analysing algorithms in one of the two views could be much easier than in the other one.
 
 \textbf{OLO and Optimization.}
 It is well known that a regret bound can be transformed into a convergence guarantee for optimization of convex functions.
-In particular, we have the following Theorem from~\ref{}.
-
+In particular, we have the following Theorem from~\citet{Cesa-BianchiCG04}.
+%
 \begin{theorem}
 Let $\bw_1, \cdots, \bw_T \in \fH$ the vector produced by an OLO algorithm $\mathcal{A}$ with a regret guarantee $R_A(T)$.
 Let $F:\fH\rightarrow\R$ a convex function, and fix the vectors $\bg_t$ to be unbiased estimate of the gradient of $F$ in $\bw_t$. Then, the following holds
@@ -42,21 +40,16 @@ Let $F:\fH\rightarrow\R$ a convex function, and fix the vectors $\bg_t$ to be un
 \]
 \end{theorem}
 
-High probability bounds can be also easily obtained, assuming more on the function $F$~\cite{}.
+High probability bounds can be also easily obtained, assuming more on the function $F$~\citep{Cesa-BianchiCG04}.
 The above theorem says that, if the regret grows, for example, as $\scO(\sqrt{T})$, the OLO algorithm can be used as a stochastic optimization algorithm with convergence in expectation $\scO(\frac{1}{\sqrt{T}})$.
 
-\textbf{Betting and Automatic Model Selection.}
-Let $\rho$ a fixed but unknown distribution on $\fX \times \fY$, where $\fY=[-1,1]$.
-A training set $\{\bx_t,y_t\}_{t=1}^T$ will consist of samples drawn \ac{IID} from $\rho$.
-Denote by $\frho(x):= \int_\fY y d\rho(y|x)$ the \emph{regression function}, where $\rho(\cdot|x)$ is the conditional probability measure at $x$ induced by $\rho$. 
-%Denote by $\rho_\fX$ the marginal probability measure on $\fX$ and let $\Ltworho$ be the space of square integrable functions with respect to $\rho_\fX$, whose norm is denoted by $\normL{\f}:=\sqrt{\int_\fX \f^2(x) d \rho_\fX}$. Note that $\frho \in \Ltworho$.
-Define the \emph{$\ell$-risk} of $f$, as $\RiskLoss(f):=\int_{\fX \times \fY} \ell(y f(x)) d \rho$. Also, define $\flrho(x):=\argmin_{t \in \R} \int_\fY \ell(y t) d \rho(y|x)$, that gives the \emph{optimal $\ell$-risk}, $\RiskLoss(\flrho)=\inf_{\f \in \Ltworho} \RiskLoss(\f)$.
-
+\textbf{Adaptive Algorithms for OLO and Self-tuning Model Selection.}
 In learning theory a key concept is the one of regularization. If the concept class we are learning is too rich, we need to constrain the complexity of the trained predictor. A regularizer is achieving this, biasing the classifieres towards a small region of the space. However, it is known that the optimal amount of regularization is completely problem-dependent. Hence, the regularizer becomes another parameter to be learned.
 
 Most, if not all, the machine learning algorithms uses a two-stages process to find the optimal amount of regularization. First, the algorithm is trained with a fixed regularization parameter. Second, its generalization performance is estimated together with a change in the regularization parameter. These two steps are repeated till convergence.
 
-Surprisingly enough, \citep{} proved that the above procedure can be avoided with a stochastic learner. In particular, the follwing theorem holds.
+Surprisingly enough, \citep{Orabona14} proved that the above procedure can be avoided with a stochastic learner. In particular, instead of solving a series of regularized ERM problems, with different amounts of regularization, one can use a simple prarameter-free stochastic gradient descent procedure over the training samples and achieve the same performance.
+More rigorously, the follwing theorem holds.
 \begin{theorem}
 Let $\bw_1, \cdots, \bw_T \in \fH$ the vector produced by the PiSTOL algorithm.
 Let $\ell:\R\rightarrow\R$ a convex and Lipschitz function, and fix the vectors $\bg_t$ to be unbiased estimate of the gradient of $F$ in $\bw_t$. Then, the rate of convergence of $\E\left[Risk_F\left(\frac{1}{T} \bw_t\right)\right]$ is the same of regularized ERM algorithm with the (unknown) optimal amount of regularization.
@@ -65,6 +58,11 @@ Let $\ell:\R\rightarrow\R$ a convex and Lipschitz function, and fix the vectors 
 Moreover, from \citep{} we can extract the following Theorem.
 \begin{theorem}
 When PiSTOL is used as a betting strategy against a coin with outcomes in $[-1,1]$, it guarantees an exponential reward.
+\end{theorem}
+
+In reality, the connection between betting and self-tuning regularized ERM is actually stronger. In fact, the following theorem can be proved.
+\begin{theorem}
+If a betting strategy against a coin with outcomes in $[-1,1]$ guarantees an exponential reward, the same algorith used for SGD over the risk of a convex loss will guarantee optimal rate of convergence to the Bayes risk.
 \end{theorem}
 
 To summarize, we have that regret minimization in OLO is equivalent to reward maximization. Moreover, optimal betting algorithms correspond to adaptive OLO algorithms, that guarantees automatic model selection when used in infinite dimensional spaces.

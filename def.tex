@@ -1,43 +1,46 @@
 \section{Setting and Notation}
-In the \ac{OLO} framework, at each round $t$ the algorithm receives a vector $\bx_t \in \fX$, picks a $\bw_t \in \fX$, and pays $\langle \bw_t,\bx_t \rangle$.
-The aim of the algorithm is to minimize the \emph{regret}, that is the difference between the cumulative loss of the algorithm, $\sum_{t=1}^T \langle \bw_t,\bx_t \rangle$, and the cumulative loss of an arbitrary and fixed competitor $\bu \in \fX$, $\sum_{t=1}^T \langle \bu,\bx_t \rangle$.
-In particular, define
-\[
-Regret(u) := \sum_{t=1}^T \langle g_t ,w_t - u \rangle~.
-\]
-and
-\[
-Reward := \sum_{t=1}^T \langle -g_t, w_t \rangle~.
-\]
+These papers deals with three different settings, hence we will fist describe the common notation and then each of one them separately, trying to show the similarities between them.
 
-
-We will consider the following setting. The better starts with the amount of money $\epsilon$. We denote the amount of money that he has with $L_{t-1}+\epsilon$, where $L_{t-1}$ is the amount of money won (or lost) in the previous $t-1$ rounds.
-At each time step $t$, it has to bet a quantity of money $w_t$ equal to a fraction of his current money, $w_t=\beta_t \, (\epsilon+\sum_{i=1}^{t-1} w_i g_i)$ where $\beta_t \in (-1,1)$. Note that to be a proper betting strategy, $|\beta_t|$ must be strictly less than 1, otherwise the algorithm could lose all the money in one round.
-After the bet, the outcome of the coin $g_t \in \{-1,1\}$ is revealed and the better wins (or loses) the quantity $w_t g_t$.
-Note that the outcome of the coin is in $\{-1,1\}$, but we will also consider that general case that $g_t in [-1,1]$.
-Given the quantities above we have $L_t=\epsilon + \sum_{i=1}^t w_i g_i$, so that $L_0=\epsilon$.
-Also, $L_t= L_{t-1}+w_t g_t =L_{t-1} + \beta_t \, g_t \, L_{t-1} = L_{t-1} (1+\beta_t g_t)$.
-For the $L_0$ we know, by definition that $L_0=\epsilon$.
-
-We will denote the outcome of the coin at time $t$ with $g_t$. So, we will first assume that $g_t \in \{-1,1\}$, then we will generalize it to $[-1,1]$.
-
+Real number variable will denoted by italic letters, e.g. $x,y$, while vectors will be denoted by bold letters, $\bw,\bu$.
 We define the KL divergence between two Bernoulli distributions with parameters $p$ and $q$ as
 \[
-KL_{Ber}(p,q)= p \log\frac{p}{q} + (1-p) \log\frac{1-p}{1-q}.
+D(p||q)= p \log\frac{p}{q} + (1-p) \log\frac{1-p}{1-q}.
 \]
 Hence, we have, for any $ 0\leq p < 1$
 \[
-KL_{Ber}(\frac{1}{2}+\frac{p}{2},\frac{1}{2}) = KL_{Ber}(\frac{1}{2}-\frac{p}{2},\frac{1}{2})= \frac{1+p}{2} \log(1+p) + \frac{1-p}{2} \log(1-p).
+D\left(\frac{1}{2}+\frac{p}{2}\middle\|\frac{1}{2}\right) = D\left(\frac{1}{2}-\frac{p}{2}\middle\|\frac{1}{2}\right)= \frac{1+p}{2} \log(1+p) + \frac{1-p}{2} \log(1-p).
 \]
-The extension for continuity of $KL_{Ber}(\frac{1}{2}+\frac{p}{2},\frac{1}{2})$ in $p=1$ is $log(2)$.
+The extension for continuity of $D(\frac{1}{2}+\frac{p}{2}||\frac{1}{2})$ in $p=1$ is $\log(2)$.
 Also,
 \[
-\left(\frac{n}{n-q}\right)^{n-q} \left(\frac{n}{q}\right)^{q} = 2^n \exp\left(-n KL_{Ber}(\frac{q}{n}||\frac{1}{2})\right),
+\left(\frac{n}{n-q}\right)^{n-q} \left(\frac{n}{q}\right)^{q} = 2^n \exp\left(-n D\left(\frac{q}{n}\middle\|\frac{1}{2}\right)\right),
 \]
 and
 \[
-\left(1+x\right)^\frac{1+x}{2} \left(1-x\right)^\frac{1-x}{2}= \exp\left( KL_{Ber}(\frac{1}{2}+\frac{x}{2},\frac{1}{2}) \right)
+\left(1+x\right)^\frac{1+x}{2} \left(1-x\right)^\frac{1-x}{2}= \exp\left( D\left(\frac{1}{2}+\frac{x}{2}\middle\|\frac{1}{2}\right) \right)
 \]
 
+\textbf{Binary and Continuos Coin Betting.}
+The bettor starts with the amount of money $\epsilon$. 
+At the end of each bet in the time step $t$ we denote the amount of money he has by $\gain_t$.
+At each time step $t$, it has to bet a quantity of money $w_t$ equal to a fraction of his current money, $w_t=\beta_t \, \gain_{t-1}$ where $\beta_t \in (-1,1)$. Note that here we consider only betting strategies that will never result in a negative quantity of money owned. Hence, $|\beta_t|$ must be strictly less than 1, otherwise the algorithm could lose all the money in one round.
+After the bet, the outcome of the coin $g_t \in \{-1,1\}$ is revealed and the better wins (or loses) the quantity $w_t g_t$.
+Note that we will speak about a ``binary coin'' when the outcome of the coin is in $\{-1,1\}$, and ``continous coin'' when $g_t \in [-1,1]$. The latter case model the situation in there are different possible prizes with unknown probabilities to be won. Given the quantities above we have $\gain_t=\gain_{t-1} + w_t g_t = \epsilon + \sum_{i=1}^t w_i g_i$, so that $\gain_0=\epsilon$.
+
+\textbf{\ac{OLO}.}
+In the \ac{OLO} framework, at each round $t$ the algorithm receives a vector $\bx_t \in \fX$, picks a $\bw_t \in \fX$, and pays $-\langle \bw_t,\bx_t \rangle$.
+The aim of the algorithm is to minimize the \emph{regret}, that is the difference between the cumulative loss of the algorithm, $-\sum_{t=1}^T \langle \bw_t,\bx_t \rangle$, and the cumulative loss of an arbitrary and fixed competitor $\bu \in \fX$, $-\sum_{t=1}^T \langle \bu,\bx_t \rangle$.
+In particular, define
+\[
+Regret_T(\bu) := \sum_{t=1}^T \langle \bg_t , \bu - \bw_t \rangle~.
+\]
+
+
+\textbf{Regularized ERM.}
+Let $\rho$ a fixed but unknown distribution on $\fX \times \fY$, where $\fY=[-1,1]$.
+A training set $\{\bx_t,y_t\}_{t=1}^T$ will consist of samples drawn \ac{IID} from $\rho$.
+Denote by $\frho(x):= \int_\fY y d\rho(y|x)$ the \emph{regression function}, where $\rho(\cdot|x)$ is the conditional probability measure at $x$ induced by $\rho$. 
+%Denote by $\rho_\fX$ the marginal probability measure on $\fX$ and let $\Ltworho$ be the space of square integrable functions with respect to $\rho_\fX$, whose norm is denoted by $\normL{\f}:=\sqrt{\int_\fX \f^2(x) d \rho_\fX}$. Note that $\frho \in \Ltworho$.
+Define the \emph{$\ell$-risk} of $f$, as $\RiskLoss(f):=\int_{\fX \times \fY} \ell(y f(x)) d \rho$. Also, define $\flrho(x):=\argmin_{t \in \R} \int_\fY \ell(y t) d \rho(y|x)$, that gives the \emph{optimal $\ell$-risk}, $\RiskLoss(\flrho)=\inf_{\f \in \Ltworho} \RiskLoss(\f)$.
 Performance is measured w.r.t. a loss function $\ell: \R \rightarrow \R_+$. We will consider \emph{$L$-Lipschitz} losses, that is $|\ell(x)-\ell(x')| \leq L |x-x'|, \ \forall x,x' \in \R$, and \emph{$H$-smooth} losses, that is differentiable losses with the first derivative $H$-Lipschitz. Note that a loss can be both Lipschitz and smooth.
 A vector $\bx$ is a subgradient of a convex function $\ell$ at $\bv$ if $\ell(\bu) - \ell(\bv) \ge \langle \bu - \bv, \bx \rangle$ for any $\bu$ in the domain of $\ell$. The differential set of $\ell$ at $\bv$, denoted by $\partial \ell(\bv)$, is the set of all the subgradients of $\ell$ at $\bv$.

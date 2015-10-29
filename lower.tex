@@ -1,4 +1,4 @@
-\section{Upper Bounds on the Oracle Betting Strategies}
+\section{Upper Bounds on Oracle Betting Strategies}
 
 We will now upper bound the maximum reward achievable by any betting strategy.
 First we will analyze the class of betting strategy that bets a fixed amount of the current reward for the entire game.
@@ -6,27 +6,27 @@ The following theorem is well-known, and it has been shown, for example, in \cit
 
 \begin{theorem}
 \label{thm:oracle_fraction}
-Define the reward at time $t$ as $L_t=\epsilon + \sum_{i=1}^t w_t z_t$, where $z_t\in \{-1,1\}$, and the algorithm bets a fixed fraction of his current reward, i.e. $w_t=\beta L_{t-1}$, where $0\leq\beta\leq1$. Then, for any sequence $z_1, \ldots, z_T$, we have
+Define the reward at time $t$ as $\gain_t=\epsilon + \sum_{i=1}^t w_t z_t$, where $z_t\in \{-1,1\}$, and the algorithm bets a fixed fraction of his current reward, i.e. $w_t=\beta \gain_{t-1}$, where $0\leq\beta\leq1$. Then, for any sequence $z_1, \ldots, z_T$, we have
 \[
-\max_{w_t: w_t=\beta L_{t-1}} \sum_{t=1}^T w_t z_t 
-= \epsilon \exp\left(T\, KL_{Ber}\left(\frac{1}{2}+\frac{\sum_{t=1}^T z_t}{2T},\frac{1}{2}\right)\right) 
+\max_{w_t: w_t=\beta \gain_{t-1}} \sum_{t=1}^T w_t z_t 
+= \epsilon \exp\left(T\, D\left(\frac{1}{2}+\frac{\sum_{t=1}^T z_t}{2T}\middle\|\frac{1}{2}\right)\right) 
 %\leq \epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{2T}+\frac{(\sum_{t=1}^T z_t)^4}{5 T^3}\right).
 \]
 \end{theorem}
 \begin{proof}
 From the betting strategy we have
 \[
-L_t=L_{t-1} + w_t \, g_t = L_{t-1} + \beta \, L_{t-1} \, z_t = L_{t-1} (1+\beta \, z_t)
+\gain_t=\gain_{t-1} + w_t \, g_t = \gain_{t-1} + \beta \, \gain_{t-1} \, z_t = \gain_{t-1} (1+\beta \, z_t)
 \]
 Hence
 \[
-L_T=\epsilon \prod_{t=1}^T (1+\beta z_t) = \epsilon (1+\beta)^\frac{T+Z}{2} (1-\beta)^\frac{T-Z}{2},
+\gain_T=\epsilon \prod_{t=1}^T (1+\beta z_t) = \epsilon (1+\beta)^\frac{T+Z}{2} (1-\beta)^\frac{T-Z}{2},
 \]
 where $Z=\sum_{t=1}^T z_t$.
-It is easy to show that the maximum value of $L_T$ w.r.t. $\beta$ is in $\beta=\frac{Z}{T}$. 
+It is easy to show that the maximum value of $\gain_T$ w.r.t. $\beta$ is in $\beta=\frac{Z}{T}$. 
 Hence, we have
 \begin{align}
-L_T &= \epsilon (1+\frac{Z}{T})^\frac{T+Z}{2} (1-\frac{Z}{T})^\frac{T-Z}{2} 
+\gain_T &= \epsilon (1+\frac{Z}{T})^\frac{T+Z}{2} (1-\frac{Z}{T})^\frac{T-Z}{2} 
 &= \epsilon \left[(1+\frac{Z}{T})^\frac{1+\frac{Z}{T}}{2} (1-\frac{Z}{T})^\frac{1-\frac{Z}{T}}{2}\right]^T 
 &\leq \epsilon \exp \left(\frac{Z^2}{2 T} + \frac{Z^4}{5 T^3}\right)
 \end{align}
@@ -131,7 +131,7 @@ The second class of betting strategy we consider can bet any amount of money at 
 Let $T\geq2$ an even number of Bernoulli random variables $b_i$. Then for any $k \in \Nat_0$ such that $k\leq \frac{1}{2}T-1$, we have
 \[
 P\left( \sum_{i=1}^T b_i \geq \frac{1}{2} T + k\right) 
-\geq  \frac{\exp\left(-T KL_{Ber}(\frac{1}{2}+\frac{k}{T}||\frac{1}{2})\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)y+\sqrt{y^2+2 \pi}},
+\geq  \frac{\exp\left(-T D\left(\frac{1}{2}+\frac{k}{T}\middle\|\frac{1}{2}\right)\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)y+\sqrt{y^2+2 \pi}},
 \]
 where $y=\frac{2 k}{\sqrt{T}}$.
 \end{theorem}
@@ -159,9 +159,9 @@ Hence, for any $n \geq 2$ and $1\leq q \leq n-1$, after some algebra we obtain
 \begin{align*}
 {n \choose q} 
 &\geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \left(\frac{n}{n-q}\right)^{n-q} \left(\frac{n}{q}\right)^{q} \sqrt{\frac{n}{q(n-q)}} \\
-&\geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} 2^n \exp\left(-n KL_{Ber}(\frac{q}{n}||\frac{1}{2})\right) \sqrt{\frac{n}{q(n-q)}}.
+&\geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} 2^n \exp\left(-n D\left(\frac{q}{n}\middle\|\frac{1}{2}\right)\right) \sqrt{\frac{n}{q(n-q)}}.
 \end{align*}
-where in the equality we used the definition of $KL_{Ber}$.
+where in the equality we used the definition of $D\left(\cdot\middle\|\cdot\right)$.
 Also, we have
 \begin{equation}
 \label{eq:bin_3}
@@ -170,8 +170,8 @@ Also, we have
 Putting together \eqref{eq:bin_1}-\eqref{eq:bin_3}, and using the definition of $y$ we have
 \begin{align*}
 P\left( \sum_{i=1}^T b_i \geq \frac{1}{2} T + k \right) 
-&\geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \exp\left(-T KL_{Ber}(\frac{1}{2}+\frac{k}{T}||\frac{1}{2})\right) \sqrt{\frac{\frac{1}{2} + \frac{k}{T}}{\frac{1}{2}-\frac{k}{T}}}  \frac{Q(y)}{\phi(y)} \\
-&\geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \exp\left(-T KL_{Ber}(\frac{1}{2}+\frac{k}{T}||\frac{1}{2})\right) \frac{\pi}{(\pi-1)y+\sqrt{y^2+2 \pi}}. \qedhere
+&\geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \exp\left(-T D\left(\frac{1}{2}+\frac{k}{T}\middle\|\frac{1}{2}\right)\right) \sqrt{\frac{\frac{1}{2} + \frac{k}{T}}{\frac{1}{2}-\frac{k}{T}}}  \frac{Q(y)}{\phi(y)} \\
+&\geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \exp\left(-T D\left(\frac{1}{2}+\frac{k}{T}\middle\|\frac{1}{2}\right)\right) \frac{\pi}{(\pi-1)y+\sqrt{y^2+2 \pi}}. \qedhere
 \end{align*}
 \end{proof}
 
@@ -180,7 +180,7 @@ P\left( \sum_{i=1}^T b_i \geq \frac{1}{2} T + k \right)
 For $T \in \Nat$ even, any betting strategy $w_t$, and an initial amount of money equal to $\epsilon$, we have
 \[
 \sum_{t=1}^T w_t z_t 
-\leq \epsilon \min\left(\left(\exp\left(\frac{1}{6}\right)\sqrt{2 \pi}\frac{|\sum_{t=1}^T z_t|}{\sqrt{T}} +2\exp\left(\frac{1}{6}\right)-1\right) \exp\left(T KL_{Ber}(\frac{1}{2}+\frac{|\sum_{t=1}^T z_t|}{2T}||\frac{1}{2})\right), 2^T\right).
+\leq \epsilon \min\left(\left(\exp\left(\frac{1}{6}\right)\sqrt{2 \pi}\frac{|\sum_{t=1}^T z_t|}{\sqrt{T}} +2\exp\left(\frac{1}{6}\right)-1\right) \exp\left(T D\left(\frac{1}{2}+\frac{|\sum_{t=1}^T z_t|}{2T}\middle\|\frac{1}{2}\right)\right), 2^T\right).
 \]
 \end{theorem}
 \begin{proof}
@@ -227,7 +227,7 @@ Notice that $\frac{r_t + 1}{2}$ are Bernoulli random variables.
 Using Theorem~\ref{lemma:bin}, we have
 \begin{align*}
 \E\left[\sum_{t=1}^T w_t r_t \bigg| \left|\sum_{t=1}^T r_t\right| \geq 2 k\right]
-&\leq \epsilon \left(\exp\left(\frac{1}{6}\right)\sqrt{2 \pi}\frac{2k}{\sqrt{T}} +2\exp\left(\frac{1}{6}\right)-1\right)\exp\left(T KL_{Ber}(\frac{1}{2}+\frac{k}{T}||\frac{1}{2})\right)
+&\leq \epsilon \left(\exp\left(\frac{1}{6}\right)\sqrt{2 \pi}\frac{2k}{\sqrt{T}} +2\exp\left(\frac{1}{6}\right)-1\right)\exp\left(T D\left(\frac{1}{2}+\frac{k}{T}\middle\|\frac{1}{2}\right)\right)
 \end{align*}
 \end{proof}
 
