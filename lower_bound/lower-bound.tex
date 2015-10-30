@@ -25,7 +25,7 @@
 
 \begin{document}
 
-\title{Optimal Non-Asymptotic Lower Bound \\ on the \\ Minimax Regret for Learning with Expert Advice}
+\title{Optimal Non-Asymptotic Lower Bound \\ on the \\ Minimax Regret of Learning with Expert Advice}
 \author{
 \begin{tabular}{c@{\hskip 1in}c}
   Francesco Orabona & David Pal \\
@@ -42,11 +42,10 @@ New York, NY, USA
 \begin{abstract}
 We prove non-asymptotic lower bounds on the expectation of the maximum of $d$
 independent Gaussian variables and expectation of the maximum of $d$
-independent symmetric random walks. Both lower bound recovers
-the optimal leading constant in the limit.
-
-A simple application of the lower bound for random walks is a non-asymptotic lower
-bound on the minimax regret of online learning with expert advice.
+independent symmetric random walks. Both lower bound recovers the optimal
+leading constant in the limit.  A simple application of the lower bound for
+random walks is a non-asymptotic lower bound on the minimax regret of online
+learning with expert advice.
 \end{abstract}
 
 \section{Introduction}
@@ -63,33 +62,42 @@ It is also well known that
 \lim_{d \to \infty} \frac{\Exp \left[ \max_{1 \le i \le d} X_i \right]}{\sigma \sqrt{2 \ln d}} = 1 \; .
 \end{equation}
 In section~\ref{section:maximum-of-gaussians}, we prove a non-asymptotic
-$\Omega(\sigma \sqrt{\log d})$ lower bound on $\Exp[\max_{1 \le i \le d} X_i]$. The leading term
-of the lower bound is asymptotically $\sqrt{2 \ln d}$. In other words, the lower bound implies~\eqref{equation:limit-maximum-of-gaussians}.
+$\Omega(\sigma \sqrt{\log d})$ lower bound on $\Exp[\max_{1 \le i \le d} X_i]$.
+The leading term of the lower bound is asymptotically $\sqrt{2 \ln d}$. In
+other words, the lower bound
+implies~\eqref{equation:limit-maximum-of-gaussians}.
 
-Discrete analog of a Gaussian random variable is the symmetric random walk. Recall that a random walk $Z^{(n)}$
-of length $n$ is a sum $Z^{(n)} = Y_1 + Y_2 + \dots + Y_n$ of $n$ i.i.d. Rademacher variables, which have probability distribution
-$\Pr[Y_i = +1] = \Pr[Y_i = -1] = 1/2$. We consider $d$ independent symmetric random walks $Z^{(n)}_1, Z^{(n)}_2, \dots, Z^{(n)}_d$ of length $n$.
-Analogously to \eqref{equation:upper-bound-on-maximum-of-gaussians}, it is easy to prove that (see Appendix~\ref{section:upper-bounds})
+Discrete analog of a Gaussian random variable is the symmetric random walk.
+Recall that a random walk $Z^{(n)}$ of length $n$ is a sum $Z^{(n)} = Y_1 + Y_2
++ \dots + Y_n$ of $n$ i.i.d. Rademacher variables, which have probability
+distribution $\Pr[Y_i = +1] = \Pr[Y_i = -1] = 1/2$. We consider $d$ independent
+symmetric random walks $Z^{(n)}_1, Z^{(n)}_2, \dots, Z^{(n)}_d$ of length $n$.
+Analogously to \eqref{equation:upper-bound-on-maximum-of-gaussians}, it is easy
+to prove that (see Appendix~\ref{section:upper-bounds})
 \begin{equation}
 \label{equation:upper-bound-on-maximum-of-random-walks}
 \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i \right] \le \sqrt{2 n \ln d} \qquad \text{for any $n \ge 0$ and any $d \ge 1$}\; .
 \end{equation}
-Note that $\sigma^2$ in \eqref{equation:upper-bound-on-maximum-of-gaussians} is replaced by $\Var(Z^{(n)}_i) = n$. By central limit theorem $\frac{Z^{(n)}_i}{\sqrt{n}}$
-as $n \to \infty$ converges in distribution to $N(0,1)$. From this fact, it possible to prove
-the analog of \eqref{equation:limit-maximum-of-gaussians},
+Note that $\sigma^2$ in \eqref{equation:upper-bound-on-maximum-of-gaussians} is
+replaced by $\Var(Z^{(n)}_i) = n$. By central limit theorem
+$\frac{Z^{(n)}_i}{\sqrt{n}}$ as $n \to \infty$ converges in distribution to
+$N(0,1)$. From this fact, it possible to prove the analog of
+\eqref{equation:limit-maximum-of-gaussians},
 \begin{equation}
 \label{equation:limit-maximum-of-random-walks}
 \lim_{d \to \infty} \lim_{n \to \infty} \frac{\Exp\left[ \max_{1 \le i \le d} Z^{(n)}_i \right]}{\sqrt{2 n \ln d}} = 1 \; .
 \end{equation}
-We prove a non-asymptotic $\Omega(\sqrt{n \log d})$ lower bound on $\Exp\left[ \max_{1 \le i \le d} Z^{(n)}_i \right]$.
-Same as for the Gaussian case, the leading term of the lower bound is asymptotically $\sqrt{2 n \ln d}$
+We prove a non-asymptotic $\Omega(\sqrt{n \log d})$ lower bound on $\Exp\left[
+\max_{1 \le i \le d} Z^{(n)}_i \right]$.  Same as for the Gaussian case, the
+leading term of the lower bound is asymptotically $\sqrt{2 n \ln d}$
 matching~\eqref{equation:limit-maximum-of-random-walks}.
 
 In section~\ref{section:experts}, we show a simple application of the lower
-bound on $\Exp\left[\max_{1 \le i \le d} Z^{(n)}_i \right]$ to the problem of learning with
-expert advice.  This problem was extensively studied in the online learning
-literature; see~\citep{Cesa-BianchiL06}.  Our bound is optimal in the sense
-that for large $d$ and large $n$ it recovers the right leading constant.
+bound on $\Exp\left[\max_{1 \le i \le d} Z^{(n)}_i \right]$ to the problem of
+learning with expert advice.  This problem was extensively studied in the
+online learning literature; see~\citep{Cesa-BianchiL06}.  Our bound is optimal
+in the sense that for large $d$ and large $n$ it recovers the right leading
+constant.
 
 \section{Maximum of Gaussians}
 \label{section:maximum-of-gaussians}
@@ -123,8 +131,10 @@ $$
 \ge \frac{\pi}{\pi x + \sqrt{2\pi}} \; .
 $$
 \end{lemma}
-The second inequality holds since $a + b \ge \sqrt{a^2 + b^2}$ holds for
-any $a,b \ge 0$ and we choose $a=\sqrt{2 \pi}$ and $b = x$.
+The second inequality in Lemma~\ref{lemma:boyd} is our simplification of Boyd's
+bound.  It follows by setting $a=\sqrt{2 \pi}$ and $b=x$. By a simple algebra
+it is equivalent to the inequality $a + b \ge \sqrt{a^2 + b^2}$ which holds for
+any $a,b \ge 0$.
 
 \begin{corollary}[Lower Bound on Gaussian Tail]
 Let $X \sim N(0, \sigma^2)$ and $x \ge 0$. Then,
@@ -209,31 +219,32 @@ Since $C(d)$ has minimum at $d = e^e$, it follows that $C(d) \ge C(e^e) = \sqrt{
 \section{Maximum of Random Walks}
 \label{section:maximum-of-random-walks}
 
-The general strategy for proving a lower bound on $\Exp\left[\max_{1 \le i \le d} Z^{(n)}_i \right]$ is the same
-as in the previous section---we lower bound the tail $\Pr[Z^{(n)} \ge x]$ of a symmetric random walk $Z^{(n)}$ of length $n$.
-Note that
+The general strategy for proving a lower bound on $\Exp\left[\max_{1 \le i \le d} Z^{(n)}_i \right]$
+ is the same as in the previous section. The main task it to lower bound the
+tail $\Pr[Z^{(n)} \ge x]$ of a symmetric random walk $Z^{(n)}$ of length
+$n$.  Note that
 $$
 B_n = \frac{Z^{(n)} + n}{2}
 $$
-is a Binomial random variable $B(n,\frac{1}{2})$. Our starting point will be lower bound on the tail $\Pr[B_n \ge k]$
-due to~\citet[Theorem 2]{McKay1989} in term's of the Mill's ratio of $N(0,1)$.
+is a Binomial random variable $B(n,\frac{1}{2})$. Our starting point will be
+lower bound on the tail $\Pr[B_n \ge k]$ due to~\citet[Theorem 2]{McKay1989} in
+term's of the Mill's ratio of $N(0,1)$.
 
 \begin{lemma}[Bound on Binomial Tail]
 \label{lemma:mckay}
 Let $n,k$ be integers satisfying $n \ge 1$ and $\frac{n}{2} \le k \le n$. Define $x = \frac{2k - n}{\sqrt{n}}$. Then, $B_n \sim B(n,\frac{1}{2})$ satisfies
 $$
-\Pr \left[ B_n \ge  k \right]
- \ge \sqrt{n} \binom{n-1}{k-1} 2^{-n} \; \frac{1 - \Phi(x)}{\phi(x)} \; .
+\Pr \left[ B_n \ge  k \right] \ge \sqrt{n} \binom{n-1}{k-1} 2^{-n}
+ \; \frac{1 - \Phi(x)}{\phi(x)} \; .
 $$
 \end{lemma}
 
-We combine the lemma with the lower bound on Mill's ratio
-(Lemma~\ref{lemma:boyd}). Furthermore, we lower bound the binomial coefficient
+We lower bound the binomial coefficient
 $\binom{n-1}{k-1}$ using Stirling's approximation of the factorial. The lower
 bound on the binomial coefficient will be expressed in terms of
 Kullback-Leibler divergence between two Bernoulli distributions,
 $\text{Bernoulli}(p)$ and $\text{Bernoulli}(q)$. Abusing notation somewhat,
-we write it as
+we write the divergence as
 $$
 D(p\|q) = p \ln \left( \frac{p}{q} \right) + (1-p) \ln \left( \frac{1-p}{1-q} \right) \; .
 $$
@@ -243,18 +254,16 @@ The result is the following lower bound on the tail of Binomial.
 \label{theorem:binomial}
 Let $n,k$ be integers satisfying $n \ge 1$ and $\frac{n}{2} \le k \le n$. Define $x = \frac{2k - n}{\sqrt{n}}$. Then, $B_n \sim B(n,\frac{1}{2})$ satisfies
 $$
-\Pr \left[ B_n \ge  k \right] \ge \frac{\exp\left(-n D \left(\frac{k}{n} \middle\| \frac{1}{2} \right)\right)}{2 \exp\left(\frac{1}{6}\right)} \cdot \frac{\sqrt{2\pi}}{(\pi-1)x+\sqrt{x^2+2 \pi}} \; .
+\Pr \left[ B_n \ge  k \right] \ge \frac{\exp\left(-n D \left(\frac{k}{n} \middle\| \frac{1}{2} \right)\right)}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \; \frac{1 - \Phi(x)}{\phi(x)} \; .
 $$
 \end{theorem}
 
 \begin{proof}
-Lemmas~\ref{lemma:boyd}~and~\ref{lemma:mckay} imply that
-\begin{align*}
-\Pr \left[ B_n \ge k \right]
-& \ge \sqrt{n} \binom{n-1}{k-1} 2^{-n} \frac{1 - \Phi(x)}{\phi(x)} \\
-& \ge \sqrt{n} \binom{n-1}{k-1} 2^{-n} \frac{\pi}{(\pi-1)x+\sqrt{x^2+2 \pi}} \; .
-\end{align*}
-We now deal with $\binom{n-1}{k-1}$. First, since $k \ge 1$, we can write the binomial coefficient as
+Lemma~\ref{lemma:mckay} implies that
+$$
+\Pr \left[ B_n \ge k \right] \ge \sqrt{n} \binom{n-1}{k-1} 2^{-n} \frac{1 - \Phi(x)}{\phi(x)}
+$$
+Since $k \ge 1$, we can write the binomial coefficient as
 $$
 \binom{n-1}{k-1} = \frac{k}{n} \binom{n}{k}
 $$
@@ -273,26 +282,26 @@ Using the Stirling's approximation, for any $1\le k \le n-1$,
 \end{align*}
 where in the equality we used the definition of $D(p\|q)$. Combining all the inequalities, gives
 \begin{align*}
-\Pr \left[ Z^{(n)} \ge 2k - n \right]
-& \ge \sqrt{n} \frac{k}{n} \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \ 2^n \exp\left(-n \cdot D\left(\frac{k}{n} \middle\| \frac{1}{2}\right)\right) \sqrt{\frac{n}{k(n-k)}} 2^{-n} \frac{\pi}{(\pi-1)x+\sqrt{x^2+2 \pi}} \\
-& = \frac{1}{2\exp\left(\frac{1}{6}\right)} \exp\left(-n \cdot D\left(\frac{k}{n} \middle\| \frac{1}{2}\right)\right) \frac{\sqrt{2\pi}}{(\pi-1)x+\sqrt{x^2+2 \pi}} \sqrt{\frac{k}{n-k}} \\
-& \ge \frac{1}{2\exp\left(\frac{1}{6}\right)} \exp\left(-n \cdot D\left(\frac{k}{n} \middle\| \frac{1}{2}\right)\right) \frac{\sqrt{2\pi}}{(\pi-1)x+\sqrt{x^2+2 \pi}} \; .
+\Pr \left[ B_n \ge 2k - n \right]
+& \ge \sqrt{n} \frac{k}{n} \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \ 2^n \exp\left(-n \cdot D\left(\frac{k}{n} \middle\| \frac{1}{2}\right)\right) \sqrt{\frac{n}{k(n-k)}} 2^{-n} \; \frac{1 - \Phi(x)}{\phi(x)} \\
+& = \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2\pi}} \exp\left(-n \cdot D\left(\frac{k}{n} \middle\| \frac{1}{2}\right)\right) \frac{1 - \Phi(x)}{\phi(x)} \sqrt{\frac{k}{n-k}} \\
+& = \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2\pi}} \exp\left(-n \cdot D\left(\frac{k}{n} \middle\| \frac{1}{2}\right)\right) \frac{1 - \Phi(x)}{\phi(x)}
 \end{align*}
 for $\frac{n}{2} \le k \le n - 1$. For $k=n$, we verify the statement of the theorem by direct substitution. The left hand side is $\Pr[B^{(n)} \ge n] = 2^{-n}$.
 Since $e^{-nD(1\|\frac{1}{2})} = 2^{-n}$ and $x=\sqrt{n} \ge 1$, it's easy to see that the right hand side is smaller than $2^{-n}$.
 \end{proof}
 
-We quantify the intuition with the function $\psi:[-\frac{1}{2},\frac{1}{2}] \to \R$
-defined as
+For $k=n/2 + xn$, the divergence $D \left( \frac{k}{n} \middle\| \frac{1}{2} \right) = D \left(\frac{1}{2} + x \| \frac{1}{2} \right)$ can be approximated by $2x^2$.
+We define function the $\psi:[-\frac{1}{2},\frac{1}{2}] \to \R$ as the ratio of this divergece and the approximation:
 $$
 \psi(x) = \frac{D \left(\frac{1}{2}+x \middle\| \frac{1}{2} \right)}{2 x^2} \; .
 $$
-he function $\psi(x)$ satisfies the following properties
+The function $\psi(x)$ satisfies the following properties
 \begin{itemize}
 \item $\psi(x) = \psi(-x)$
-\item $\psi(x)$ is increasing for $0\le x \le \frac{1}{2}$.
-\item $\psi(0) = 1$
-\item $\psi(0.5) = 2 \ln(2) \approx 1.3863$
+\item $\psi(x)$ is decreasing on $[-\frac{1}{2}, 0]$ and increasing on $[0, \frac{1}{2}]$.
+\item minimum value is $\psi(0) = 1$
+\item maximum value is $\psi(0.5) = \psi(-0.5) = 2 \ln(2) \le 1.3863$
 \end{itemize}
 
 As in the Gaussian case, for the Binomial case we need lower bound on the
@@ -302,26 +311,25 @@ proof is the Appendix for completeness.
 \begin{corollary}
 Let $n \ge 1$ be a positive integer and let $t \in [1, \frac{n}{2} + 1]$ be a real number. Then $B_n \sim B(n, \frac{1}{2})$ satisfies
 $$
-\Pr \left[ Z \ge \frac{1}{2} n + t - 1 \right] \ge \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{t}{n}\right) \frac{t^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 t}{\sqrt{n}} + 2} \; .
+\Pr \left[ B_n \ge \frac{1}{2} n + t - 1 \right] \ge \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{t}{n}\right) \frac{t^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 t}{\sqrt{n}} + 2} \; .
 $$
 \end{corollary}
 
 \begin{proof}
-By Theorem~\ref{theorem:binomial}, we have
+By Theorem~\ref{theorem:binomial} and Lemma~\ref{lemma:boyd}, we have
 \begin{align*}
 \Pr \left[ Z \ge  \frac{1}{2} n + t - 1 \right]
 & = \Pr \left[ Z \ge \left\lceil \frac{1}{2} n + t - 1 \right\rceil \right] \\
-& \ge \frac{\exp\left(-n D \left(\frac{\lceil \frac{1}{2}n + t - 1 \rceil}{n} \middle\| \frac{1}{2} \right)\right)}{2 \exp\left(\frac{1}{6}\right)} \cdot \frac{\sqrt{2\pi}}{(\pi-1) \frac{2\lceil \frac{1}{2}n + t - 1 \rceil - n}{\sqrt{n}} + \sqrt{ \left(\frac{2\lceil \frac{1}{2}n + t - 1 \rceil - n}{\sqrt{n}} \right)^2 + 2 \pi}} \\
-& \ge \frac{\exp\left(-n D \left(\frac{\frac{1}{2}n + t}{n} \middle\| \frac{1}{2} \right)\right)}{2 \exp\left(\frac{1}{6}\right)} \cdot \frac{\sqrt{2\pi}}{(\pi-1) \frac{2 (\frac{1}{2}n + t) - n}{\sqrt{n}} + \sqrt{ \left(\frac{2 (\frac{1}{2}n + t) - n}{\sqrt{n}} \right)^2 + 2 \pi}} \\
-& = \frac{\exp\left(-n D \left(\frac{1}{2} + \frac{t}{n} \middle\| \frac{1}{2} \right)\right)}{2 \exp\left(\frac{1}{6}\right)} \cdot \frac{\sqrt{2\pi}}{(\pi-1) \frac{2t}{\sqrt{n}} + \sqrt{ \left(\frac{2t}{\sqrt{n}} \right)^2 + 2 \pi}} \\
-& =  \frac{\exp\left(- 2 \psi(\frac{t}{n}) \frac{t^2}{n} \right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2\pi}}{(\pi-1)\frac{2t}{\sqrt{n}}+\sqrt{\left(\frac{2t}{\sqrt{n}}\right)^2+2 \pi}} \\
-& \ge \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{t}{n}\right) \frac{t^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 t}{\sqrt{n}} + 2} \; .
+& \ge \frac{\exp\left(-n D \left(\frac{\lceil \frac{1}{2}n + t - 1 \rceil}{n} \middle\| \frac{1}{2} \right)\right)}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \cdot \frac{\pi}{\pi \frac{2\lceil \frac{1}{2}n + t - 1 \rceil - n}{\sqrt{n}} + \sqrt{2 \pi}} \\
+& \ge \frac{\exp\left(-n D \left(\frac{\frac{1}{2}n + t}{n} \middle\| \frac{1}{2} \right)\right)}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \cdot \frac{\pi}{\pi \frac{2 (\frac{1}{2}n + t) - n}{\sqrt{n}} + \sqrt{2 \pi}} \\
+& = \frac{\exp\left(-n D \left(\frac{1}{2} + \frac{t}{n} \middle\| \frac{1}{2} \right)\right)}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \cdot \frac{\pi}{\pi \frac{2t}{\sqrt{n}} + \sqrt{2 \pi}} \\
+& = \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{t}{n}\right) \frac{t^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 t}{\sqrt{n}} + 2} \; .
 \end{align*}
 \end{proof}
 
 \begin{theorem}
 \label{theorem:maximum-of-random-walks}
-Let $Z^{(n)}_1, Z^{(n)}_2, \dots, Z^{(n)}_d$ be $d$ independent symmetric random walks of length $n$. If $2 \le d \le \exp(\frac{n}{4})$ and $n\ge 10$ is even,
+Let $Z^{(n)}_1, Z^{(n)}_2, \dots, Z^{(n)}_d$ be $d$ independent symmetric random walks of length $n$. If $2 \le d \le \exp(\frac{n}{4})$ and $n\ge 10$,
 \begin{align*}
 \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i \right]
 & \ge \frac{1}{\sqrt{\psi\left(\frac{1.6\sqrt{\ln d}}{2 \sqrt{n}}\right)}}\sqrt{n}\left(1 - \exp\left(-\frac{\sqrt{\ln d}}{3.1 \sqrt{2\pi}}\right)\right) \left(\sqrt{2 \ln d -\ln \ln d}-1\right) -\sqrt{n} \\
@@ -330,22 +338,16 @@ Let $Z^{(n)}_1, Z^{(n)}_2, \dots, Z^{(n)}_d$ be $d$ independent symmetric random
 \end{theorem}
 
 \begin{proof}
-Define $Z^{(n)}_i = 2 B_i-n$.  Define the event $A$ equal to the case that at least
-one of the $X_i$ is greater or equal than $C \sqrt{n \ln d}-2$, where
-$C=\frac{1}{\sqrt{\psi\left(\frac{\sqrt{\ln d}}{2
-\sqrt{n}}\right)}}\sqrt{2-\frac{\ln \ln d}{\ln d}}$. Also, the function
-$f(d)=\sqrt{2-\frac{\ln \ln d}{\ln d}}$ has a minimum in $d=e^e$, hence
-$1.08 \le \frac{f(15)}{\sqrt{2 \ln 2}} \le C\le f(2)\le 1.6$.
-
-Notice that the condition on $n$ and $d$ assures that $\frac{C \sqrt{n \ln d}}{2}>1$ and $\frac{C \sqrt{n \ln d}}{2}\le \frac{1}{2} n - 1$.
+Define the event $A$ equal to the case that at least one of the $X_i$ is greater or equal to $C \sqrt{n \ln d}-2$ where $C=\frac{1}{\sqrt{\psi\left(\frac{\sqrt{\ln d}}{2 \sqrt{n}}\right)}}\sqrt{2-\frac{\ln \ln d}{\ln d}}$.
+We have
 \begin{align*}
 \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i \right]
 & = \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i ~ \middle|~ A \right] \cdot \Pr[A] + \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i ~\middle|~ \overline{A} \right] \cdot \Pr \left[ \overline{A} \right] \\
 & \ge \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i ~\middle|~ A \right] \cdot \Pr[A] + \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i ~\middle|~ \overline{A} \right] \cdot \Pr \left[ \overline{A} \right]\\
 & \ge \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i ~\middle|~ A \right] \cdot \Pr[A] + \Exp\left[ Z^{(n)}_1 ~\middle|~ \overline{A} \right] \cdot \Pr \left[ \overline{A} \right] \\
-& = \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i ~\middle|~ A \right] \cdot \Pr[A] + \Exp \left[ Z^{(n)}_1 ~\middle|~ Z^{(n)}_1 \le C \sigma \sqrt{\ln d} \right] \cdot \Pr \left[ \overline{A} \right]\\
+& = \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i ~\middle|~ A \right] \cdot \Pr[A] + \Exp \left[ Z^{(n)}_1 ~\middle|~ Z^{(n)}_1 < C \sqrt{n \ln d} - 2 \right] \cdot \Pr \left[ \overline{A} \right]\\
 & \ge \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i ~\middle|~ A \right] \cdot \Pr[A] + \Exp \left[ Z^{(n)}_1 ~\middle|~ Z^{(n)}_1 \le 0 \right] \cdot \Pr \left[ \overline{A} \right] \\
-& \ge (C \sigma \sqrt{n \ln d} - 2) \Pr[A] + \Exp \left[ Z^{(n)}_1 ~\middle|~ Z^{(n)}_1 < 0 \right] (1 - \Pr[A]) \; .
+& \ge (C \sigma \sqrt{n \ln d} - 2) \Pr[A] + \Exp \left[ Z^{(n)}_1 ~\middle|~ Z^{(n)}_1 \le 0 \right] (1 - \Pr[A]) \; .
 \end{align*}
 
 First, we lower bound $\Exp \left[ Z^{(n)}_1 ~\middle|~ Z^{(n)}_1 \le 0 \right]$. Using the fact that $Z^{(n)}_1$ is symmetric and has zero mean, we have
@@ -361,9 +363,16 @@ First, we lower bound $\Exp \left[ Z^{(n)}_1 ~\middle|~ Z^{(n)}_1 \le 0 \right]$
 & = -\sqrt{n}.
 \end{align*}
 
-Now let's focus on $\Pr[A]$. As in the Gaussian case, we can lower bound it as
+Now let us focus on $\Pr[A]$. Note that $B_n = \frac{Z_1 + n}{2}$ is a binomial random variable with distribution $B(n,\frac{1}{2})$.
+ Also, the function
+$f(d)=\sqrt{2-\frac{\ln \ln d}{\ln d}}$ has a minimum in $d=e^e$, hence
+$1.08 \le \frac{f(15)}{\sqrt{2 \ln 2}} \le C\le f(2)\le 1.6$.
+Notice that the condition on $n$ and $d$ assures that $\frac{C \sqrt{n \ln d}}{2}>1$ and $\frac{C \sqrt{n \ln d}}{2}\le \frac{1}{2} n - 1$.
+
+As in the Gaussian case, we can lower bound $\Pr[A]$ as
 \begin{align*}
 \Pr[A]
+& = 1 - \Pr \left[ \overline{A} \right] \\
 & = 1 - \Pr \left[ Z^{(n)}_1 < C \sqrt{n \ln d} - 2 \right]^d \\
 & = 1 - \left(1 - \Pr\left[Z^{(n)}_1\ge C \sqrt{n \ln d}-2 \right] \right)^d \\
 & = 1 - \left(1 - \Pr\left[B_1 \ge \frac{C \sqrt{n \ln d}}{2} +\frac{n}{2} - 1 \right] \right)^d \\
