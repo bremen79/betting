@@ -1,4 +1,5 @@
 \section{Kelly Betting, Mixture Forecasters and Portfolio Selection}
+\label{sec:kelly}
 
 We will now upper bound the maximum reward achievable by any betting strategy.
 First we will analyze the class of betting strategy that bets a fixed amount of the current reward for the entire game.
@@ -9,11 +10,11 @@ The following theorem is well-known, and it has been shown, for example, in \cit
 Let an algorithm bet a fixed fraction of his current reward, i.e. $w_t=\beta \gain_{t-1}$, where $0\leq\beta\leq1$. Then, for any sequence $g_1, \ldots, g_n \in \{-1,1\}$, we have
 \begin{equation}
 \label{eq:opt_fixed_reward}
-\max_{w_t: w_t=\beta \gain_{t-1}} \sum_{t=1}^n w_t z_t 
-= \epsilon \exp\left(n\, D\left(\frac{1}{2}+\frac{\sum_{t=1}^n z_t}{2 n}\middle\|\frac{1}{2}\right)\right)~. 
+\max_{w_t: w_t=\beta \gain_{t-1}} \sum_{t=1}^n w_t g_t 
+= \epsilon \exp\left(n\, D\left(\frac{1}{2}+\frac{\sum_{t=1}^n g_t}{2 n}\middle\|\frac{1}{2}\right)\right)~. 
 %\leq \epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{2T}+\frac{(\sum_{t=1}^T z_t)^4}{5 T^3}\right).
 \end{equation}
-Moreover the optimal $\beta$ is $\frac{\sum_{t=1}^n z_t}{n}$.
+Moreover the optimal $\beta$ is $\frac{\sum_{t=1}^n g_t}{n}$.
 \end{theorem}
 
 The above theorem tells us that any algorithms that keep the fraction of money to bet at each round fixed cannot gain more that the quantity on the r.h.s. of $\eqref{eq:opt_fixed_reward}$. Moreover, the optimal fraction is nothing else the empirical estimate of the frequencies of 1 vs -1.
@@ -23,16 +24,16 @@ One might ask if having a changing fraction of money that changes over time migh
 \label{thm:oracle_fraction_changing}
 For $n \in \Nat$ even, any betting strategy $w_t$, and an initial amount of money equal to $\epsilon$, we have
 \[
-\sum_{t=1}^n w_t z_t 
-\leq \epsilon \min\left(\left(\exp\left(\frac{1}{6}\right)\sqrt{2 \pi}\frac{|\sum_{t=1}^n z_t|}{\sqrt{n}} +2\exp\left(\frac{1}{6}\right)-1\right) \exp\left(n\, D\left(\frac{1}{2}+\frac{|\sum_{t=1}^n z_t|}{2 n}\middle\|\frac{1}{2}\right)\right), 2^n\right).
+\sum_{t=1}^n w_t g_t 
+\leq \epsilon \min\left(\left(\exp\left(\frac{1}{6}\right)\sqrt{2 \pi}\frac{|\sum_{t=1}^n g_t|}{\sqrt{n}} +2\exp\left(\frac{1}{6}\right)-1\right) \exp\left(n\, D\left(\frac{1}{2}+\frac{|\sum_{t=1}^n g_t|}{2 n}\middle\|\frac{1}{2}\right)\right), 2^n\right).
 \]
 \end{theorem}
 
-If we knew that the setting is stochastic, this is nothing else than the Kelly criterion, that is derived with the objective of maximizing the expectation of the logarithm of his capital, rather than the expected profit from each bet.
+Notice that, if we knew that the setting is stochastic, the optimal fraction of money in Theorem~\ref{eq:opt_fixed_reward} is nothing else than the Kelly criterion, that is derived with the objective of maximizing the expectation of the logarithm of the reward, rather than the expected profit from each bet~\citep{Kelly56}.
 In the latter case, one would be led to gamble all he had when presented with a favorable bet, and, in the case of a lost, one would have no capital with which to place subsequent bets. Kelly realized that it was the logarithm of the gambler's capital which is additive in sequential bets, and "to which the law of large numbers applies."
-In most gambling scenarios, the Kelly strategy will do better than any essentially different strategy in the long run \cite{}. It was described by J. L. Kelly, Jr in 1956.[1] The formula has also a practical use [2][3][4].
+In most gambling scenarios, the Kelly strategy will do better than any essentially different strategy in the long run \cite{}. The formula has also a practical use [2][3][4].
 
-Practically speaking, the Kelly criterion applied to a coin that has probability $p$ for one of the faces, with $p> \frac{1}{2}$, and with equal wins, corresponds in betting on that face on each round a fraction of the current money equal to $2p-1$. This simple rule assures that in expectation the growth rate will be exponential.
+Practically speaking, the Kelly criterion applied to a coin that has probability $p$ for one of the faces, with $p> \frac{1}{2}$, and with equal wins, corresponds in betting on that face on each round a fraction of the current money equal to $2p-1$. This simple rule assures that in expectation the growth rate will be exponential \textbf{In expectation?}.
 
 However, the Kelly criterion can be used only if the coin is stochastic and if we knew bias of the coin exactly. One might argue that this is equally unlikely as knowning beforehand the empirical frequencies of $1$ and $-1$ in the sequence.
 One might ask what is the optimal strategy in the case that the sequence of outcomes of the coin is non-stochastic.

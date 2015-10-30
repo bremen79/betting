@@ -6,19 +6,6 @@ We define the KL divergence between two Bernoulli distributions with parameters 
 \[
 D(p||q) := p \log\frac{p}{q} + (1-p) \log\frac{1-p}{1-q}.
 \]
-Hence, we have, for any $ 0\leq p < 1$
-\[
-D\left(\frac{1}{2}+\frac{p}{2}\middle\|\frac{1}{2}\right) = D\left(\frac{1}{2}-\frac{p}{2}\middle\|\frac{1}{2}\right)= \frac{1+p}{2} \log(1+p) + \frac{1-p}{2} \log(1-p).
-\]
-The extension for continuity of $D(\frac{1}{2}+\frac{p}{2}||\frac{1}{2})$ in $p=1$ is $\log(2)$.
-Also,
-\[
-\left(\frac{n}{n-q}\right)^{n-q} \left(\frac{n}{q}\right)^{q} = 2^n \exp\left(-n D\left(\frac{q}{n}\middle\|\frac{1}{2}\right)\right),
-\]
-and
-\[
-\left(1+x\right)^\frac{1+x}{2} \left(1-x\right)^\frac{1-x}{2}= \exp\left( D\left(\frac{1}{2}+\frac{x}{2}\middle\|\frac{1}{2}\right) \right)
-\]
 
 \textbf{Binary and Continuos Coin Betting.}
 The bettor starts with the amount of money $\epsilon$. 
@@ -34,7 +21,12 @@ In particular, define
 \[
 Regret_n(\bu) := \sum_{t=1}^n \langle \bg_t , \bu - \bw_t \rangle~.
 \]
-A vector $\bx$ is a subgradient of a convex function $\ell$ at $\bv$ if $\ell(\bu) - \ell(\bv) \ge \langle \bu - \bv, \bx \rangle$ for any $\bu$ in the domain of $\ell$. The differential set of $\ell$ at $\bv$, denoted by $\partial \ell(\bv)$, is the set of all the subgradients of $\ell$ at $\bv$.
+Instead, in the \ac{OCO} setting, the algorithm receives convex functions $f_t$ rather than vectors.
+The regret in this case is defined as
+\[
+Regret^{OCO}_n(\bu) := \sum_{t=1}^n \left(f_t(\bw_t) -f_t(\bu)\right)~.
+\]
+A vector $\bx$ is a subgradient of a convex function $\ell$ at $\bv$ iff $\ell(\bu) - \ell(\bv) \ge \langle \bu - \bv, \bx \rangle$ for any $\bu$ in the domain of $\ell$. The differential set of $\ell$ at $\bv$, denoted by $\partial \ell(\bv)$, is the set of all the subgradients of $\ell$ at $\bv$.
 
 \textbf{Regularized ERM.}
 Let $\rho$ a fixed but unknown distribution on $\fX \times \fY$, where $\fY=[-1,1]$.

@@ -1,4 +1,6 @@
+\appendix
 \section{Proofs}
+\label{sec:proofs}
 
 First we state some technical lemmas that will be used in the following proofs.
 
@@ -6,7 +8,7 @@ First we state some technical lemmas that will be used in the following proofs.
 The Lambert function satisfies $W(x) \geq 0.6321 \log(x+1), \forall x\geq0$.
 \end{lemma}
 \begin{proof}
-The Lambert function that satisfies
+The Lambert function satisfies
 \[
 x=W(x) \exp \left(W(x)\right).
 \]
@@ -93,37 +95,53 @@ f^*(y) \leq  \norm{\btheta} \sqrt{\alpha \log \left(\frac{\alpha \norm{\btheta}^
 \]
 \end{cor}
 
-\subsection{Proof of Theorem~\ref{thm:oracle_fraction}}
-\begin{proof}
+\subsection{Proofs of Theorem~\ref{thm:oracle_fraction} and Theorem~\ref{thm:oracle_fraction_changing}}
+
+We first state a couple of useful indentities.
+For any $ 0\leq p < 1$
+\[
+D\left(\frac{1}{2}+\frac{p}{2}\middle\|\frac{1}{2}\right) = D\left(\frac{1}{2}-\frac{p}{2}\middle\|\frac{1}{2}\right)= \frac{1+p}{2} \log(1+p) + \frac{1-p}{2} \log(1-p).
+\]
+The extension for continuity of $D(\frac{1}{2}+\frac{p}{2}||\frac{1}{2})$ in $p=1$ is $\log(2)$.
+Also,
+\[
+\left(\frac{n}{n-q}\right)^{n-q} \left(\frac{n}{q}\right)^{q} = 2^n \exp\left(-n D\left(\frac{q}{n}\middle\|\frac{1}{2}\right)\right),
+\]
+and
+\begin{equation}
+\label{eq:div_2}
+\left(1+x\right)^\frac{1+x}{2} \left(1-x\right)^\frac{1-x}{2}= \exp\left( D\left(\frac{1}{2}+\frac{x}{2}\middle\|\frac{1}{2}\right) \right)
+\end{equation}
+
+Also, for any $-\frac{1}{2} \leq x\leq \frac{1}{2}$ we have
+\[
+\frac{x^2}{2} +\frac{x^4}{12}\leq D\left(\frac{1}{2}+\frac{x}{2}\middle\|\frac{1}{2}\right) \leq \frac{x^2}{2} + \frac{x^4}{5}.
+\]
+
+\begin{proof}[Proof of Theorem~\ref{thm:oracle_fraction}]
 From the betting strategy we have
 \[
-\gain_t=\gain_{t-1} + w_t \, g_t = \gain_{t-1} + \beta \, \gain_{t-1} \, z_t = \gain_{t-1} (1+\beta \, z_t)
+\gain_t=\gain_{t-1} + w_t \, g_t = \gain_{t-1} + \beta \, \gain_{t-1} \, z_t = \gain_{t-1} (1+\beta \, z_t)~.
 \]
 Hence
 \[
 \gain_n=\epsilon \prod_{t=1}^n (1+\beta z_t) = \epsilon (1+\beta)^\frac{n+Z}{2} (1-\beta)^\frac{n-Z}{2},
 \]
-where $Z=\sum_{t=1}^n z_t$.
-It is easy to show that the maximum value of $\gain_n$ w.r.t. $\beta$ is in $\beta=\frac{Z}{n}$. 
+where $G=\sum_{t=1}^n g_t$.
+It is easy to show that the maximum value of $\gain_n$ w.r.t. $\beta$ is in $\beta=\frac{G}{n}$. 
 Hence, we have
-\begin{align}
-\gain_n &= \epsilon (1+\frac{Z}{n})^\frac{n+Z}{2} (1-\frac{Z}{n})^\frac{n-Z}{2} 
-&= \epsilon \left[(1+\frac{Z}{n})^\frac{1+\frac{Z}{n}}{2} (1-\frac{Z}{n})^\frac{1-\frac{Z}{n}}{2}\right]^n
-&\leq \epsilon \exp \left(\frac{Z^2}{2 n} + \frac{Z^4}{5 n^3}\right)
-\end{align}
-where we used the simple inequalities
 \[
-\frac{x^2}{2} +\frac{x^4}{12}\leq \frac{1+x}{2} \log(1+x) + \frac{1-x}{2}\log(1-x) \leq \frac{x^2}{2} + \frac{x^4}{5}.
+\gain_n = \epsilon \left(1+\frac{G}{n}\right)^\frac{n+G}{2} \left(1-\frac{G}{n}\right)^\frac{n-G}{2} 
+= \epsilon \left[\left(1+\frac{G}{n}\right)^\frac{1+\frac{G}{n}}{2} \left(1-\frac{G}{n}\right)^\frac{1-\frac{G}{n}}{2}\right]^n = \exp\left( D\left(\frac{1}{2}+\frac{G}{2n}\middle\|\frac{1}{2}\right) \right),
+%\leq \epsilon \exp \left(\frac{Z^2}{2 n} + \frac{Z^4}{5 n^3}\right),
 \]
+where in the last equality we used \eqref{eq:div_2}.
 %or 
 %\[
 %\frac{x^2}{2} +\frac{x^4}{12}\leq \frac{1+x}{2} \log(1+x) + \frac{1-x}{2}\log(1-x) \leq \frac{x^2}{2} + \log(2)-.5
 %\]
 %where the lhs is given by Taylor expansion.
 \end{proof}
-
-
-\subsection{Proof of Theorem~\ref{thm:oracle_fraction_changing}}
 
 \begin{theorem}
 \label{lemma:bin}

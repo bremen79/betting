@@ -1,4 +1,5 @@
 \section{The Betting Algorithm for Continous Coins}
+\label{sec:algo}
 
 \begin{algorithm}[t]
   \begin{algorithmic}
@@ -19,11 +20,11 @@
   \label{alg:cocob}
 \end{algorithm}
 
-As said in Section~\ref{}, portfolio selection can be used to optimally solve, betting, stochastic optimization, and self-tuning of regularized \ac{ERM}. However, no simple algorithms are known.
+As said in Section~\ref{}, portfolio selection can be used to optimally solve betting and, as a consequence, stochastic optimization and self-tuning of regularized \ac{ERM}. However, no simple algorithm is known for portfolio selection.
 Hence, in this section we show how a very simple algorithm can achieve a bound close to the optimal one.
 
 The \ac{COCOB} algorithm is shown in Algorithm~\ref{alg:cocob} and we can prove the following guarantee for its performance.
-Without loss of generality, we will assume that $g_t$ are between $[-1,1]$.
+%Without loss of generality, we will assume that $g_t$ are between $[-1,1]$.
 %
 \begin{theorem}
 \label{theo:cocob}
@@ -32,7 +33,8 @@ $\gain_{t-1} \left(2 \, S\left(\frac{4 \theta_{t-1}}{a (\sg_{t-1} + 1)}\right)-1
 \begin{align*}
 \gain_{n} 
 \geq \epsilon \exp\left(\frac{\theta_{n}^2}{a \sg_{n}} - \sum_{i=1}^{n} \frac{|g_i|}{a( \sg_{i-1} + 1) } \right)
-\geq \epsilon \exp\left(\frac{\theta_{n}^2}{a \sg_{n}} - \sum_{i=1}^{n} \frac{|g_i|}{a( \sg_{i-1} + 1) } \right)~.
+\geq \epsilon \exp\left(\frac{\theta_{n}^2}{a \sg_{n}} - \frac{1}{a} \ln \left(\sum_{t=1}^n \frac{|g_i|}{\delta}+1\right) \right)~.
 \end{align*}
 \end{theorem}
 %
+Notice that the $a$ regolates the trade-off between the first and second term. When $a=2$, we have a 

@@ -1,4 +1,5 @@
-\section{Reward, OLO, Optimization, and Automatic Model Selection}
+\section{Betting, OLO, OCO, Stochastic Optimization, and Model Selection}
+\label{sec:appl}
 
 \begin{figure}[t]
 \centering
@@ -9,27 +10,34 @@
 In this section we will show the connection between portfolio selection, betting on a continous coin, adaptive OLO, and automatic model selection. We will prove that, given an ``optimal'' betting algorithm, the same algorithm can be used to solve all the problems listed above.
 
 \textbf{Betting vs. OLO.}
-We use the duality between Regret and Reward in \citet{McMahanO14}.
-We have the following Theorem.
+We use the duality between Regret and Reward proved in \citet{McMahanO14}.
 \begin{theorem}
   \label{thm:rrdual}
-  Let $\Psi:\mathcal{H} \rightarrow (-\inf, +\inf]$ be a lower semicontinuos and convex function, with $dom \Psi \neq \emptyset$. An
+  Let $\Psi:\mathcal{H} \rightarrow (-\infty, +\infty]$ be a lower semicontinuos and convex function, with $dom \Psi \neq \emptyset$. An
   algorithm for the player guarantees
   \[
-  Reward \geq \Psi(-g_{1:n}) - \epsilon \quad \quad \quad \textnormal{ for any } g_1, \dots, g_n
+  \gain_n \geq \Psi\left(\sum_{t=1}^n \bg_t\right) - \epsilon \quad \quad \quad \textnormal{ for any } \bg_1, \dots, \bg_n
   \]
   for a constant $\epsilon \in \R$ if and only if it
   guarantees
   \begin{equation}\label{eq:regb}
-  \qquad Regret(u) \leq \Psi^*(u) + \epsilon \quad \quad \quad \textnormal{ for all } u \in \mathcal{H}~.
+  \qquad Regret_n(\bu) \leq \Psi^*(\bu) + \epsilon \quad \quad \quad \textnormal{ for all } \bu \in \mathcal{H}~.
   \end{equation}
 \end{theorem}
 
-The above Theorem proves that the reward and regret view on online learning are equivalent: an algorithm guarantees low regret iff it guarantees high reward. Hence a betting algorithm can be used for online learning and vice-versa. However, as it was already stressed in \citet{McMahanO14}, the reward view has the big advantage of having one variable less, the competitor $\bu$.
-Moreover, as we will show in Section~\ref{}, designing and analysing algorithms in one of the two views could be much easier than in the other one.
+The above Theorem proves that the reward and regret view on online learning are equivalent: an algorithm guarantees low regret iff it guarantees high reward. Notice that the algorithm is exactly the same in the two setting.
+Hence a betting algorithm can be used for online learning and vice-versa. However, as it was already stressed in \citet{McMahanO14}, the reward view has the big advantage of having one variable less, the competitor $\bu$.
+Moreover, as we will show in Section~\ref{sec:algo}, designing and analysing algorithms in one of the two views could be much easier than in the other one.
 
-\textbf{OLO and Optimization.}
-It is well known that a regret bound can be transformed into a convergence guarantee for optimization of convex functions.
+\textbf{\ac{OLO}, \ac{OCO} and Stochastic Convex Optimization.}
+
+From the property of the sub-gradient of a convex function we have that, for any sequence of convex functions $f_1, \ldots, f_n$ and vectors $\bw_1,\ldots, \bw_n$ if for all $t$ $\bg_t \in f_t(\bw_t)$, then
+\[
+Regret^{OCO}_n(\bu) = \sum_{t=1}^n \left( f_t(\bw_t) -f_t(\bu)\right) \leq \sum_{t=1}^n \langle \bw_t-\bu, \bg_t\rangle = Regret_n(\bu)~.
+\]
+Hence, the regret w.r.t. to arbitrary convex functions is upper bounded by linear regret. This means that an \ac{OLO} algorithm can be used to solve an \ac{OCO} problem, just feeding the algorithm with loss vectors $g_t$ equal to the subgradients of the functions $f_t$.
+
+Also, a regret bound can be transformed into a convergence guarantee for optimization of convex functions.
 In particular, we have the following Theorem from~\citet{Cesa-BianchiCG04}.
 %
 \begin{theorem}
@@ -42,6 +50,7 @@ Let $F:\fH\rightarrow\R$ a convex function, and fix the vectors $\bg_t$ to be un
 
 High probability bounds can be also easily obtained, assuming more on the function $F$~\citep{Cesa-BianchiCG04}.
 The above theorem says that, if the regret grows, for example, as $\scO(\sqrt{n})$, the OLO algorithm can be used as a stochastic optimization algorithm with convergence in expectation $\scO(\frac{1}{\sqrt{n}})$.
+
 
 \textbf{Adaptive Algorithms for OLO and Self-tuning Model Selection.}
 In learning theory a key concept is the one of regularization. If the concept class we are learning is too rich, we need to constrain the complexity of the trained predictor. A regularizer is achieving this, biasing the classifieres towards a small region of the space. However, it is known that the optimal amount of regularization is completely problem-dependent. Hence, the regularizer becomes another parameter to be learned.
