@@ -9,7 +9,7 @@
 
 In this section we will show the connection between portfolio selection, betting on a continous coin, adaptive OLO, and automatic model selection. We will prove that, given an ``optimal'' betting algorithm, the same algorithm can be used to solve all the problems listed above.
 
-\textbf{Betting vs. OLO.}
+\textbf{Reward vs. Regret.}
 We use the duality between Regret and Reward proved in \citet{McMahanO14}.
 \begin{theorem}
   \label{thm:rrdual}
@@ -73,5 +73,52 @@ In reality, the connection between betting and self-tuning regularized ERM is ac
 \begin{theorem}
 If a betting strategy against a coin with outcomes in $[-1,1]$ guarantees an exponential reward, the same algorith used for SGD over the risk of a convex loss will guarantee optimal rate of convergence to the Bayes risk.
 \end{theorem}
+
+
+\textbf{From 1-dimension to Hilbert spaces.}
+Till now we have assumed to have a 1-dimensional betting algorithm, while the applications were in Hilbert spaces. Here, we prove that assuming our 1-dimensional betting algorithm satisfies a certain property, we can make a reduction from Hilbert spaces to 1-dimension.
+
+\begin{theorem}
+Assume that there exists a sequence of functions $f:\R \times Set \rightarrow \R$ convex in the first argument and an algorithm that generates $u_t$ using in input $x \in \R$, $z_t \in [-1,1]$ and the functions $f_t$, that guarantees
+\begin{equation}
+\label{eq:1_d_hp}
+u_t z_t \geq f( (x+z_t)^2, \{z_1, \ldots, z_t\})-f( x^2, \{z_1, \ldots, z_{t-1}\} )~.
+\end{equation}
+Let $\bg_t \in \fH$ an arbitrary sequence of vector, such that $\norm{\bg_t} \leq 1$ and define the vector $\btheta_t=\sum_{i=1}^{t} \bg_i$.
+Feed the 1-dimensional betting algorithm with the sequence $z_t= \sign(\langle \btheta_{t-1}, \bg_t \rangle) \norm{\bg_t}$, where the function $\sign(x)$ is defined as 
+\[
+\sign(x) =
+\begin{cases}
+1 & \mbox{if } x > 0 \\
+-1 & \mbox{if } x < 0 \\
+0 & \mbox{if } x = 0~.
+\end{cases}
+\]
+Define a vectorial algorithm that at each step outputs $\bw_t = u_t \frac{\sum_{i=1}^{n-1}\bg_i}{\norm{\sum_{i=1}^{n-1}\bg_i}}\gain_{t-1}$. Then the following holds
+\[
+\sum_{t=1}^n \langle \bg_t, \bw_t \rangle \geq f_n\left( \norm{\sum_{t=1}^n \bg_t}^2\right)~.
+\]
+\end{theorem}
+\begin{proof}
+We will prove the thesis by induction, hence assume that 
+\[
+\sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle \geq f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}^2\right),
+\]
+and we want to prove that 
+\[
+\sum_{t=1}^{n} \langle \bg_t, \bw_t \rangle \geq f_{n}\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)~.
+\]
+We have that
+\begin{align*}
+\sum_{t=1}^{n} &\langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)
+= \langle \bg_n, \bw_n \rangle + \sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
+&\geq \langle \bg_n, \bw_n \rangle + f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}^2\right) - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
+&= \frac{u_n}{\norm{\btheta_{n-1}}} \langle \bg_n, \btheta_{n-1} \rangle + f_{n-1}\left( \norm{\btheta_{n-1}}^2\right) - f_n\left( \norm{\btheta_{n-1}}^2 + \norm{\bg_n}^2 - 2 \langle \btheta_{n-1}, \bg_n \rangle \right)\\
+&\geq f_{n-1}\left( \norm{\btheta_{n-1}}^2\right)+ \min\left(u_n z_n  - f_n\left( (\norm{\btheta_{n-1}} + z_n)^2 \right), -u_n z_n  - f_n\left( (\norm{\btheta_{n-1}} - z_n)^2 \right)\right)\\
+&\geq 0,
+\end{align*}
+where the first inequality comes from the induction hypothesis, the second one because we take the minimum of a concave function and the last one by the hypothesis on the 1-dimensional betting strategy.
+\end{proof}
+Notice that the theorem includes the 1-dimensional case, so the assumption \eqref{eq:1_d_hp} allows to prove guarantees for 1-dimensional and Hilbert spaces.
 
 To summarize, we have that regret minimization in OLO is equivalent to reward maximization. Moreover, optimal betting algorithms correspond to adaptive OLO algorithms, that guarantees automatic model selection when used in infinite dimensional spaces. In the next section we will explain what are the difficulties in designing an optimal betting strategy.

@@ -1,7 +1,7 @@
 \section{The Betting Algorithm for Continous Coins}
 \label{sec:algo}
 
-\begin{algorithm}[t]
+\begin{algorithm}[ht]
   \begin{algorithmic}
   {
     \STATE{\bfseries Parameters:} $a>2,\delta>1$
@@ -29,7 +29,7 @@ In particular, it is easy to show that
 \[
 D\left(\frac{1}{2}+\frac{\sum_{t=1}^n g_t}{2 n}\middle\|\frac{1}{2}\right) \geq \frac{(\sum_{t=1}^n g_t)^2}{2 n^2},
 \]
-where the approximation is very good around $x=0$. Indeed, we show below that it is possible to design a simple algorithm that has an exponential reward that depends on this quantity.
+where the approximation is very good around $x=0$ and it is of the order of $\scO(\frac{(\sum_{t=1}^n g_t)^4}{ n^4})$. Indeed, we show below that it is possible to design a simple algorithm that has an exponential reward that depends on this quantity.
 
 The \ac{COCOB} algorithm is shown in Algorithm~\ref{alg:cocob} and we can prove the following guarantee for its performance.
 %Without loss of generality, we will assume that $g_t$ are between $[-1,1]$.
