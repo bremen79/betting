@@ -23,6 +23,14 @@
 As said in Section~\ref{}, portfolio selection can be used to optimally solve betting and, as a consequence, stochastic optimization and self-tuning of regularized \ac{ERM}. However, no simple algorithm is known for portfolio selection.
 Hence, in this section we show how a very simple algorithm can achieve a bound close to the optimal one.
 
+The first observation is that the reward of the oracle fixed betting strategy in Theorem~\ref{oracle_fraction} grows exponential in time depending on $D\left(\frac{1}{2}+\frac{\sum_{t=1}^n g_t}{2 n}\middle\|\frac{1}{2}\right)$. If we try to achieve exactly this term, we are (probably) doomed to use portfolio selection algorithms or to assume a binary coin.
+However, we might try to achieve something that is very close to that quantity.
+In particular, it is easy to show that
+\[
+D\left(\frac{1}{2}+\frac{\sum_{t=1}^n g_t}{2 n}\middle\|\frac{1}{2}\right) \geq \frac{(\sum_{t=1}^n g_t)^2}{2 n^2},
+\]
+where the approximation is very good around $x=0$. Indeed, we show below that it is possible to design a simple algorithm that has an exponential reward that depends on this quantity.
+
 The \ac{COCOB} algorithm is shown in Algorithm~\ref{alg:cocob} and we can prove the following guarantee for its performance.
 %Without loss of generality, we will assume that $g_t$ are between $[-1,1]$.
 %

@@ -121,11 +121,11 @@ Also, for any $-\frac{1}{2} \leq x\leq \frac{1}{2}$ we have
 \begin{proof}[Proof of Theorem~\ref{thm:oracle_fraction}]
 From the betting strategy we have
 \[
-\gain_t=\gain_{t-1} + w_t \, g_t = \gain_{t-1} + \beta \, \gain_{t-1} \, z_t = \gain_{t-1} (1+\beta \, z_t)~.
+\gain_t=\gain_{t-1} + w_t \, g_t = \gain_{t-1} + \beta \, \gain_{t-1} \, g_t = \gain_{t-1} (1+\beta \, g_t)~.
 \]
 Hence
 \[
-\gain_n=\epsilon \prod_{t=1}^n (1+\beta z_t) = \epsilon (1+\beta)^\frac{n+Z}{2} (1-\beta)^\frac{n-Z}{2},
+\gain_n=\epsilon \prod_{t=1}^n (1+\beta g_t) = \epsilon (1+\beta)^\frac{n+Z}{2} (1-\beta)^\frac{n-Z}{2},
 \]
 where $G=\sum_{t=1}^n g_t$.
 It is easy to show that the maximum value of $\gain_n$ w.r.t. $\beta$ is in $\beta=\frac{G}{n}$. 
@@ -195,17 +195,17 @@ P\left( \sum_{i=1}^n b_i \geq \frac{1}{2} n + k \right)
 We can now prove Theorem~\ref{thm:oracle_fraction_changing}.
 
 \begin{proof}[Proof of Theorem~\ref{thm:oracle_fraction_changing}]
-First observe that, even knowing all the outcomes of $z_t$, we cannot gain more than $\epsilon 2^n$, simply betting on each round all the money on the correct outcome.
+First observe that, even knowing all the outcomes of $g_t$, we cannot gain more than $\epsilon 2^n$, simply betting on each round all the money on the correct outcome.
 
 Then, for a specific function $g(\cdot,\cdot)$ that grows in the first argument, we will show that
 \begin{align*}
-\min_{|\sum_{t=1}^n z_t| \geq 2 k} \sum_{t=1}^n w_t z_t 
+\min_{|\sum_{t=1}^n g_t| \geq 2 k} \sum_{t=1}^n w_t g_t 
 \leq \epsilon \, g(k,n), \ \forall 0 \leq k \leq n-1.
 \end{align*}
 When $k=n/2$, we cannot gain more than $\epsilon 2^n$, this is why we can safely consider only $0\leq k\leq n/2-1$.
 From this we will infer that
 \begin{align*}
-\min_{z_t} \sum_{t=1}^n w_t z_t - \epsilon\min\left(g\left(\frac{|\sum_{t=1}^n z_t|}{2},n\right),2^n\right) \leq 0,
+\min_{g_t} \sum_{t=1}^n w_t g_t - \epsilon\min\left(g\left(\frac{|\sum_{t=1}^n g_t|}{2},n\right),2^n\right) \leq 0,
 \end{align*}
 that implies the stated inequality.
 
@@ -214,7 +214,7 @@ Hence, we have that $\E[ \sum_{t=1}^n w_t r_t ]=0$, and also $\sum_{t=1}^n w_t r
 
 Hence we have
 \begin{align*}
-\min_{|\sum_{t=1}^n z_t| \geq 2 k} \sum_{t=1}^n w_t z_t 
+\min_{|\sum_{t=1}^n g_t| \geq 2 k} \sum_{t=1}^n w_t g_t 
 \leq \E\left[\sum_{t=1}^n w_t r_t \bigg| \left|\sum_{t=1}^n r_t\right| \geq 2 k\right], \ \forall 0 \leq k \leq n-1.
 \end{align*}
 
