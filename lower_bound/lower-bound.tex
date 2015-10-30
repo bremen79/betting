@@ -7,8 +7,6 @@
 \usepackage{times}
 
 \DeclareMathOperator*{\Exp}{\mathbf{E}}
-\DeclareMathOperator*{\argmin}{arg\,min}
-\DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator{\Regret}{Regret}
 
 \newcommand{\field}[1]{\mathbb{#1}}
@@ -18,7 +16,7 @@
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corrollary}[theorem]{Corollary}
+\newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{proposition}[theorem]{Proposition}
 
@@ -96,16 +94,24 @@ that for large $d$ and large $n$ it recovers the right leading constant.
 \section{Maximum of Gaussians}
 \label{section:maximum-of-gaussians}
 
-It is well known that the maximum of Gaussian variables converges to a Gumbel
-distribution. Here we quantify the rate of convergence for the expectation of
-maximum of independent Gaussian variables.
+Crucial step towards lower bounding $\Exp \left[ \max_{1 \le i \le d} X_i
+\right]$ is a good lower bound on the tail $\Pr[X_i \ge x]$ of a single
+Gaussian. The standard way of deriving such bounds is via bounds on the so-called
+Mill's ratio.  Mill's ratio of a random variable $X$ with density function
+$f(x)$ is the ratio $\frac{\Pr[X > x]}{f(x)}$.~\footnote{Mill's ratio has
+applications in economics. A simple is problem where Mill's ratio shows up is
+the problem of setting optimal price for a product.  Given a distribution
+prices that customers are willing to pay, the goal is to choose the price that
+brings the most revenue.} It clear that a lower bound on the Mill's ratio
+yields a lower bound on the thail $\Pr[X > x]$.
 
-We start with a lower bound on the Mill's ratio of Gaussian variables. Mill's ratio of a random variable $X$
-with density function $f(x)$ is the ratio $\frac{\Pr[X > x]}{f(x)}$. For standard Gaussian
-$N(0,1)$ with density $\phi(x) = \frac{1}{\sqrt{2 \pi}} \exp\left( - \frac{x^2}{2} \right)$
-and $\Phi(x) = \int_{-\infty}^x \frac{1}{\sqrt{2 \pi}} \exp\left( - \frac{t^2}{2} \right) dt$,
-the Mill's ratio is $\frac{1 - \Phi(x)}{\phi(x)}$. Bounds on Mill's ratio provide bounds on $\Pr[X > x]$.
-In this paper we rely on a lower bound on Mill's ratio by~\cite{Boyd-1959}.
+Without loss of generality it suffices to lower bound Mill's ratio of $N(0,1)$,
+since Mill's ratio of $N(0,\sigma^2)$ can be obtained by rescaling.  Recal that
+probability density of $N(0,1)$ is $\phi(x) = \frac{1}{\sqrt{2 \pi}}
+e^{-x^2/2}$ and its cumulative distribution function is $\Phi(x) =
+\int_{-\infty}^x \frac{1}{\sqrt{2 \pi}} e^{-t^2/2} dt$.  Mill's ratio for
+$N(0,1)$ can be expressed as $\frac{1 - \Phi(x)}{\phi(x)}$. A lower bound on
+Mill's ratio of $N(0,1)$ was proved by~\cite{Boyd-1959}.
 
 \begin{lemma}[Mill's ratio for standard Gaussian~\citep{Boyd-1959}]
 \label{lemma:boyd}
@@ -113,18 +119,19 @@ For any $x \ge 0$,
 $$
 \frac{1 - \Phi(x)}{\phi(x)}
 = \exp\left(\frac{x^2}{2}\right) \int_x^{\infty} \exp\left(-\frac{t^2}{2}\right) dt
-\ge \frac{\pi}{(\pi-1)x+\sqrt{x^2+2 \pi}}.
+\ge \frac{\pi}{(\pi-1)x+\sqrt{x^2+2 \pi}}
+\ge \frac{\pi}{\pi x + \sqrt{2\pi}} \; .
 $$
 \end{lemma}
+The second inequality holds since $a + b \ge \sqrt{a^2 + b^2}$ holds for
+any $a,b \ge 0$ and we choose $a=\sqrt{2 \pi}$ and $b = x$.
 
-The bound on Mill's ratio can be turned into a lower bound on the tail of the distribution.
-
-\begin{corrollary}[Lower Bound on Gaussian Tail]
+\begin{corollary}[Lower Bound on Gaussian Tail]
 Let $X \sim N(0, \sigma^2)$ and $x \ge 0$. Then,
 $$
 \Pr[X \ge x] \ge \exp\left(-\frac{x^2}{2 \sigma^2}\right) \frac{1}{\sqrt{2\pi}\frac{x}{\sigma}+2}.
 $$
-\end{corrollary}
+\end{corollary}
 
 \begin{proof}
 We have
@@ -132,11 +139,12 @@ We have
 \Pr[X \ge x]
 & = \frac{1}{\sigma \sqrt{2 \pi}} \int_x^{\infty} \exp \left( -\frac{t^2}{2 \sigma^2} \right) d t \\
 & = \frac{1}{\sqrt{2 \pi}} \int_\frac{x}{\sigma}^{\infty} \exp \left( -\frac{t^2}{2} \right) d t \\
-& \ge \frac{1}{\sqrt{2 \pi}} \exp\left(-\frac{x^2}{2 \sigma^2}\right) \frac{\pi}{(\pi-1)\frac{x}{\sigma}+\sqrt{\frac{x^2}{\sigma^2}+2 \pi}} & \text{(by Lemma~\ref{lemma:boyd})} \\
-& \ge \frac{1}{\sqrt{2}} \exp\left(-\frac{x^2}{2 \sigma^2}\right) \frac{\sqrt{\pi}}{\pi\frac{x}{\sigma}+\sqrt{2 \pi}} \\
-& = \exp\left(-\frac{x^2}{2 \sigma^2}\right) \frac{1}{\sqrt{2\pi}\frac{x}{\sigma}+2} \; .
+& \ge \frac{1}{\sqrt{2 \pi}} \exp\left(-\frac{x^2}{2 \sigma^2}\right) \frac{\pi}{\pi\frac{x}{\sigma}+\sqrt{2 \pi}} & \text{(by Lemma~\ref{lemma:boyd})} \\
+& = \exp\left(-\frac{x^2}{2 \sigma^2}\right) \frac{1}{\sqrt{2\pi}\frac{x}{\sigma}+2} \; . \qquad \qedhere
 \end{align*}
 \end{proof}
+
+Equipped with the lower bound on the tail, we prove an upper bound on the maximum of Gaussians.
 
 \begin{theorem}[Lower Bound on Maximum of Independent Gaussians]
 Let $X_1, X_2, \dots, X_d$ be independent Gaussian random variables $N(0,\sigma^2)$. For any $d \ge 2$,
@@ -187,7 +195,6 @@ we can deduce that $C(d) \le \max\{C(2), \sqrt{2}\} \le 1.75$ for any $d \in [2,
 \Pr[A] \ge 1 - \exp\left(-\frac{\sqrt{\ln d}}{6.35}\right) \; .
 \end{equation}
 Inequalities \eqref{equation:maximum-of-gaussians-lower-bound-3} and \eqref{equation:maximum-of-gaussians-lower-bound-6} together imply bound \eqref{equation:maximum-of-gaussians-lower-bound-1}.
-
 Bound \eqref{equation:maximum-of-gaussians-lower-bound-2} is obtained from \eqref{equation:maximum-of-gaussians-lower-bound-1} by noticing that
 \begin{align*}
 & \sigma \left(1 - \exp\left(-\frac{\sqrt{\ln d}}{6.35}\right)\right) \left(\sqrt{2 \ln d - 2 \ln \ln d} +\sqrt\frac{2}{\pi}\right) -\sqrt{\frac{2}{\pi}} \sigma \\
@@ -199,22 +206,88 @@ where we used that $\exp\left(-\frac{\sqrt{\ln d}}{6.35}\right) \le 0.8773$ for 
 Since $C(d)$ has minimum at $d = e^e$, it follows that $C(d) \ge C(e^e) = \sqrt{2 - \frac{2}{e}} \ge 1.1243$ for any $d \ge 2$.
 \end{proof}
 
-\section{Binomial Case}
+\section{Maximum of Random Walks}
 \label{section:maximum-of-random-walks}
 
-In the Binomial case, we expect the discrete nature of the variable to play a
-role. In fact, we expect it to behave like a Gaussian only when the number of
-draws goes to infinity.  We quantify the intuition with the function $\psi:[-\frac{1}{2},\frac{1}{2}] \to \R$
+The general strategy for proving a lower bound on $\Exp\left[\max_{1 \le i \le d} Z^{(n)}_i \right]$ is the same
+as in the previous section---we lower bound the tail $\Pr[Z^{(n)} \ge x]$ of a symmetric random walk $Z^{(n)}$ of length $n$.
+Note that
+$$
+B_n = \frac{Z^{(n)} + n}{2}
+$$
+is a Binomial random variable $B(n,\frac{1}{2})$. Our starting point will be lower bound on the tail $\Pr[B_n \ge k]$
+due to~\citet[Theorem 2]{McKay1989} in term's of the Mill's ratio of $N(0,1)$.
+
+\begin{lemma}[Bound on Binomial Tail]
+\label{lemma:mckay}
+Let $n,k$ be integers satisfying $n \ge 1$ and $\frac{n}{2} \le k \le n$. Define $x = \frac{2k - n}{\sqrt{n}}$. Then, $B_n \sim B(n,\frac{1}{2})$ satisfies
+$$
+\Pr \left[ B_n \ge  k \right]
+ \ge \sqrt{n} \binom{n-1}{k-1} 2^{-n} \; \frac{1 - \Phi(x)}{\phi(x)} \; .
+$$
+\end{lemma}
+
+We combine the lemma with the lower bound on Mill's ratio
+(Lemma~\ref{lemma:boyd}). Furthermore, we lower bound the binomial coefficient
+$\binom{n-1}{k-1}$ using Stirling's approximation of the factorial. The lower
+bound on the binomial coefficient will be expressed in terms of
+Kullback-Leibler divergence between two Bernoulli distributions,
+$\text{Bernoulli}(p)$ and $\text{Bernoulli}(q)$. Abusing notation somewhat,
+we write it as
+$$
+D(p\|q) = p \ln \left( \frac{p}{q} \right) + (1-p) \ln \left( \frac{1-p}{1-q} \right) \; .
+$$
+The result is the following lower bound on the tail of Binomial.
+
+\begin{theorem}[Bound on Binomial Tail]
+\label{theorem:binomial}
+Let $n,k$ be integers satisfying $n \ge 1$ and $\frac{n}{2} \le k \le n$. Define $x = \frac{2k - n}{\sqrt{n}}$. Then, $B_n \sim B(n,\frac{1}{2})$ satisfies
+$$
+\Pr \left[ B_n \ge  k \right] \ge \frac{\exp\left(-n D \left(\frac{k}{n} \middle\| \frac{1}{2} \right)\right)}{2 \exp\left(\frac{1}{6}\right)} \cdot \frac{\sqrt{2\pi}}{(\pi-1)x+\sqrt{x^2+2 \pi}} \; .
+$$
+\end{theorem}
+
+\begin{proof}
+Lemmas~\ref{lemma:boyd}~and~\ref{lemma:mckay} imply that
+\begin{align*}
+\Pr \left[ B_n \ge k \right]
+& \ge \sqrt{n} \binom{n-1}{k-1} 2^{-n} \frac{1 - \Phi(x)}{\phi(x)} \\
+& \ge \sqrt{n} \binom{n-1}{k-1} 2^{-n} \frac{\pi}{(\pi-1)x+\sqrt{x^2+2 \pi}} \; .
+\end{align*}
+We now deal with $\binom{n-1}{k-1}$. First, since $k \ge 1$, we can write the binomial coefficient as
+$$
+\binom{n-1}{k-1} = \frac{k}{n} \binom{n}{k}
+$$
+We bound the binomial coefficient $\binom{n}{k}$ by using Stirling's formula for the factorial.
+We use explicit upper and lower bounds due to~\cite{Robbins-1955} valid for any $n\ge 1$,
+$$
+\sqrt{2 \pi n} \left( \frac{n}{e} \right)^n < n! < \exp\left(\frac{1}{12}\right) \sqrt{2 \pi n} \left( \frac{n}{e} \right)^n \; .
+$$
+Using the Stirling's approximation, for any $1\le k \le n-1$,
+\begin{align*}
+\binom{n}{k}
+& = \frac{n!}{k! (n-k)!} \\
+& > \frac{\sqrt{2\pi n} \ n^n e^{-n}}{\sqrt{2\pi k} \ k^k e^{-k} e^{1/12} \cdot \sqrt{2\pi (n-k)} \ (n-k)^{n-k} e^{-(n-k)} e^{1/12}} \\
+& = \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \left(\frac{n}{n-k}\right)^{n-k} \left(\frac{n}{k}\right)^k \sqrt{\frac{n}{k(n-k)}} \\
+& = \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \ 2^n \exp\left(-n \cdot D\left(\frac{k}{n} \middle\| \frac{1}{2}\right)\right) \sqrt{\frac{n}{k(n-k)}}
+\end{align*}
+where in the equality we used the definition of $D(p\|q)$. Combining all the inequalities, gives
+\begin{align*}
+\Pr \left[ Z^{(n)} \ge 2k - n \right]
+& \ge \sqrt{n} \frac{k}{n} \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \ 2^n \exp\left(-n \cdot D\left(\frac{k}{n} \middle\| \frac{1}{2}\right)\right) \sqrt{\frac{n}{k(n-k)}} 2^{-n} \frac{\pi}{(\pi-1)x+\sqrt{x^2+2 \pi}} \\
+& = \frac{1}{2\exp\left(\frac{1}{6}\right)} \exp\left(-n \cdot D\left(\frac{k}{n} \middle\| \frac{1}{2}\right)\right) \frac{\sqrt{2\pi}}{(\pi-1)x+\sqrt{x^2+2 \pi}} \sqrt{\frac{k}{n-k}} \\
+& \ge \frac{1}{2\exp\left(\frac{1}{6}\right)} \exp\left(-n \cdot D\left(\frac{k}{n} \middle\| \frac{1}{2}\right)\right) \frac{\sqrt{2\pi}}{(\pi-1)x+\sqrt{x^2+2 \pi}} \; .
+\end{align*}
+for $\frac{n}{2} \le k \le n - 1$. For $k=n$, we verify the statement of the theorem by direct substitution. The left hand side is $\Pr[B^{(n)} \ge n] = 2^{-n}$.
+Since $e^{-nD(1\|\frac{1}{2})} = 2^{-n}$ and $x=\sqrt{n} \ge 1$, it's easy to see that the right hand side is smaller than $2^{-n}$.
+\end{proof}
+
+We quantify the intuition with the function $\psi:[-\frac{1}{2},\frac{1}{2}] \to \R$
 defined as
 $$
 \psi(x) = \frac{D \left(\frac{1}{2}+x \middle\| \frac{1}{2} \right)}{2 x^2} \; .
 $$
-where $D(p\|q)$ is the Kullback-Leibler divergence between $\text{Bernoulli}(p)$ and $\text{Bernoulli}(q)$
-defined as
-$$
-D(p\|q) = p \ln \frac{p}{q}+(1-p) \ln\frac{1-p}{1-q}
-$$
-The function $\psi(x)$ satisfies the following properties
+he function $\psi(x)$ satisfies the following properties
 \begin{itemize}
 \item $\psi(x) = \psi(-x)$
 \item $\psi(x)$ is increasing for $0\le x \le \frac{1}{2}$.
@@ -226,36 +299,24 @@ As in the Gaussian case, for the Binomial case we need lower bound on the
 probability tail.  We will use the next Theorem from \cite{nOrabona13}, whose
 proof is the Appendix for completeness.
 
-\begin{theorem}
-\label{theorem:binomial}
-Let $n \ge 2$ an even number and $Z$ a Binomial random variable
-$B(n,\frac{1}{2})$. Then for any $k \in \Nat_0$ such that $k\le
-\frac{1}{2}n-1$, we have
+\begin{corollary}
+Let $n \ge 1$ be a positive integer and let $t \in [1, \frac{n}{2} + 1]$ be a real number. Then $B_n \sim B(n, \frac{1}{2})$ satisfies
 $$
-\Pr \left[ Z \ge \frac{1}{2} n + k\right]
-\ge \frac{\exp\left(-n D(\frac{1}{2}+\frac{k}{n}\|\frac{1}{2})\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)y+\sqrt{y^2+2 \pi}} \; ,
+\Pr \left[ Z \ge \frac{1}{2} n + t - 1 \right] \ge \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{t}{n}\right) \frac{t^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 t}{\sqrt{n}} + 2} \; .
 $$
-where $y=\frac{2 k}{\sqrt{n}}$.
-\end{theorem}
-
-\begin{corrollary}
-Let $Z \sim B(n, 1/2)$ and $k \ge 1$ and $n \ge 2$ even. Then
-$$
-\Pr \left[ Z \ge \frac{1}{2} n + k-1 \right] \ge \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{k}{n}\right) \frac{k^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 k}{\sqrt{n}} + 2 }~.
-$$
-\end{corrollary}
+\end{corollary}
 
 \begin{proof}
+By Theorem~\ref{theorem:binomial}, we have
 \begin{align*}
-\Pr \left[ Z \ge  \frac{1}{2} n + k-1 \right]
-& = \Pr \left[ Z \ge \frac{1}{2} n + \lceil k - 1\rceil \right] \\
-& \ge \frac{\exp\left(-n D(\frac{1}{2}+\frac{\lceil k -1\rceil}{n} \| \frac{1}{2})\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2\lceil k -1\rceil}{\sqrt{n}}+\sqrt{\left(\frac{2\lceil k -1\rceil}{\sqrt{n}}\right)^2+2 \pi}} \\
-& \ge \frac{\exp\left(-n D(\frac{1}{2}+\frac{k}{n} \| \frac{1}{2})\right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2k}{\sqrt{n}}+\sqrt{\left(\frac{2k}{\sqrt{n}}\right)^2+2 \pi}} \\
-& = \frac{\exp\left(- 2 \psi(\frac{k}{n}) \frac{k^2}{n} \right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2k}{\sqrt{n}}+\sqrt{\left(\frac{2k}{\sqrt{n}}\right)^2+2 \pi}} \\
-& \ge \frac{\exp\left(- 2 \psi(\frac{k}{n}) \frac{k^2}{n} \right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2 \pi}}{(\pi-1)\frac{2k}{\sqrt{n}}+\sqrt{\left(\frac{2k}{\sqrt{n}}\right)^2+2 \pi}} \\
-& \ge \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{k}{n}\right) \frac{k^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 k}{\sqrt{n}} + 2} \; ,
+\Pr \left[ Z \ge  \frac{1}{2} n + t - 1 \right]
+& = \Pr \left[ Z \ge \left\lceil \frac{1}{2} n + t - 1 \right\rceil \right] \\
+& \ge \frac{\exp\left(-n D \left(\frac{\lceil \frac{1}{2}n + t - 1 \rceil}{n} \middle\| \frac{1}{2} \right)\right)}{2 \exp\left(\frac{1}{6}\right)} \cdot \frac{\sqrt{2\pi}}{(\pi-1) \frac{2\lceil \frac{1}{2}n + t - 1 \rceil - n}{\sqrt{n}} + \sqrt{ \left(\frac{2\lceil \frac{1}{2}n + t - 1 \rceil - n}{\sqrt{n}} \right)^2 + 2 \pi}} \\
+& \ge \frac{\exp\left(-n D \left(\frac{\frac{1}{2}n + t}{n} \middle\| \frac{1}{2} \right)\right)}{2 \exp\left(\frac{1}{6}\right)} \cdot \frac{\sqrt{2\pi}}{(\pi-1) \frac{2 (\frac{1}{2}n + t) - n}{\sqrt{n}} + \sqrt{ \left(\frac{2 (\frac{1}{2}n + t) - n}{\sqrt{n}} \right)^2 + 2 \pi}} \\
+& = \frac{\exp\left(-n D \left(\frac{1}{2} + \frac{t}{n} \middle\| \frac{1}{2} \right)\right)}{2 \exp\left(\frac{1}{6}\right)} \cdot \frac{\sqrt{2\pi}}{(\pi-1) \frac{2t}{\sqrt{n}} + \sqrt{ \left(\frac{2t}{\sqrt{n}} \right)^2 + 2 \pi}} \\
+& =  \frac{\exp\left(- 2 \psi(\frac{t}{n}) \frac{t^2}{n} \right)}{2 \exp\left(\frac{1}{6}\right)} \frac{\sqrt{2\pi}}{(\pi-1)\frac{2t}{\sqrt{n}}+\sqrt{\left(\frac{2t}{\sqrt{n}}\right)^2+2 \pi}} \\
+& \ge \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{t}{n}\right) \frac{t^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 t}{\sqrt{n}} + 2} \; .
 \end{align*}
-where in the second equality we used Theorem~\ref{theorem:binomial}.
 \end{proof}
 
 \begin{theorem}
@@ -293,7 +354,7 @@ First, we lower bound $\Exp \left[ Z^{(n)}_1 ~\middle|~ Z^{(n)}_1 \le 0 \right]$
 & = \sum_{k=-n}^0 k \cdot \Pr[Z^{(n)}_1 = k ~|~ Z^{(n)}_1 \le 0] \\
 & = \frac{1}{\Pr[Z^{(n)}_1 \le 0]} \sum_{k=-n}^0 k \cdot \Pr[Z^{(n)}_1 = k] \\
 & \ge 2 \sum_{k=-n}^0 k \cdot \Pr[Z^{(n)}_1 = k] \\
-& = - \sum_{k=-n}^n |k| \cdot \Pr[Z^((n))_1 = k] \\
+& = - \sum_{k=-n}^n |k| \cdot \Pr[Z^{(n)}_1 = k] \\
 & = - \Exp[|Z^{(n)}_1|] \\
 & = - \Exp \left[ \sqrt{ \left( Z^{(n)}_1 \right)^2} \right] \\
 & \ge - \sqrt{\Exp \left[ \left( Z^{(n)}_1 \right)^2 \right]} \\
@@ -372,50 +433,6 @@ infinity.
 \bibliography{biblio}
 
 \appendix
-
-\section{Proof of Theorem~\ref{theorem:binomial}}
-
-\begin{proof}
-We use Theorem~2 in \cite{McKay1989}, that specialized to our case says that
-\begin{equation}
-\label{equation:bin-1}
-\Pr \left[ Z \ge  \frac{1}{2} n + k  \right] \ge \sqrt{n} \binom{n-1}{ \frac{1}{2} n + k -1} 2^{-n} \frac{1 - \Phi(y)}{\phi(y)},
-\end{equation}
-where $\phi(x) = \frac{1}{\sqrt{2 \pi}} \exp(-\frac{x^2}{2})$ is the density of $N(0,1)$ and
-$\Phi(x) = \int_{-\infty}^x \phi(t) dt$ is its cumulative density function.
-
-We use Lemma~\ref{lemma:boyd} to lower bound the Mill's ratio $\frac{1 - \Phi(y)}{\phi(y)}$,
-$$
-\frac{1 - \Phi(y)}{\phi(y)}
-= \exp\left(\frac{x^2}{2}\right) \int_{x}^{+\infty} \exp\left(-\frac{t^2}{2}\right) dt
-\ge \frac{\pi}{(\pi-1)x+\sqrt{x^2+2 \pi}}.
-$$
-
-We bound the binomial coefficient in \eqref{equation:bin-1} by using Stirling's formula for the factorial.
-We use explicit upper and lower bounds due to~\cite{Robbins-1955} valid for any $n\ge 1$,
-$$
-\sqrt{2 \pi n} \left( \frac{n}{e} \right)^n < n! < \exp\left(\frac{1}{12}\right) \sqrt{2 \pi n} \left( \frac{n}{e} \right)^n \; .
-$$
-Hence, for any $n \ge 2$ and $1\le q \le n-1$, after some algebra we obtain
-\begin{align*}
-\binom{n}{q}
-& = \frac{n!}{q! (n-q)!} \\
-& \ge \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \left(\frac{n}{n-q}\right)^{n-q} \left(\frac{n}{q}\right)^{q} \sqrt{\frac{n}{q(n-q)}} \\
-& = \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} 2^n \exp\left(-n D\left(\frac{q}{n} \middle\| \frac{1}{2}\right)\right) \sqrt{\frac{n}{q(n-q)}}.
-\end{align*}
-where in the equality we used the definition of $D$.
-Also, we have
-\begin{equation}
-\label{equation:bin-3}
-{n-1 \choose \frac{1}{2} n + k - 1} = {n \choose \frac{1}{2} n + k} \left(\frac{1}{2} + \frac{k}{n}\right) .
-\end{equation}
-Putting together \eqref{equation:bin-1}-\eqref{equation:bin-3}, and using the definition of $y$ we have
-\begin{align*}
-\Pr\left[ Z \ge \frac{1}{2} n + k \right]
-& \ge \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \exp\left(-n D\left(\frac{1}{2}+\frac{k}{n} \middle\| \frac{1}{2}\right)\right) \sqrt{\frac{\frac{1}{2} + \frac{k}{n}}{\frac{1}{2}-\frac{k}{n}}}  \frac{1 - \Phi(y)}{\phi(y)} \\
-& \ge \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \exp\left(-n D\left(\frac{1}{2}+\frac{k}{n} \middle\| \frac{1}{2}\right)\right) \frac{\pi}{(\pi-1)y+\sqrt{y^2+2 \pi}}. \qedhere
-\end{align*}
-\end{proof}
 
 \section{Upper Bounds}
 \label{section:upper-bounds}
