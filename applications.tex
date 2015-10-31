@@ -9,9 +9,66 @@
 
 In this section we will show the connection between portfolio selection, betting on a continous coin, adaptive OLO, and automatic model selection. We will prove that, given an ``optimal'' betting algorithm, the same algorithm can be used to solve all the problems listed above.
 
-\textbf{Reward vs. Regret.}
-We use the duality between Regret and Reward proved in \citet{McMahanO14}.
+We will assume that a 1-dimensional algorithm exists, that satisfies the following assumption.
+\begin{assumption}
+\label{assumption:1-d_algo}
+Assume that there exists a sequence of functions $f:\R \times Set \rightarrow \R$ convex in the first argument and an algorithm, that we will denote by \ac{MBA}, that generates $u_t$ using in input $x_{t-1} \in \R$, $z_1, \ldots, z_{t-1} \in [-1,1]$, such that the following holds
+\begin{equation}
+\label{eq:1_d_hp}
+u_t z_t \geq f\left( (x_{t-1}+z_t)^2, \{|z_1|, \ldots, |z_t|\}\right)-f\left( x_{t-1}^2, \{|z_1|, \ldots, |z_{t-1}|\} \right), \ \ \forall z_{t} \in [-1,1]~.
+\end{equation}
+\end{assumption}
+
+By induction is easy to prove a lower bound on the reward of such algorithm.
 \begin{theorem}
+\label{theo:1-d_reward}
+Assume that Assumption \ref{assumption:1-d_algo} holds and use the \ac{MBA} with $x_{t-1}=|\sum_{i=1}^{t-1} g_i|$ and $z_t=g_t$.
+Then, for any sequence of outcomes $g_t \in [-1,1]$, the following holds
+\[
+\gain_n \geq f\left( \left(\sum_{i=1}^{t-1} g_i \right)^2, \left\{|z_1|, \ldots, |z_n|\right\}\right)~.
+\]
+\end{theorem}
+
+Also, the \ac{MBA} can also be used to prove lower bound on the reward in Hilbert Spaces.
+\textbf{From 1-dimension to Hilbert spaces.}
+Till now we have assumed to have a 1-dimensional betting algorithm, while the applications were in Hilbert spaces. Here, we prove that assuming our 1-dimensional betting algorithm satisfies a certain property, we can make a reduction from Hilbert spaces to 1-dimension.
+
+\begin{theorem}
+\label{theo:hilbert_reward}
+  Assume that \ref{assumption:1-d_algo} holds.
+  Let $\bg_t \in \fH$ an arbitrary sequence of vector, such that $\norm{\bg_t} \leq 1$ and define the vector $\btheta_t=\sum_{i=1}^{t} \bg_i$.
+  Use the Algorithm in \ref{assumption:1-d_algo} with the sequence $x_{t-1}= \norm{\btheta_{t-1}}$.
+  Define a vectorial algorithm that at each step outputs $\bw_t = u_t \frac{\btheta_{t-1}}{\norm{\btheta_{t-1}}}$. Then the following holds
+  \[
+  \sum_{t=1}^n \langle \bg_t, \bw_t \rangle \geq f_n\left( \norm{\sum_{t=1}^n \bg_t}^2, \left\{\norm{\bg_1}, \ldots, \norm{\bg_n}\right\}\right)~.
+  \]
+\end{theorem}
+\begin{proof}
+  For simplicity denote by $f_t(\cdot)=f\left(\cdot, \{\norm{\bg_1}, \ldots, \norm{\bg_t}\}\right)$.
+  We will prove the thesis by induction, hence assume that 
+  \[
+  \sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle \geq f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}^2\right),
+  \]
+  and we want to prove that 
+  \[
+  \sum_{t=1}^{n} \langle \bg_t, \bw_t \rangle \geq f_{n}\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)~.
+  \]
+  We have that
+  \begin{align*}
+  \sum_{t=1}^{n} &\langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)
+  = \langle \bg_n, \bw_n \rangle + \sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
+  &\geq \langle \bg_n, \bw_n \rangle + f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}^2\right) - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
+  &= \frac{u_n}{\norm{\btheta_{n-1}}} \langle \bg_n, \btheta_{n-1} \rangle + f_{n-1}\left( \norm{\btheta_{n-1}}^2\right) - f_n\left( \norm{\btheta_{n-1}}^2 + \norm{\bg_n}^2 + 2 \langle \btheta_{n-1}, \bg_n \rangle \right)\\
+  &\geq f_{n-1}\left( \norm{\btheta_{n-1}}^2\right)+ \min\left(u_n \norm{g_n}  - f_n\left( (\norm{\btheta_{n-1}} + \norm{g_n})^2 \right), -u_n \norm{g_n}  - f_n\left( (\norm{\btheta_{n-1}} - \norm{g_n})^2 \right)\right)\\
+  &\geq 0,
+  \end{align*}
+  where the first inequality comes from the induction hypothesis, the second one because we take the minimum of a concave function and the last one by the hypothesis on the \ac{MBA}.
+\end{proof}
+This latest theorem is useful to prove regret bounds in Hilbert spaces, as shown in the next Theorem.
+
+
+\textbf{From Reward to Regret.}
+\begin{theorem}[\citet{McMahanO14}]
   \label{thm:rrdual}
   Let $\Psi:\mathcal{H} \rightarrow (-\infty, +\infty]$ be a lower semicontinuos and convex function, with $dom \Psi \neq \emptyset$. An
   algorithm for the player guarantees
@@ -24,10 +81,18 @@ We use the duality between Regret and Reward proved in \citet{McMahanO14}.
   \qquad Regret_n(\bu) \leq \Psi^*(\bu) + \epsilon \quad \quad \quad \textnormal{ for all } \bu \in \mathcal{H}~.
   \end{equation}
 \end{theorem}
-
 The above Theorem proves that the reward and regret view on online learning are equivalent: an algorithm guarantees low regret iff it guarantees high reward. Notice that the algorithm is exactly the same in the two setting.
 Hence a betting algorithm can be used for online learning and vice-versa. However, as it was already stressed in \citet{McMahanO14}, the reward view has the big advantage of having one variable less, the competitor $\bu$.
 Moreover, as we will show in Section~\ref{sec:algo}, designing and analysing algorithms in one of the two views could be much easier than in the other one.
+Coupling Theorem~\ref{thm:rrdual} with Theorem~\ref{theo:hilbert_reward}, we have the following Corollary.
+\begin{cor}
+\label{theo:hilbert_regret}
+Assume that \ref{assumption:1-d_algo} holds. Then there exists a reduction of the \ac{MBA} that produces a sequence of vectors $\bw_t$ that satisfy
+\[
+Regret_n(\bu) \leq f^*\left( \norm{\sum_{i=1}^{t-1} \bg_i}^2, \left\{\norm{\bg_1}, \ldots, \norm{\bg_n}\right\}\right),
+\]
+where the conjugation is taken w.r.t. the first argument of $f$.
+\end{cor}
 
 \textbf{\ac{OLO}, \ac{OCO} and Stochastic Convex Optimization.}
 
@@ -60,65 +125,25 @@ Most, if not all, the machine learning algorithms uses a two-stages process to f
 Surprisingly enough, \citep{Orabona14} proved that the above procedure can be avoided with a stochastic learner. In particular, instead of solving a series of regularized ERM problems, with different amounts of regularization, one can use a simple prarameter-free stochastic gradient descent procedure over the training samples and achieve the same performance.
 More rigorously, the follwing theorem holds.
 \begin{theorem}
-Let $\bw_1, \cdots, \bw_n \in \fH$ the vector produced by the PiSTOL algorithm.
-Let $\ell:\R\rightarrow\R$ a convex and Lipschitz function, and fix the vectors $\bg_t$ to be unbiased estimate of the gradient of $F$ in $\bw_t$. Then, the rate of convergence of $\E\left[Risk_F\left(\frac{1}{n} \bw_t\right)\right]$ is the same of regularized ERM algorithm with the (unknown) optimal amount of regularization.
+\label{theo:self_tune}
+Assume that there is an online algorithm whose $Regret_n(\bu)$ is $\scO\left(\norm{\bu}\sqrt{n \ln(n)}\right)$. Then the following holds
+\[
+\E\left[\RiskLoss\left(\frac{1}{T} \sum_{t=1}^n \bw_t\right)\right] \leq \tilde{\scO}\left(\inf_{\bu} \min_{\eta>0} \E[\RiskLoss(\bu)] + \frac{1}{\eta\,n}\norm{\bu}^2 +\eta] \right)~.
+\]
+% Let $\bw_1, \cdots, \bw_n \in \fH$ the vector produced by the PiSTOL algorithm.
+% Let $\ell:\R\rightarrow\R$ a convex and Lipschitz function, and fix the vectors $\bg_t$ to be unbiased estimate of the gradient of $F$ in $\bw_t$. Then, the rate of convergence of $\E\left[Risk_F\left(\frac{1}{n} \bw_t\right)\right]$ is the same of regularized ERM algorithm with the (unknown) optimal amount of regularization.
 \end{theorem}
 
-Moreover, from \citep{} we can extract the following Theorem.
+The missing piece now is to prove that the existence of the \ac{MBA} guarantees to have an algorithm that satisfies the regret guarantee in the hypothesis of Theorem~\ref{theo:self_tune}.
 \begin{theorem}
-When PiSTOL is used as a betting strategy against a coin with outcomes in $[-1,1]$, it guarantees an exponential reward.
+Assume that \ref{assumption:1-d_algo} holds.
+Then there exists an algorithm, that uses the \ac{MBA} as a subroutine, that guarantees $Regret_n(\bu)=\scO\left(\norm{\bu}\sqrt{n \ln(n)}\right)$.
 \end{theorem}
 
-In reality, the connection between betting and self-tuning regularized ERM is actually stronger. In fact, the following theorem can be proved.
-\begin{theorem}
-If a betting strategy against a coin with outcomes in $[-1,1]$ guarantees an exponential reward, the same algorith used for SGD over the risk of a convex loss will guarantee optimal rate of convergence to the Bayes risk.
-\end{theorem}
+%In reality, the connection between betting and self-tuning regularized ERM is actually stronger. In fact, the following theorem can be proved.
+%\begin{theorem}
+%If a betting strategy against a coin with outcomes in $[-1,1]$ guarantees an exponential reward, the same algorith used for SGD over the risk of a convex loss will guarantee optimal rate of convergence to the Bayes risk.
+%\end{theorem}
 
-
-\textbf{From 1-dimension to Hilbert spaces.}
-Till now we have assumed to have a 1-dimensional betting algorithm, while the applications were in Hilbert spaces. Here, we prove that assuming our 1-dimensional betting algorithm satisfies a certain property, we can make a reduction from Hilbert spaces to 1-dimension.
-
-\begin{theorem}
-Assume that there exists a sequence of functions $f:\R \times Set \rightarrow \R$ convex in the first argument and an algorithm that generates $u_t$ using in input $x \in \R$, $z_t \in [-1,1]$ and the functions $f_t$, that guarantees
-\begin{equation}
-\label{eq:1_d_hp}
-u_t z_t \geq f( (x+z_t)^2, \{z_1, \ldots, z_t\})-f( x^2, \{z_1, \ldots, z_{t-1}\} )~.
-\end{equation}
-Let $\bg_t \in \fH$ an arbitrary sequence of vector, such that $\norm{\bg_t} \leq 1$ and define the vector $\btheta_t=\sum_{i=1}^{t} \bg_i$.
-Feed the 1-dimensional betting algorithm with the sequence $z_t= \sign(\langle \btheta_{t-1}, \bg_t \rangle) \norm{\bg_t}$, where the function $\sign(x)$ is defined as 
-\[
-\sign(x) =
-\begin{cases}
-1 & \mbox{if } x > 0 \\
--1 & \mbox{if } x < 0 \\
-0 & \mbox{if } x = 0~.
-\end{cases}
-\]
-Define a vectorial algorithm that at each step outputs $\bw_t = u_t \frac{\sum_{i=1}^{n-1}\bg_i}{\norm{\sum_{i=1}^{n-1}\bg_i}}\gain_{t-1}$. Then the following holds
-\[
-\sum_{t=1}^n \langle \bg_t, \bw_t \rangle \geq f_n\left( \norm{\sum_{t=1}^n \bg_t}^2\right)~.
-\]
-\end{theorem}
-\begin{proof}
-We will prove the thesis by induction, hence assume that 
-\[
-\sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle \geq f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}^2\right),
-\]
-and we want to prove that 
-\[
-\sum_{t=1}^{n} \langle \bg_t, \bw_t \rangle \geq f_{n}\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)~.
-\]
-We have that
-\begin{align*}
-\sum_{t=1}^{n} &\langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)
-= \langle \bg_n, \bw_n \rangle + \sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
-&\geq \langle \bg_n, \bw_n \rangle + f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}^2\right) - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
-&= \frac{u_n}{\norm{\btheta_{n-1}}} \langle \bg_n, \btheta_{n-1} \rangle + f_{n-1}\left( \norm{\btheta_{n-1}}^2\right) - f_n\left( \norm{\btheta_{n-1}}^2 + \norm{\bg_n}^2 - 2 \langle \btheta_{n-1}, \bg_n \rangle \right)\\
-&\geq f_{n-1}\left( \norm{\btheta_{n-1}}^2\right)+ \min\left(u_n z_n  - f_n\left( (\norm{\btheta_{n-1}} + z_n)^2 \right), -u_n z_n  - f_n\left( (\norm{\btheta_{n-1}} - z_n)^2 \right)\right)\\
-&\geq 0,
-\end{align*}
-where the first inequality comes from the induction hypothesis, the second one because we take the minimum of a concave function and the last one by the hypothesis on the 1-dimensional betting strategy.
-\end{proof}
-Notice that the theorem includes the 1-dimensional case, so the assumption \eqref{eq:1_d_hp} allows to prove guarantees for 1-dimensional and Hilbert spaces.
 
 To summarize, we have that regret minimization in OLO is equivalent to reward maximization. Moreover, optimal betting algorithms correspond to adaptive OLO algorithms, that guarantees automatic model selection when used in infinite dimensional spaces. In the next section we will explain what are the difficulties in designing an optimal betting strategy.
