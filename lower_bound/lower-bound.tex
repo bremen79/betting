@@ -157,6 +157,7 @@ We have
 Equipped with the lower bound on the tail, we prove an upper bound on the maximum of Gaussians.
 
 \begin{theorem}[Lower Bound on Maximum of Independent Gaussians]
+\label{theorem:maximum-of-gaussians}
 Let $X_1, X_2, \dots, X_d$ be independent Gaussian random variables $N(0,\sigma^2)$. For any $d \ge 2$,
 \begin{align}
 \Exp \left[\max_{1 \le i \le d} X_i\right]
@@ -185,7 +186,7 @@ It remains to lower bound $\Pr[A]$, which we do as follows
 \begin{align}
 \Pr[A]
 & = 1 - \Pr[\overline{A}] \notag \\
-& = 1 - \prod_{i=1}^d \Pr \left[ X_i \le C \sigma \sqrt{\ln d} \right]  \notag \\
+& = 1 - \left( \Pr \left[ X_1 \le C \sigma \sqrt{\ln d} \right] \right)^d  \notag \\
 & = 1 - \left(1 - \Pr\left[ X_1 > C \sigma \sqrt{\ln d} \right] \right)^d \notag \\
 & \ge 1 - \exp\left(-d \cdot \Pr\left[X_1 \ge C \sigma \sqrt{\ln d} \right]\right) \notag \\
 & \ge 1 - \exp\left(-d \exp\left(-\frac{C^2 \ln d}{2}\right) \frac{1}{\sqrt{2\pi}C \sqrt{\ln d}+2} \right) \notag \\
@@ -292,16 +293,16 @@ Since $e^{-nD(1\|\frac{1}{2})} = 2^{-n}$ and $x=\sqrt{n} \ge 1$, it's easy to se
 \end{proof}
 
 For $k=n/2 + xn$, the divergence $D \left( \frac{k}{n} \middle\| \frac{1}{2} \right) = D \left(\frac{1}{2} + x \| \frac{1}{2} \right)$ can be approximated by $2x^2$.
-We define function the $\psi:[-\frac{1}{2},\frac{1}{2}] \to \R$ as the ratio of this divergece and the approximation:
+We define function the $\psi:[-\frac{1}{2},\frac{1}{2}] \to \R$ as 
 $$
 \psi(x) = \frac{D \left(\frac{1}{2}+x \middle\| \frac{1}{2} \right)}{2 x^2} \; .
 $$
-The function $\psi(x)$ satisfies the following properties
+It is the ratio of the divergence and the approximation. The function $\psi(x)$ satisfies the following properties:
 \begin{itemize}
 \item $\psi(x) = \psi(-x)$
-\item $\psi(x)$ is decreasing on $[-\frac{1}{2}, 0]$ and increasing on $[0, \frac{1}{2}]$.
+\item $\psi(x)$ is decreasing on $[-\frac{1}{2}, 0]$ and increasing on $[0, \frac{1}{2}]$
 \item minimum value is $\psi(0) = 1$
-\item maximum value is $\psi(0.5) = \psi(-0.5) = 2 \ln(2) \le 1.3863$
+\item maximum value is $\psi(\frac{1}{2}) = \psi(-\frac{1}{2}) = 2 \ln(2) \le 1.3863$
 \end{itemize}
 
 As in the Gaussian case, for the Binomial case we need lower bound on the
@@ -309,6 +310,7 @@ probability tail.  We will use the next Theorem from \cite{nOrabona13}, whose
 proof is the Appendix for completeness.
 
 \begin{corollary}
+\label{corollary:binomial}
 Let $n \ge 1$ be a positive integer and let $t \in [1, \frac{n}{2} + 1]$ be a real number. Then $B_n \sim B(n, \frac{1}{2})$ satisfies
 $$
 \Pr \left[ B_n \ge \frac{1}{2} n + t - 1 \right] \ge \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{t}{n}\right) \frac{t^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 t}{\sqrt{n}} + 2} \; .
@@ -327,84 +329,87 @@ By Theorem~\ref{theorem:binomial} and Lemma~\ref{lemma:boyd}, we have
 \end{align*}
 \end{proof}
 
-\begin{theorem}
+\begin{theorem}[Lower Bound on Maximum of Independent Symmetric Random Walks]
 \label{theorem:maximum-of-random-walks}
-Let $Z^{(n)}_1, Z^{(n)}_2, \dots, Z^{(n)}_d$ be $d$ independent symmetric random walks of length $n$. If $2 \le d \le \exp(\frac{n}{4})$ and $n\ge 10$,
+Let $Z^{(n)}_1, Z^{(n)}_2, \dots, Z^{(n)}_d$ be $d$ independent symmetric random walks of length $n$. If $2 \le d \le \exp(\frac{n}{3})$ and $n \ge 6$,
 \begin{align*}
 \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i \right]
-& \ge \frac{1}{\sqrt{\psi\left(\frac{1.6\sqrt{\ln d}}{2 \sqrt{n}}\right)}}\sqrt{n}\left(1 - \exp\left(-\frac{\sqrt{\ln d}}{3.1 \sqrt{2\pi}}\right)\right) \left(\sqrt{2 \ln d -\ln \ln d}-1\right) -\sqrt{n} \\
-& \ge 0.13 \sqrt{n \ln d} - 2 \sqrt{n}.
+& \ge \frac{1 - \exp\left(-\frac{\sqrt{\ln d}}{3.1 \sqrt{2\pi}}\right)}{\sqrt{\psi\left(\frac{1.6\sqrt{\ln d}}{2 \sqrt{n}}\right)}} \sqrt{n} \left(\sqrt{2 \ln d -\ln \ln d}-1\right) - \sqrt{n} \\
+& \ge 0.13 \sqrt{n \ln d} - 2 \sqrt{n} \; .
 \end{align*}
 \end{theorem}
 
 \begin{proof}
-Define the event $A$ equal to the case that at least one of the $X_i$ is greater or equal to $C \sqrt{n \ln d}-2$ where $C = C(d,n) = \frac{1}{\sqrt{\psi\left(\frac{\sqrt{\ln d}}{2 \sqrt{n}}\right)}}\sqrt{2-\frac{\ln \ln d}{\ln d}}$.
-We have
+Define the event $A$ equal to the case that at least one of the $Z^{(n)}_i$ is greater or equal to $C \sqrt{n \ln d}-2$ where
+$C = C(d,n) = \frac{1}{\sqrt{\psi\left(\frac{\sqrt{\ln d}}{2 \sqrt{n}}\right)}}\sqrt{2-\frac{\ln \ln d}{\ln d}}$.
+
+We upper and lower bound $C(d,n)$. Denote by $f(d)=\sqrt{2-\frac{\ln \ln d}{\ln d}}$
+and notice that $C(d,n) = \frac{1}{\sqrt{\psi\left( \frac{\sqrt{\ln d}}{2 \sqrt{n}}\right)}} f(d)$.  It
+suffices to bound $f(d)$ and $\psi( \frac{\sqrt{\ln d}}{2 \sqrt{n}})$.
+We already know that $1 \le \psi(x) \le 2 \ln(2)$ for all $x \in [-\frac{1}{2}, \frac{1}{2}]$
+and $\frac{\sqrt{\ln d}}{2\sqrt{n}} \in [0,\frac{1}{2}]$ for $n \ge \ln d > 0$.
+The function $f(d)$ is decreasing on $(1,e^e]$,
+increasing on $[e^e, \infty)$, and $\lim_{d \to \infty} f(d) = \sqrt{2}$. It has
+unique minimum at $e^e$. Thefore, $f(d) \ge f(e^e) = \sqrt{2 - \frac{1}{e}} \ge 1.08$
+for all $d \in (1,\infty)$.  Similarly, from unimodality of $f(d)$ we have that
+$f(d) \le \max\{\sqrt{2}, f(2)\} = f(2) \le 1.6$ for all $d \in [2, \infty)$.
+From this we can conclude that if $n \ge \ln d > 0$,
+\begin{equation}
+\label{equation:bound-on-constant}
+1.08 \le \frac{f(e^e)}{\sqrt{2 \ln 2}} \le C(d,n) \le f(2) \le 1.6 \; .
+\end{equation}
+If $n \ge 6$ and $2 \le d \le \exp(n/3)$ this implies that
+\begin{equation}
+\label{equation:conditions}
+1 < \frac{C \sqrt{n \ln d}}{2} < \frac{n}{2} + 1 \; .
+\end{equation}
+
+Recalling the definition of event $A$, we have
 \begin{align*}
 \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i \right]
 & = \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i ~ \middle|~ A \right] \cdot \Pr[A] + \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i ~\middle|~ \overline{A} \right] \cdot \Pr \left[ \overline{A} \right] \\
 & \ge \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i ~\middle|~ A \right] \cdot \Pr[A] + \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i ~\middle|~ \overline{A} \right] \cdot \Pr \left[ \overline{A} \right]\\
 & \ge \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i ~\middle|~ A \right] \cdot \Pr[A] + \Exp\left[ Z^{(n)}_1 ~\middle|~ \overline{A} \right] \cdot \Pr \left[ \overline{A} \right] \\
 & = \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i ~\middle|~ A \right] \cdot \Pr[A] + \Exp \left[ Z^{(n)}_1 ~\middle|~ Z^{(n)}_1 < C \sqrt{n \ln d} - 2 \right] \cdot \Pr \left[ \overline{A} \right]\\
-& \ge \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i ~\middle|~ A \right] \cdot \Pr[A] + \Exp \left[ Z^{(n)}_1 ~\middle|~ Z^{(n)}_1 \le 0 \right] \cdot \Pr \left[ \overline{A} \right] \\
-& \ge (C \sigma \sqrt{n \ln d} - 2) \Pr[A] + \Exp \left[ Z^{(n)}_1 ~\middle|~ Z^{(n)}_1 \le 0 \right] (1 - \Pr[A]) \; .
+& \ge \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i ~\middle|~ A \right] \cdot \Pr[A] + \Exp \left[ Z^{(n)}_1 ~\middle|~ Z^{(n)}_1 \le 0 \right] \cdot \Pr \left[ \overline{A} \right] & \text{(by \eqref{equation:conditions})} \\
+& \ge (C \sqrt{n \ln d} - 2) \Pr[A] + \Exp \left[ Z^{(n)}_1 ~\middle|~ Z^{(n)}_1 \le 0 \right] (1 - \Pr[A]) \; .
 \end{align*}
 
-First, we lower bound $\Exp \left[ Z^{(n)}_1 ~\middle|~ Z^{(n)}_1 \le 0 \right]$. Using the fact that $Z^{(n)}_1$ is symmetric and has zero mean, we have
+We lower bound $\Exp \left[ Z^{(n)}_1 ~\middle|~ Z^{(n)}_1 \le 0 \right]$. Using the fact that distribution of $Z^{(n)}_1$ is symmetric and has zero mean,
 \begin{align*}
 \Exp \left[ Z^{(n)}_1 ~\middle|~ Z^{(n)}_1 \le 0 \right]
 & = \sum_{k=-n}^0 k \cdot \Pr[Z^{(n)}_1 = k ~|~ Z^{(n)}_1 \le 0] \\
 & = \frac{1}{\Pr[Z^{(n)}_1 \le 0]} \sum_{k=-n}^0 k \cdot \Pr[Z^{(n)}_1 = k] \\
-& \ge 2 \sum_{k=-n}^0 k \cdot \Pr[Z^{(n)}_1 = k] \\
-& = - \sum_{k=-n}^n |k| \cdot \Pr[Z^{(n)}_1 = k] \\
+& \ge 2 \sum_{k=-n}^0 k \cdot \Pr[Z^{(n)}_1 = k] & \text{(by symmetry of $Z^{(n)}_1$)} \\
+& = - \sum_{k=-n}^n |k| \cdot \Pr[Z^{(n)}_1 = k] & \text{(again, by symmetry of $Z^{(n)}_1$)} \\
 & = - \Exp[|Z^{(n)}_1|] \\
 & = - \Exp \left[ \sqrt{ \left( Z^{(n)}_1 \right)^2} \right] \\
-& \ge - \sqrt{\Exp \left[ \left( Z^{(n)}_1 \right)^2 \right]} \\
+& \ge - \sqrt{\Exp \left[ \left( Z^{(n)}_1 \right)^2 \right]} & \text{(by concavity of $\sqrt{\cdot}$)} \\
+& = - \sqrt{\Var \left( Z^{(n)}_1 \right)} \\
 & = -\sqrt{n}.
 \end{align*}
 
-
-Before we continue, let us upper and lower bound $C(d,n)$. Let
-$f(d)=\sqrt{2-\frac{\ln \ln d}{\ln d}}$ and notice that $C(d,n) =
-\frac{1}{\sqrt{\psi\left( \frac{\sqrt{\ln d}}{2 \sqrt{n}}\right)}} f(d)$.  It
-suffices to bound $f(d)$ and $\psi( \frac{\sqrt{\ln d}}{2 \sqrt{n}})$.
-We already know that $1 \le \psi(x) \le 2 \ln(2)$ for all $x \in [-\frac{1}{2}, \frac{1}{2}]$
-and by assumption on $n$ and $d$, $\frac{\sqrt{\ln d}}{2\sqrt{n}} \in [0,\frac{1}{2}]$.
-The function $f(d)$ is decreasing on $(1,e^e]$,
-increasing on $[e^e, \infty)$, and $\lim_{d \to \infty} f(d) = \sqrt{2}$. It has
-unique minimum at $e^e$. Thefore, $f(d) \ge f(e^e) = \sqrt{2 - \frac{1}{e}} \ge 1.08$
-for all $d \in (1,\infty)$.  Similarly, from unimodality of $f(d)$ we have that
-$f(d) \le \max\{\sqrt{2}, f(2)\} = f(2) \le 1.6$ for all $d \in [2, \infty)$.
-From this we can conclude that for all $n \ge 1$ and all $d \ge 2$,
-$$
-1.08 \le \frac{f(e^e)}{\sqrt{2 \ln 2}} \le C(d,n) \le f(2)\le 1.6 \; .
-$$
-Notice that the condition on $n$ and $d$ assures that $\frac{C \sqrt{n \ln d}}{2}>1$ and $\frac{C \sqrt{n \ln d}}{2}\le \frac{1}{2} n - 1$.
-
 Now let us focus on $\Pr[A]$. Note that $B_n = \frac{Z_1 + n}{2}$ is a binomial random variable with distribution $B(n,\frac{1}{2})$.
-
-As in the Gaussian case, we can lower bound $\Pr[A]$ as
+Similar to the proof of Theorem~\ref{theorem:maximum-of-gaussians}, we can lower bound $\Pr[A]$ as
 \begin{align*}
 \Pr[A]
 & = 1 - \Pr \left[ \overline{A} \right] \\
-& = 1 - \Pr \left[ Z^{(n)}_1 < C \sqrt{n \ln d} - 2 \right]^d \\
-& = 1 - \left(1 - \Pr\left[Z^{(n)}_1\ge C \sqrt{n \ln d}-2 \right] \right)^d \\
-& \ge 1 - \left(1 - \Pr\left[B_n \ge \frac{C \sqrt{n \ln d}}{2} +\frac{n}{2} - 1 \right] \right)^d \\
-& \ge 1-\exp\left(-d \cdot \Pr \left[ B_n \ge \frac{C \sqrt{n \ln d}}{2} +\frac{n}{2}-1 \right] \right) \\
-& \ge 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{C \sqrt{\ln d}}{2 \sqrt{n}}\right)}}{C \sqrt{2\pi} \sqrt{\ln d}+2}\right) \\
-& \ge 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\ln d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\ln d}+2}\right).
+& = 1 - \left(\Pr \left[ Z^{(n)}_1 < C \sqrt{n \ln d} - 2 \right] \right)^d \\
+& = 1 - \left(\Pr \left[ B_n < \frac{n}{2} + \frac{C \sqrt{n \ln d}}{2} - 1 \right] \right)^d \\
+& = 1 - \left(1 - \Pr\left[B_n \ge \frac{C \sqrt{n \ln d}}{2} +\frac{n}{2} - 1 \right] \right)^d \\
+& \ge 1 - \exp\left(-d \cdot \Pr \left[ B_n \ge \frac{C \sqrt{n \ln d}}{2} +\frac{n}{2} - 1 \right] \right) & \text{(since $1 - x \le e^x$)} \\
+& \ge 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{C \sqrt{\ln d}}{2 \sqrt{n}}\right)}}{C \sqrt{2\pi} \sqrt{\ln d}+2}\right) & \text{(by Corollary \ref{corollary:binomial} and \eqref{equation:conditions})} \\
+& \ge 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\ln d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\ln d}+2}\right) & \text{(by \eqref{equation:bound-on-constant}).}
 \end{align*}
-We now use the fact that $C=\frac{1}{\sqrt{\psi\left(\frac{1.6 \sqrt{\ln d}}{2 \sqrt{n}}\right)}}\sqrt{2- \frac{\ln \ln d}{\ln d}}$ that implies $d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\ln d}}{2 \sqrt{n}}\right)}=\ln d$. Hence, we obtain
+We now use the fact that $C=\frac{1}{\sqrt{\psi\left(\frac{1.6 \sqrt{\ln d}}{2 \sqrt{n}}\right)}}\sqrt{2- \frac{\ln \ln d}{\ln d}}$ implies that $d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\ln d}}{2 \sqrt{n}}\right)}=\ln d$. Hence, we obtain
 \begin{align*}
 \Pr[A]
 & \ge 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\ln d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\ln d}+2}\right) \\
 & = 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) \ln d}{1.6 \sqrt{2\pi} \sqrt{\ln d}+2}\right) \\
 & \ge 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) \sqrt{\ln d}}{2.6 \sqrt{2\pi}}\right)\\
-& \ge 1 - \exp\left(-\frac{\sqrt{\ln d}}{3.1 \sqrt{2\pi}}\right),
+& \ge 1 - \exp\left(-\frac{\sqrt{\ln d}}{3.1 \sqrt{2\pi}}\right)
 \end{align*}
-where in the last equality we used the fact that $\sqrt{2\pi} \sqrt{\ln d} > 2$ for $d\ge 2$.
-
-Putting all together, we have the stated bound.
+where in the last equality we used the fact that $\sqrt{2\pi} \sqrt{\ln d} > 2$ for $d\ge 2$. Putting all together, we have the stated bound.
 \end{proof}
 
 \section{Learning with Expert Advice}
@@ -420,14 +425,14 @@ action in hind-sight is called \emph{regret}.  Formally,
 $$
 \Regret^{(d)}(n) = \sum_{t=1}^n \ell_{t,I_t} - \min_{1 \le i \le d} \sum_{t=1}^n \ell_{t,i} \; .
 $$
-There are algorithms that given the number of rounds $n$ as an input achieve regret no more than $\sqrt{\frac{n}{2} \log d}$
+There are algorithms that given the number of rounds $n$ as an input achieve regret no more than $\sqrt{\frac{n}{2} \ln d}$
 for any sequence of losses.
 
 \begin{theorem}
-Let $d \ge 2$ and $n \ge 4 \ln d$. For any algorithm for learning with expert advice there exists a sequence
+Let $n \ge 6$ and $2 \le d \le \exp(\frac{n}{3})$. For any algorithm for learning with expert advice there exists a sequence
 of losses $\ell_{t,i} \in \{0,1\}$, $1 \le i \le d$, $1 \le t \le n$, such that
 $$
-\Regret^{(d)}(n) \ge \frac{1}{2}\frac{1}{\sqrt{\psi\left(\frac{1.6 \sqrt{\ln d}}{2 \sqrt{n}}\right)}}\sqrt{n}\left(1 - \exp\left(-\frac{\sqrt{\ln d}}{3.1 \sqrt{2\pi}}\right)\right) \left(\sqrt{2 \ln d - \ln \ln d}-1\right) -\frac{1}{2}\sqrt{n} \; .
+\Regret^{(d)}(n) \ge \frac{1 - \exp\left(-\frac{\sqrt{\ln d}}{3.1 \sqrt{2\pi}}\right)}{\sqrt{\psi\left(\frac{1.6 \sqrt{\ln d}}{2 \sqrt{n}}\right)}} \frac{\sqrt{n}}{2} \left(\sqrt{2 \ln d - \ln \ln d}-1\right) - \frac{\sqrt{n}}{2} \; .
 $$
 \end{theorem}
 
@@ -436,8 +441,7 @@ Proceeding as in the proof of Theorem~3.7 in~\citep{Cesa-BianchiL06} we only nee
 $$
 \Regret^{(d)}{(n)} \ge \frac{1}{2} \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i \right]
 $$
-where $Z^{(n)}_1, Z^{(n)}_2, \dots, Z^{(n)}_d$ are independent symmetric random walks of length $n$. Theorem~\ref{theorem:maximum-of-random-walks} implies
-the first part statement. For the second statement, we use the fact that $\lim_{n \to \infty} \psi\left(\frac{1.6 \sqrt{\ln d}}{2 \sqrt{n}}\right) = 1$.
+where $Z^{(n)}_1, Z^{(n)}_2, \dots, Z^{(n)}_d$ are independent symmetric random walks of length $n$. The theorem follows from Theorem~\ref{theorem:maximum-of-random-walks}.
 \end{proof}
 
 The theorem proves a non-asymptotic lower bounds, while at the same time
