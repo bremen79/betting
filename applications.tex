@@ -126,7 +126,7 @@ Ignoring the fact that the bound in Theorem~\ref{theo:self_tune} is only in expe
 The only missing piece is to prove that the existence of the \ac{MBA} guarantees to have an algorithm that satisfies the regret guarantee in the hypothesis of Theorem~\ref{theo:self_tune}. Indeed, we have the following Theorem.
 \begin{theorem}
 \label{theo:regret_pistol}
-Assume that \ref{assumption:1-d_algo} holds.
+Assume that \ref{assumption:1-d_algo} holds and that the function $f$ is exponential in his first argument.
 Then there exists an algorithm, that uses the \ac{MBA} as a subroutine, that guarantees $Regret_n(\bu)=\scO\left(\norm{\bu}\sqrt{n \ln(n)}\right)$.
 \end{theorem}
 

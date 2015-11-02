@@ -4,15 +4,19 @@
 
 First we state some technical lemmas that will be used in the following proofs.
 
+Define the Lambert function $W(x):\R\rightarrow\R$ as the one that satisfies the equality\footnote{For $x<0$ the Lambert function is multivalued. Hence, to avoid complication and because we only need positive arguments, we will define it only for positive values of $x$.}
+\begin{equation}
+\label{eq:lambert}
+x=W(x) \exp \left(W(x)\right), \ \forall x\geq0.
+\end{equation}
+It satisfies the following properties.
+%
 \begin{lemma}
-The Lambert function satisfies $W(x) \geq 0.6321 \log(x+1), \forall x\geq0$.
+The Lambert function satisfies $0.6321 \log(x+1) \leq W(x) \leq \log(x+1), \forall x\geq0$.
 \end{lemma}
+%
 \begin{proof}
-The Lambert function satisfies
-\[
-x=W(x) \exp \left(W(x)\right).
-\]
-Hence,
+We first prove the lower bound. From \eqref{eq:lambert} we have
 \begin{align}
 W(x) &= \log\left(\frac{x}{W(x)}\right) \label{eq:lm_lambert_1} \\
 &= \log\left(\frac{x}{\log(x/W(x))}\right). \label{eq:lm_lambert_1b}
@@ -51,6 +55,12 @@ Numberically, $b=1.71825...$, so
 \[
 W(x) \geq 0.6321 \log(x+1)~. \qedhere
 \]
+
+For the upper bound, we use Theorem~2.3 in \cite{hoorfar2008inequalities}, that says that
+\[
+W(x) \leq \log\frac{x+C}{1+\log(C)}, \quad \forall x> -\frac{1}{e}, \ C>\frac{1}{e}.
+\]
+Setting $C=1$, we obtain the stated bound.
 \end{proof}
 
 \begin{lemma}
@@ -129,9 +139,6 @@ The statement is readily proved using the inequality $a\,b \leq \frac{a^2}{\lamb
 \subsection{Proof of Theorem~\ref{theo:regret_pistol}}
 \begin{proof}
 From Theorem~\ref{thm:rrdual} and \ref{theo:hilbert_reward}, we have that
-\[
-
-\]
 \end{proof}
 
 
