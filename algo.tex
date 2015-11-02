@@ -1,4 +1,4 @@
-\section{The Betting Algorithm for Continous Coins}
+\section{The Master Betting Algorithm for Continous Coins}
 \label{sec:algo}
 
 \begin{algorithm}[ht]
@@ -7,20 +7,21 @@
     \STATE{\bfseries Parameters:} $a>2,\delta>1$
     \STATE{\bfseries Initialize:} $\gain_0=\epsilon,\sg_0=\delta$
     \FOR{$t=1,2,\dots$}
+    \STATE{Receive $\theta_{t-1}$ and $\sg_{t-1}$}
     \STATE{Calculate fraction and direction to bet: $\beta_t=2 \, S\left(\frac{4 \theta_{t-1}}{a (\sg_{t-1} + 1)}\right)-1$}
-    \STATE{Bet $w_t=\beta_t \gain_{t-1}$}
-    \STATE{Win (or lose) $w_t g_t$}
-    \STATE{Update your money: $\gain_t=\gain_{t-1}+w_t g_t$}
-    \STATE{Update $\theta_t$: $\theta_t=\theta_{t-1}+g_t$}
-    \STATE{Update $\sg_t$: $\sg_t=\sg_{t-1}+|g_t|$}
+    \STATE{Bet $b_t=\beta_t \gain_{t-1}$}
+    \STATE{Win (or lose) $b_t z_t$}
+    \STATE{Update your money: $\gain_t=\gain_{t-1}+b_t z_t$}
+    %\STATE{Update $\theta_t$: $\theta_t=\theta_{t-1}+z_t$}
+    %\STATE{Update $\sg_t$: $\sg_t=\sg_{t-1}+|z_t|$}
     \ENDFOR
   }
   \end{algorithmic}
-  \caption{Continous Coin Betting (COCOB)}
+  \caption{Master Betting Algorithm}
   \label{alg:cocob}
 \end{algorithm}
 
-As said in Section~\ref{}, portfolio selection can be used to optimally solve betting and, as a consequence, stochastic optimization and self-tuning of regularized \ac{ERM}. However, no simple algorithm is known for portfolio selection.
+As said in Section~\ref{sec:appl}, portfolio selection can be used to optimally solve betting and, as a consequence, stochastic optimization and self-tuning of regularized \ac{ERM}. However, no simple algorithm is known for portfolio selection.
 Hence, in this section we show how a very simple algorithm can achieve a bound close to the optimal one.
 
 The first observation is that the reward of the oracle fixed betting strategy in Theorem~\ref{oracle_fraction} grows exponential in time depending on $D\left(\frac{1}{2}+\frac{\sum_{t=1}^n g_t}{2 n}\middle\|\frac{1}{2}\right)$. If we try to achieve exactly this term, we are (probably) doomed to use portfolio selection algorithms or to assume a binary coin.
@@ -31,18 +32,41 @@ D\left(\frac{1}{2}+\frac{\sum_{t=1}^n g_t}{2 n}\middle\|\frac{1}{2}\right) \geq 
 \]
 where the approximation is very good around $x=0$ and it is of the order of $\scO(\frac{(\sum_{t=1}^n g_t)^4}{ n^4})$. Indeed, we show below that it is possible to design a simple algorithm that has an exponential reward that depends on this quantity.
 
-The \ac{COCOB} algorithm is shown in Algorithm~\ref{alg:cocob} and we can prove the following guarantee for its performance.
+The \ac{MBA} is shown in Algorithm~\ref{alg:cocob} and we can prove the following guarantee for its performance.
 %Without loss of generality, we will assume that $g_t$ are between $[-1,1]$.
 %
 \begin{theorem}
 \label{theo:cocob}
-Let $a\geq2$ and start with an amount of money equal to $\epsilon$. Bet at each round a quantity equal to
-$\gain_{t-1} \left(2 \, S\left(\frac{4 \theta_{t-1}}{a (\sg_{t-1} + 1)}\right)-1\right)$, where $S:\R\rightarrow(0,1)$ and $S(x)=\frac{1}{1+exp(-x)}$ and receive the outcome $g_t \in [-1,1]$. Then
-\begin{align*}
-\gain_{n} 
-\geq \epsilon \exp\left(\frac{\theta_{n}^2}{a \sg_{n}} - \sum_{i=1}^{n} \frac{|g_i|}{a( \sg_{i-1} + 1) } \right)
-\geq \epsilon \exp\left(\frac{\theta_{n}^2}{a \sg_{n}} - \frac{1}{a} \ln \left(\sum_{t=1}^n \frac{|g_i|}{\delta}+1\right) \right)~.
-\end{align*}
+Let $a\geq2$. Then the function 
+\[
+f(x,\{z_1, \ldots, z_t\}) := \exp\left(\frac{x^2}{a (1+\delta+\sum_{i=1}^{t-1} z_i)} - \sum_{i=1}^{n} \frac{z_i}{a( 1+\delta+\sum_{j=1}^{i-1} z_j) } \right)
+\]
+and the betting 
+\[
+b_t:= \gain_{t-1} \left(2 \, S\left(\frac{4 x}{a (1+\delta+\sum_{i=1}^{t-1} z_i)}\right)-1\right),
+\]
+satisfy Assumption~\ref{assumption:1-d_algo}.
+% 
+% and start with an amount of money equal to $\epsilon$. Bet at each round a quantity equal to
+% $\gain_{t-1} \left(2 \, S\left(\frac{4 \theta_{t-1}}{a (\sg_{t-1} + 1)}\right)-1\right)$, where $S:\R\rightarrow(0,1)$ and $S(x)=\frac{1}{1+exp(-x)}$ and receive the outcome $g_t \in [-1,1]$. Then
+% \begin{align*}
+% \gain_{n} 
+% \geq \epsilon \exp\left(\frac{\theta_{n}^2}{a \sg_{n}} - \sum_{i=1}^{n} \frac{|g_i|}{a( \sg_{i-1} + 1) } \right)
+% \geq \epsilon \exp\left(\frac{\theta_{n}^2}{a \sg_{n}} - \frac{1}{a} \ln \left(\sum_{t=1}^n \frac{|g_i|}{\delta}+1\right) \right)~.
+% \end{align*}
 \end{theorem}
 %
-Notice that the $a$ regolates the trade-off between the first and second term. When $a=2$, we have a 
+Notice that the $a$ regolates the trade-off between the first and second term. When $a=2$, we have a \textbf{???}
+
+\begin{cor}
+Set $a=2$ in Algorithm~\ref{alg:cocob}. Then we have that the following hold
+
+\begin{itemize}
+\item Feed Algorithm~\ref{alg:cocob} with $\sg_{t-1}=\sum_{i=1}^{t-1} |g_t| + \delta + 1$ and $\theta_{t-1}=|\sum_{i=1}^{t-1} g_i|$.
+Algorithm~\ref{alg:cocob} guarantees an exponential reward in $\frac{(\sum_{t=1}^n g_t)^2}{2 \sum_{t=1}^n |g_t|}$ and a regret w.r.t. any real number $u$ of $\tilde{\scO}(|u| \sqrt{\sum_{t=1}^n |g_t|})$.
+
+\item Feed Algorithm~\ref{alg:cocob} with $\sg_{t-1}=\sum_{i=1}^{t-1} \norm{\bg_t} + \delta + 1$ and $\theta_{t-1}=\norm{\btheta_{t-1}}$.
+Predicting with $\bw_t=b_t \frac{\sum_{i=1}^t \bg_t}{\norm{\sum_{i=1}^t \bg_t}}$ guarantees a regret w.r.t. any $\bu \in \fH$ of $\tilde{\scO}(\norm{\bu} \sqrt{\sum_{t=1}^n \norm{\bg_t}})$ and an exponential reward in $\frac{(\sum_{t=1}^n \bg_t)^2}{2 \sum_{t=1}^n \norm{\bg_t}}$.
+
+\end{itemize}
+\end{cor}

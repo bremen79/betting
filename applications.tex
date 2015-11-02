@@ -12,10 +12,10 @@ In this section we will show the connection between portfolio selection, betting
 We will assume that a 1-dimensional algorithm exists, that satisfies the following assumption.
 \begin{assumption}
 \label{assumption:1-d_algo}
-Assume that there exists a sequence of functions $f:\R \times Set \rightarrow \R$ convex in the first argument and an algorithm, that we will denote by \ac{MBA}, that generates $u_t$ using in input $x_{t-1} \in \R$, $z_1, \ldots, z_{t-1} \in [-1,1]$, such that the following holds
+Assume that there exists a sequence of functions $f:\R \times Set \rightarrow \R$ convex in the first argument and an algorithm, that we will denote by \ac{MBA}, that generates $b_t$, where $|b_t|\leq 1$, using in input $x_{t-1} \in \R$, $z_1, \ldots, z_{t-1} \in [-1,1]$, such that the following holds
 \begin{equation}
 \label{eq:1_d_hp}
-u_t z_t \geq f\left( (x_{t-1}+z_t)^2, \{|z_1|, \ldots, |z_t|\}\right)-f\left( x_{t-1}^2, \{|z_1|, \ldots, |z_{t-1}|\} \right), \ \ \forall z_{t} \in [-1,1]~.
+(1+b_t z_t) f\left( x_{t-1}^2, \{|z_1|, \ldots, |z_{t-1}|\} \right) \geq f\left( (x_{t-1}+z_t)^2, \{|z_1|, \ldots, |z_t|\}\right), \ \ \forall z_{t} \in [-1,1]~.
 \end{equation}
 \end{assumption}
 
@@ -38,7 +38,7 @@ Till now we have assumed to have a 1-dimensional betting algorithm, while the ap
   Assume that \ref{assumption:1-d_algo} holds.
   Let $\bg_t \in \fH$ an arbitrary sequence of vector, such that $\norm{\bg_t} \leq 1$ and define the vector $\btheta_t=\sum_{i=1}^{t} \bg_i$.
   Use the Algorithm in \ref{assumption:1-d_algo} with the sequence $x_{t-1}= \norm{\btheta_{t-1}}$.
-  Define a vectorial algorithm that at each step outputs $\bw_t = u_t \frac{\btheta_{t-1}}{\norm{\btheta_{t-1}}}$. Then the following holds
+  Define a vectorial algorithm that at each step outputs $\bw_t = b_t \frac{\btheta_{t-1}}{\norm{\btheta_{t-1}}} \gain_{t-1}$. Then the following holds
   \[
   \sum_{t=1}^n \langle \bg_t, \bw_t \rangle \geq f_n\left( \norm{\sum_{t=1}^n \bg_t}^2, \left\{\norm{\bg_1}, \ldots, \norm{\bg_n}\right\}\right)~.
   \]
@@ -55,11 +55,12 @@ Till now we have assumed to have a 1-dimensional betting algorithm, while the ap
   \]
   We have that
   \begin{align*}
-  \sum_{t=1}^{n} &\langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)
-  = \langle \bg_n, \bw_n \rangle + \sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
-  &\geq \langle \bg_n, \bw_n \rangle + f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}^2\right) - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
-  &= \frac{u_n}{\norm{\btheta_{n-1}}} \langle \bg_n, \btheta_{n-1} \rangle + f_{n-1}\left( \norm{\btheta_{n-1}}^2\right) - f_n\left( \norm{\btheta_{n-1}}^2 + \norm{\bg_n}^2 + 2 \langle \btheta_{n-1}, \bg_n \rangle \right)\\
-  &\geq f_{n-1}\left( \norm{\btheta_{n-1}}^2\right)+ \min\left(u_n \norm{g_n}  - f_n\left( (\norm{\btheta_{n-1}} + \norm{g_n})^2 \right), -u_n \norm{g_n}  - f_n\left( (\norm{\btheta_{n-1}} - \norm{g_n})^2 \right)\right)\\
+  \sum_{t=1}^{n} &\langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right) \\
+  &= \langle \bg_n, \bw_n \rangle + \sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
+  &= \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right)\sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
+  &\geq \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right) f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}^2\right) - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
+  &= \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right) f_{n-1}\left( \norm{\btheta_{n-1}}^2\right) - f_n\left( \norm{\btheta_{n-1}}^2 + \norm{\bg_n}^2 + 2 \langle \btheta_{n-1}, \bg_n \rangle \right)\\
+  &\geq \min_{r\in \{-1,1\}} \left(1+ r\, b_n \norm{\bg_n} \right) f_{n-1}\left( \norm{\btheta_{n-1}}^2\right) - f_n\left(( \norm{\btheta_{n-1}} + r \norm{\bg_n})^2\right)\\
   &\geq 0,
   \end{align*}
   where the first inequality comes from the induction hypothesis, the second one because we take the minimum of a concave function and the last one by the hypothesis on the \ac{MBA}.
@@ -106,10 +107,10 @@ Also, a regret bound can be transformed into a convergence guarantee for optimiz
 In particular, we have the following Theorem from~\citet{Cesa-BianchiCG04}.
 %
 \begin{theorem}
-Let $\bw_1, \cdots, \bw_n \in \fH$ the vector produced by an OLO algorithm $\mathcal{A}$ with a regret guarantee $R_A(n)$.
+Let $\bw_1, \cdots, \bw_n \in \fH$ the vector produced by an OLO algorithm $\mathcal{A}$ with a regret guarantee $Regret_n(\bu)$.
 Let $F:\fH\rightarrow\R$ a convex function, and fix the vectors $\bg_t$ to be unbiased estimate of the gradient of $F$ in $\bw_t$. Then, the following holds
 \[
-\E\left[F\left(\frac{1}{n} \bw_t\right)\right] \leq \frac{\E[R_A(n)]}{n}~.
+\E\left[F\left(\frac{1}{n} \bw_t\right)\right] \leq \frac{\E[Regret_n(\bu)]}{n}~.
 \]
 \end{theorem}
 
@@ -127,14 +128,26 @@ More rigorously, the follwing theorem holds.
 \begin{theorem}
 \label{theo:self_tune}
 Assume that there is an online algorithm whose $Regret_n(\bu)$ is $\scO\left(\norm{\bu}\sqrt{n \ln(n)}\right)$. Then the following holds
-\[
-\E\left[\RiskLoss\left(\frac{1}{T} \sum_{t=1}^n \bw_t\right)\right] \leq \tilde{\scO}\left(\inf_{\bu} \min_{\eta>0} \E[\RiskLoss(\bu)] + \frac{1}{\eta\,n}\norm{\bu}^2 +\eta] \right)~.
-\]
+\begin{equation}
+\label{eq:self_tune}
+\E\left[\RiskLoss\left(\frac{1}{T} \sum_{t=1}^n \bw_t\right)\right] \leq \tilde{\scO}\left(\inf_{\bu} \min_{\lambda>0} \E[\RiskLoss(\bu)] + \lambda \norm{\bu}^2 +\frac{1}{n \, \lambda} \right)~.
+\end{equation}
 % Let $\bw_1, \cdots, \bw_n \in \fH$ the vector produced by the PiSTOL algorithm.
 % Let $\ell:\R\rightarrow\R$ a convex and Lipschitz function, and fix the vectors $\bg_t$ to be unbiased estimate of the gradient of $F$ in $\bw_t$. Then, the rate of convergence of $\E\left[Risk_F\left(\frac{1}{n} \bw_t\right)\right]$ is the same of regularized ERM algorithm with the (unknown) optimal amount of regularization.
 \end{theorem}
+Compare this bound with a generalization bound you get from a regularized \ac{ERM} solution, e.g. the one in \citet{SridharanSSS09}.
+They prove that, with probability at least $1-\delta$, we have
+\begin{equation}
+\label{eq:fast_rate_srebro}
+\E\left[\RiskLoss\left(\hat{\bw}\right)\right] \leq \tilde{\scO}\left(\inf_{\bu} \E\left[\RiskLoss(\bu)\right] + \lambda \norm{\bu}^2 +\frac{\ln \frac{1}{\delta}}{\lambda \, n} \right),
+\end{equation}
+where 
+\begin{align*}
+\hat{\bw}=\argmin_{\bw} \frac{\lambda}{2}\norm{\bw}^2 + \sum_{t=1}^n f_t(\bw_t)~.
+\end{align*}
+The bound in \eqref{eq:fast_rate_srebro} is missing the minimum over $\lambda$, that is present in \eqref{eq:self_tune}. Hence, to obtain the optimal performance in the regularized \ac{ERM} setting we have to prove different values of $\lambda$, while in Theorem~\ref{theo:self_tune} the tuning is automatic.
 
-The missing piece now is to prove that the existence of the \ac{MBA} guarantees to have an algorithm that satisfies the regret guarantee in the hypothesis of Theorem~\ref{theo:self_tune}.
+The only missing piece is to prove that the existence of the \ac{MBA} guarantees to have an algorithm that satisfies the regret guarantee in the hypothesis of Theorem~\ref{theo:self_tune}. Indeed, we have the following Theorem.
 \begin{theorem}
 Assume that \ref{assumption:1-d_algo} holds.
 Then there exists an algorithm, that uses the \ac{MBA} as a subroutine, that guarantees $Regret_n(\bu)=\scO\left(\norm{\bu}\sqrt{n \ln(n)}\right)$.

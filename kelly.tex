@@ -59,6 +59,10 @@ They proved that this simple procedure guarantees an exponential reward as well,
 
 \textbf{Betting on a continuos coin.}
 Hence, the problem of betting on a coin is solved. However, the following problem cannot be solved with the Krichevsky-Trofimov forecaster. Consider the same betting scenario as before, with the only difference that the outcome of the coin is now a real number between $+1$ and $-1$. We can interpret this as a betting scenario in which the maximum amount of money that can be won or lost in each bet is fixed, but the actual winnings is shown only after the bet is done. The formalism is still the same, because $w_t g_t$ is still the amount of money won. However, the simple change makes this problem much harder than before. Indeed, to solve it we now have to use a Universal Portfolio algorithm. In fact, it is possible to consider the following equivalent problem. On each time step, we have to divide our wealth between two stocks. The gains given by the market are coded in the vector $m_t$ that are equal to $[1+g_t, 1-g_t]$. The algorithm will return a division of the wealth of the form $[a_t, 1-a_t]$. Then this can be used to bet on the continuos coin using $\beta_t=2 a_t-1$.
+It is easy to see that with this reduction the wealth of the portfolio selection is equal to the reward on the continuos coin, that is
+\[
+\gain_{t-1} \left((1+g_t) a_t+(1-g_t)(1-a_t)\right)=\gain_{t-1}+\gain_{t-1} \beta_t g_t~.
+\]
 %stocks as $[\frac{1+\beta_t}{2},\frac{1-\beta_t}{2}]$. It is immediate to show that in this way the wealth is multiplied by $1+\beta_t g_t$, as in \eqref{}.
 
 One problem with this reduction is that we cannot have an explicit lower bound on the reward. In fact, the Universal Portfolio algorithm only assures us that the reward is close to the optimal one, but there is no closed formula for the optimal reward.
