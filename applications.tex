@@ -7,7 +7,7 @@
 \caption{The links between the different areas and betting.}
 \end{figure}
 
-In this section we will show the connection between portfolio selection, betting on a continous coin, adaptive OLO, and automatic model selection. We will prove that, given an ``optimal'' betting algorithm, the same algorithm can be used to solve all the problems listed above.
+In this section we will show the connection between portfolio selection, betting on a continous coin, adaptive \ac{OLO}/\ac{OCO}, and automatic model selection. We will prove that, given an ``optimal'' betting algorithm, the same algorithm can be used to solve all the problems listed above.
 
 We will assume that a 1-dimensional algorithm exists, that satisfies the following assumption.
 \begin{assumption}
@@ -19,7 +19,7 @@ Assume that there exists a sequence of functions $f:\R \times Set \rightarrow \R
 \end{equation}
 \end{assumption}
 
-By induction is easy to prove a lower bound on the reward of such algorithm.
+By induction is easy to prove that such algorithm can indeed be used as a betting algorithm. 
 \begin{theorem}
 \label{theo:1-d_reward}
 Assume that Assumption \ref{assumption:1-d_algo} holds and use the \ac{MBA} with $x_{t-1}=|\sum_{i=1}^{t-1} g_i|$ and $z_t=g_t$.
@@ -29,10 +29,8 @@ Then, for any sequence of outcomes $g_t \in [-1,1]$, the following holds
 \]
 \end{theorem}
 
-Also, the \ac{MBA} can also be used to prove lower bound on the reward in Hilbert Spaces.
-\textbf{From 1-dimension to Hilbert spaces.}
-Till now we have assumed to have a 1-dimensional betting algorithm, while the applications were in Hilbert spaces. Here, we prove that assuming our 1-dimensional betting algorithm satisfies a certain property, we can make a reduction from Hilbert spaces to 1-dimension.
-
+Even more importantly, the \ac{MBA} can also be used to prove lower bound on the reward in Hilbert Spaces.
+%\noindent\textbf{From 1-dimension to Hilbert spaces.}
 \begin{theorem}
 \label{theo:hilbert_reward}
   Assume that \ref{assumption:1-d_algo} holds.
@@ -43,32 +41,10 @@ Till now we have assumed to have a 1-dimensional betting algorithm, while the ap
   \sum_{t=1}^n \langle \bg_t, \bw_t \rangle \geq f_n\left( \norm{\sum_{t=1}^n \bg_t}^2, \left\{\norm{\bg_1}, \ldots, \norm{\bg_n}\right\}\right)~.
   \]
 \end{theorem}
-\begin{proof}
-  For simplicity denote by $f_t(\cdot)=f\left(\cdot, \{\norm{\bg_1}, \ldots, \norm{\bg_t}\}\right)$.
-  We will prove the thesis by induction, hence assume that 
-  \[
-  \sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle \geq f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}^2\right),
-  \]
-  and we want to prove that 
-  \[
-  \sum_{t=1}^{n} \langle \bg_t, \bw_t \rangle \geq f_{n}\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)~.
-  \]
-  We have that
-  \begin{align*}
-  \sum_{t=1}^{n} &\langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right) \\
-  &= \langle \bg_n, \bw_n \rangle + \sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
-  &= \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right)\sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
-  &\geq \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right) f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}^2\right) - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
-  &= \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right) f_{n-1}\left( \norm{\btheta_{n-1}}^2\right) - f_n\left( \norm{\btheta_{n-1}}^2 + \norm{\bg_n}^2 + 2 \langle \btheta_{n-1}, \bg_n \rangle \right)\\
-  &\geq \min_{r\in \{-1,1\}} \left(1+ r\, b_n \norm{\bg_n} \right) f_{n-1}\left( \norm{\btheta_{n-1}}^2\right) - f_n\left(( \norm{\btheta_{n-1}} + r \norm{\bg_n})^2\right)\\
-  &\geq 0,
-  \end{align*}
-  where the first inequality comes from the induction hypothesis, the second one because we take the minimum of a concave function and the last one by the hypothesis on the \ac{MBA}.
-\end{proof}
-This latest theorem is useful to prove regret bounds in Hilbert spaces, as shown in the next Theorem.
+This theorem is useful to prove regret bounds in Hilbert spaces, as shown in the next part.
 
-
-\textbf{From Reward to Regret.}
+\vspace{0.2cm}\noindent\textbf{From Reward to Regret.}
+The reward and regret view on online learning are equivalent: an algorithm guarantees low regret iff it guarantees high reward. The following Theorem makes this claim rigorous. Notice that the algorithm is exactly the same in the two setting.
 \begin{theorem}[\citet{McMahanO14}]
   \label{thm:rrdual}
   Let $\Psi:\mathcal{H} \rightarrow (-\infty, +\infty]$ be a lower semicontinuos and convex function, with $dom \Psi \neq \emptyset$. An
@@ -82,8 +58,7 @@ This latest theorem is useful to prove regret bounds in Hilbert spaces, as shown
   \qquad Regret_n(\bu) \leq \Psi^*(\bu) + \epsilon \quad \quad \quad \textnormal{ for all } \bu \in \mathcal{H}~.
   \end{equation}
 \end{theorem}
-The above Theorem proves that the reward and regret view on online learning are equivalent: an algorithm guarantees low regret iff it guarantees high reward. Notice that the algorithm is exactly the same in the two setting.
-Hence a betting algorithm can be used for online learning and vice-versa. However, as it was already stressed in \citet{McMahanO14}, the reward view has the big advantage of having one variable less, the competitor $\bu$.
+So, a betting algorithm can be used for online learning and vice-versa. However, as it was already stressed in \citet{McMahanO14}, the reward view has the big advantage of having one variable less, the competitor $\bu$.
 Moreover, as we will show in Section~\ref{sec:algo}, designing and analysing algorithms in one of the two views could be much easier than in the other one.
 Coupling Theorem~\ref{thm:rrdual} with Theorem~\ref{theo:hilbert_reward}, we have the following Corollary.
 \begin{cor}
@@ -95,9 +70,8 @@ Regret_n(\bu) \leq f^*\left( \norm{\sum_{i=1}^{t-1} \bg_i}^2, \left\{\norm{\bg_1
 where the conjugation is taken w.r.t. the first argument of $f$.
 \end{cor}
 
-\textbf{\ac{OLO}, \ac{OCO} and Stochastic Convex Optimization.}
-
-From the property of the sub-gradient of a convex function we have that, for any sequence of convex functions $f_1, \ldots, f_n$ and vectors $\bw_1,\ldots, \bw_n$ if for all $t$ $\bg_t \in f_t(\bw_t)$, then
+\vspace{0.2cm}\noindent\textbf{\ac{OLO}, \ac{OCO} and Stochastic Convex Optimization.}
+From the property of the sub-gradient of a convex function we have that, for any sequence of convex functions $f_1, \ldots, f_n$, vectors $\bw_1,\ldots, \bw_n$, and $\bg_t \in f_t(\bw_t)$, we have
 \[
 Regret^{OCO}_n(\bu) = \sum_{t=1}^n \left( f_t(\bw_t) -f_t(\bu)\right) \leq \sum_{t=1}^n \langle \bw_t-\bu, \bg_t\rangle = Regret_n(\bu)~.
 \]
@@ -107,7 +81,8 @@ Also, a regret bound can be transformed into a convergence guarantee for optimiz
 In particular, we have the following Theorem from~\citet{Cesa-BianchiCG04}.
 %
 \begin{theorem}
-Let $\bw_1, \cdots, \bw_n \in \fH$ the vector produced by an OLO algorithm $\mathcal{A}$ with a regret guarantee $Regret_n(\bu)$.
+\label{theo:online_to_batch}
+Let $\bw_1, \cdots, \bw_n \in \fH$ the vector produced by an OLO algorithm with a regret guarantee $Regret_n(\bu)$.
 Let $F:\fH\rightarrow\R$ a convex function, and fix the vectors $\bg_t$ to be unbiased estimate of the gradient of $F$ in $\bw_t$. Then, the following holds
 \[
 \E\left[F\left(\frac{1}{n} \bw_t\right)\right] \leq \frac{\E[Regret_n(\bu)]}{n}~.
@@ -118,37 +93,39 @@ High probability bounds can be also easily obtained, assuming more on the functi
 The above theorem says that, if the regret grows, for example, as $\scO(\sqrt{n})$, the OLO algorithm can be used as a stochastic optimization algorithm with convergence in expectation $\scO(\frac{1}{\sqrt{n}})$.
 
 
-\textbf{Adaptive Algorithms for OLO and Self-tuning Model Selection.}
+\vspace{0.2cm}\noindent\textbf{Adaptive Algorithms for OLO and Self-tuning Model Selection.}
 In learning theory a key concept is the one of regularization. If the concept class we are learning is too rich, we need to constrain the complexity of the trained predictor. A regularizer is achieving this, biasing the classifieres towards a small region of the space. However, it is known that the optimal amount of regularization is completely problem-dependent. Hence, the regularizer becomes another parameter to be learned.
 
 Most, if not all, the machine learning algorithms uses a two-stages process to find the optimal amount of regularization. First, the algorithm is trained with a fixed regularization parameter. Second, its generalization performance is estimated together with a change in the regularization parameter. These two steps are repeated till convergence.
 
-Surprisingly enough, \citep{Orabona14} proved that the above procedure can be avoided with a stochastic learner. In particular, instead of solving a series of regularized ERM problems, with different amounts of regularization, one can use a simple prarameter-free stochastic gradient descent procedure over the training samples and achieve the same performance.
+Surprisingly enough, \citep{Orabona14} proved that, when the regularizer is the squared norm of the Hilbert space, the above lenghty procedure can be avoided with a stochastic learner.
+In particular, instead of solving a series of regularized ERM problems, with different amounts of regularization, one can use a simple prarameter-free stochastic gradient descent procedure over the training samples and achieve the same performance.
 More rigorously, the follwing theorem holds.
 \begin{theorem}
 \label{theo:self_tune}
 Assume that there is an online algorithm whose $Regret_n(\bu)$ is $\scO\left(\norm{\bu}\sqrt{n \ln(n)}\right)$. Then the following holds
 \begin{equation}
 \label{eq:self_tune}
-\E\left[\RiskLoss\left(\frac{1}{T} \sum_{t=1}^n \bw_t\right)\right] \leq \tilde{\scO}\left(\inf_{\bu} \min_{\lambda>0} \E[\RiskLoss(\bu)] + \lambda \norm{\bu}^2 +\frac{1}{n \, \lambda} \right)~.
+\E\left[\RiskLoss\left(\frac{1}{T} \sum_{t=1}^n \bw_t\right)\right] \leq \tilde{\scO}\left(\inf_{\bu} \min_{\lambda>0} \RiskLoss(\bu) + \lambda \norm{\bu}^2 +\frac{1}{n \, \lambda} \right)~.
 \end{equation}
 % Let $\bw_1, \cdots, \bw_n \in \fH$ the vector produced by the PiSTOL algorithm.
 % Let $\ell:\R\rightarrow\R$ a convex and Lipschitz function, and fix the vectors $\bg_t$ to be unbiased estimate of the gradient of $F$ in $\bw_t$. Then, the rate of convergence of $\E\left[Risk_F\left(\frac{1}{n} \bw_t\right)\right]$ is the same of regularized ERM algorithm with the (unknown) optimal amount of regularization.
 \end{theorem}
-Compare this bound with a generalization bound you get from a regularized \ac{ERM} solution, e.g. the one in \citet{SridharanSSS09}.
-They prove that, with probability at least $1-\delta$, we have
+To better appreciate this bound, it is useful to compare it with a generalization bound you get from a regularized \ac{ERM} solution, e.g. the one in \citet{SridharanSSS09}.
+There, they prove that, with probability at least $1-\delta$, we have
 \begin{equation}
 \label{eq:fast_rate_srebro}
-\E\left[\RiskLoss\left(\hat{\bw}\right)\right] \leq \tilde{\scO}\left(\inf_{\bu} \E\left[\RiskLoss(\bu)\right] + \lambda \norm{\bu}^2 +\frac{\ln \frac{1}{\delta}}{\lambda \, n} \right),
+\RiskLoss\left(\hat{\bw}\right) \leq \tilde{\scO}\left(\inf_{\bu} \RiskLoss(\bu) + \lambda \norm{\bu}^2 +\frac{\ln \frac{1}{\delta}}{\lambda \, n} \right),
 \end{equation}
 where 
 \begin{align*}
 \hat{\bw}=\argmin_{\bw} \frac{\lambda}{2}\norm{\bw}^2 + \sum_{t=1}^n f_t(\bw_t)~.
 \end{align*}
-The bound in \eqref{eq:fast_rate_srebro} is missing the minimum over $\lambda$, that is present in \eqref{eq:self_tune}. Hence, to obtain the optimal performance in the regularized \ac{ERM} setting we have to prove different values of $\lambda$, while in Theorem~\ref{theo:self_tune} the tuning is automatic.
+Ignoring the fact that the bound in Theorem~\ref{theo:self_tune} is only in expectation, the bound in \eqref{eq:fast_rate_srebro} is missing the minimum over $\lambda$, that is present in \eqref{eq:self_tune}. Hence, to obtain the optimal performance in the regularized \ac{ERM} setting we have to prove different values of $\lambda$, while in Theorem~\ref{theo:self_tune} the tuning is automatic. This is particular important in infinite dimensional Hilbert spaces, where the infimum could not be attained by a vector in the space~\cite{Orabona14}.
 
 The only missing piece is to prove that the existence of the \ac{MBA} guarantees to have an algorithm that satisfies the regret guarantee in the hypothesis of Theorem~\ref{theo:self_tune}. Indeed, we have the following Theorem.
 \begin{theorem}
+\label{theo:regret_pistol}
 Assume that \ref{assumption:1-d_algo} holds.
 Then there exists an algorithm, that uses the \ac{MBA} as a subroutine, that guarantees $Regret_n(\bu)=\scO\left(\norm{\bu}\sqrt{n \ln(n)}\right)$.
 \end{theorem}

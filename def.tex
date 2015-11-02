@@ -2,20 +2,21 @@
 These papers deals with three different settings, hence we will fist describe the common notation and then each of one them separately, trying to show the similarities between them.
 
 Real number variable will denoted by italic letters, e.g. $x,y$, while vectors will be denoted by bold letters, $\bw,\bu$.
+Random variables will be indicated by capital italic letters, e.g. $X \sim N(0,\sigma^2)$.
 We define the KL divergence between two Bernoulli distributions with parameters $p$ and $q$ as
 \[
-D(p||q) := p \log\frac{p}{q} + (1-p) \log\frac{1-p}{1-q}.
+D(p||q) := p \log\frac{p}{q} + (1-p) \log\frac{1-p}{1-q}~.
 \]
 
-\textbf{Binary and Continuos Coin Betting.}
+\vspace{0.2cm}\noindent\textbf{Binary and Continuos Coin Betting.}
 The bettor starts with the amount of money $\epsilon$. 
 At the end of each bet in the time step $t$ we denote the amount of money he has by $\gain_t$.
 At each time step $t$, it has to bet a quantity of money $w_t$ equal to a fraction of his current money, $w_t:=\beta_t \, \gain_{t-1}$ where $\beta_t \in (-1,1)$. Note that here we consider only betting strategies that will never result in a negative quantity of money owned. Hence, $|\beta_t|$ must be strictly less than 1, otherwise the algorithm could lose all the money in one round.
 After the bet, the outcome of the coin $g_t \in \{-1,1\}$ is revealed and the better wins (or loses) the quantity $w_t g_t$.
-Note that we will speak about a ``binary coin'' when the outcome of the coin is in $\{-1,1\}$, and ``continous coin'' when $g_t \in [-1,1]$. The latter case model the situation in there are different possible prizes with unknown probabilities to be won. Given the quantities above we have $\gain_t:=\gain_{t-1} + w_t g_t = \epsilon + \sum_{i=1}^t w_i g_i$, so that $\gain_0=\epsilon$.
+Note that we will speak about a ``binary coin'' when the outcome of the coin is in $\{-1,1\}$, and ``continous coin'' when $g_t \in [-1,1]$. The latter case model the situation in there are different possible prizes with unknown probabilities to be won. In both cases, we have $\gain_t:=\gain_{t-1} + w_t g_t = \epsilon + \sum_{i=1}^t w_i g_i$, so that $\gain_0=\epsilon$.
 
-\textbf{\ac{OLO} and \ac{OCO}.}
-In the \ac{OLO} framework, at each round $t$ the algorithm receives a vector $\bx_t \in \fX$, picks a $\bw_t \in \fX$, and pays $-\langle \bw_t,\bx_t \rangle$.
+\vspace{0.2cm}\noindent\textbf{\ac{OLO} and \ac{OCO}.}
+Let $\fH$ be a Hilber space. In the \ac{OLO} framework, at each round $t$ the algorithm receives a vector $\bx_t \in \fX$, picks a $\bw_t \in \fX \subset \fH$, and pays $-\langle \bw_t,\bx_t \rangle$.
 The aim of the algorithm is to minimize the \emph{regret}, that is the difference between the cumulative loss of the algorithm, $-\sum_{t=1}^n \langle \bw_t,\bx_t \rangle$, and the cumulative loss of an arbitrary and fixed competitor $\bu \in \fX$, $-\sum_{t=1}^n \langle \bu,\bx_t \rangle$.
 In particular, define
 \[
@@ -28,15 +29,17 @@ Regret^{OCO}_n(\bu) := \sum_{t=1}^n \left(f_t(\bw_t) -f_t(\bu)\right)~.
 \]
 A vector $\bx$ is a subgradient of a convex function $\ell$ at $\bv$ iff $\ell(\bu) - \ell(\bv) \ge \langle \bu - \bv, \bx \rangle$ for any $\bu$ in the domain of $\ell$. The differential set of $\ell$ at $\bv$, denoted by $\partial \ell(\bv)$, is the set of all the subgradients of $\ell$ at $\bv$.
 
-\textbf{Regularized ERM.}
+\vspace{0.2cm}\noindent\textbf{Regularized ERM.}
 Let $\rho$ a fixed but unknown distribution on $\fX \times \fY$, where $\fY=[-1,1]$.
-Denote by $\frho(x):= \int_\fY y d\rho(y|x)$ the \emph{regression function}, where $\rho(\cdot|x)$ is the conditional probability measure at $x$ induced by $\rho$. 
+%Denote by $\frho(x):= \int_\fY y d\rho(y|x)$ the \emph{regression function}, where $\rho(\cdot|x)$ is the conditional probability measure at $x$ induced by $\rho$. 
 %Denote by $\rho_\fX$ the marginal probability measure on $\fX$ and let $\Ltworho$ be the space of square integrable functions with respect to $\rho_\fX$, whose norm is denoted by $\normL{\f}:=\sqrt{\int_\fX \f^2(x) d \rho_\fX}$. Note that $\frho \in \Ltworho$.
-Performance is measured w.r.t. a loss function $\ell: \R \times \R \rightarrow \R_+$, convex and \emph{$L$-Lipschitz} w.r.t. the first argument.% We will consider \emph{$L$-Lipschitz} losses, that is $|\ell(x)-\ell(x')| \leq L |x-x'|$.
-Define the \emph{$\ell$-risk} of $f$, as $\RiskLoss(f):=\int_{\fX \times \fY} \ell(y f(x)) d \rho$. Also, define $\flrho(x):=\argmin_{t \in \R} \int_\fY \ell(y t) d \rho(y|x)$, that gives the \emph{optimal $\ell$-risk}, $\RiskLoss(\flrho)=\inf_{\f \in \Ltworho} \RiskLoss(\f)$.
+Performance is measured w.r.t. a loss function $\ell: \R \times \R \rightarrow \R_+$, convex and \emph{$L$-Lipschitz} w.r.t. the first argument.
+% We will consider \emph{$L$-Lipschitz} losses, that is $|\ell(x)-\ell(x')| \leq L |x-x'|$.
+Define the \emph{$\ell$-risk} of $f$, as $\RiskLoss(f):=\int_{\fX \times \fY} \ell(y f(x)) d \rho$.
+%Also, define $\flrho(x):=\argmin_{t \in \R} \int_\fY \ell(y t) d \rho(y|x)$, that gives the \emph{optimal $\ell$-risk}, $\RiskLoss(\flrho)=\inf_{\f \in \Ltworho} \RiskLoss(\f)$.
 %, \ \forall x,x' \in \R$, and \emph{$H$-smooth} losses, that is differentiable losses with the first derivative $H$-Lipschitz. Note that a loss can be both Lipschitz and smooth.
 Given a training set $\{\bx_t,y_t\}_{t=1}^n$ of samples drawn \ac{IID} from $\rho$, the regularized \ac{ERM} strategy finds a predictor $\hat{f}$ in a functional space $\fH$, such that
 \[
-\hat{f}= \argmin_f \lambda R(f) + \frac{1}{n} \sum_{t=1}^n \ell(f(\bx_t),y_t),
+\hat{f}= \argmin_{f \in \mathcal{F}} \ \lambda\, R(f) + \frac{1}{n} \sum_{t=1}^n \ell(f(\bx_t),y_t),
 \]
-where $R(f)$ is the regularizer.
+where $R(f)$ is the regularizer and $\mathcal{F}$ is a function class.

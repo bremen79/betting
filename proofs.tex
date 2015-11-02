@@ -95,6 +95,46 @@ f^*(y) \leq  \norm{\btheta} \sqrt{\alpha \log \left(\frac{\alpha \norm{\btheta}^
 \]
 \end{cor}
 
+
+\subsection{Proof of Theorem~\ref{theo:hilbert_reward}}
+\begin{proof}
+  For simplicity denote by $f_t(\cdot)=f\left(\cdot, \{\norm{\bg_1}, \ldots, \norm{\bg_t}\}\right)$.
+  We will prove the thesis by induction, hence assume that 
+  \[
+  \sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle \geq f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}^2\right),
+  \]
+  and we want to prove that 
+  \[
+  \sum_{t=1}^{n} \langle \bg_t, \bw_t \rangle \geq f_{n}\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)~.
+  \]
+  We have that
+  \begin{align*}
+  \sum_{t=1}^{n} &\langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right) \\
+  &= \langle \bg_n, \bw_n \rangle + \sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
+  &= \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right)\sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
+  &\geq \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right) f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}^2\right) - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
+  &= \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right) f_{n-1}\left( \norm{\btheta_{n-1}}^2\right) - f_n\left( \norm{\btheta_{n-1}}^2 + \norm{\bg_n}^2 + 2 \langle \btheta_{n-1}, \bg_n \rangle \right)\\
+  &\geq \min_{r\in \{-1,1\}} \left(1+ r\, b_n \norm{\bg_n} \right) f_{n-1}\left( \norm{\btheta_{n-1}}^2\right) - f_n\left(( \norm{\btheta_{n-1}} + r \norm{\bg_n})^2\right)\\
+  &\geq 0,
+  \end{align*}
+  where the first inequality comes from the induction hypothesis, the second one because we take the minimum of a concave function and the last one by the hypothesis on the \ac{MBA}.
+\end{proof}
+
+
+\subsection{Proof of Theorem~\ref{theo:self_tune}}
+\begin{proof}
+The statement is readily proved using the inequality $a\,b \leq \frac{a^2}{\lambda} + \lambda b^2, \ \forall a,b\geq0, \lambda>0$ and Theorem~\ref{theo:online_to_batch}.
+\end{proof}
+
+\subsection{Proof of Theorem~\ref{theo:regret_pistol}}
+\begin{proof}
+From Theorem~\ref{thm:rrdual} and \ref{theo:hilbert_reward}, we have that
+\[
+
+\]
+\end{proof}
+
+
 \subsection{Proofs of Theorem~\ref{thm:oracle_fraction} and Theorem~\ref{thm:oracle_fraction_changing}}
 
 We first state a couple of useful indentities.
@@ -242,138 +282,54 @@ Using Theorem~\ref{lemma:bin}, we have
 \end{align*}
 \end{proof}
 
-\subsection{Proof of Theorem~\ref{theo:cocob}}
-
-\begin{proof}
-From the assumptions we have that $|g_t|\leq 1$.
-
-We will prove by induction a lower bound on $\gain_n$, hence our induction hypothesis is
-\[
-\gain_{t-1}\geq \epsilon \exp\left(\frac{\theta_{t-1}^2}{a \sg_{t-1}}- \sum_{i=1}^{t-1} \frac{|g_i|}{a (\sg_{i-1} + 1)}\right)~.
-\]
-We have to prove that 
-\[
-\gain_{t}\geq \epsilon \exp\left(\frac{\theta_{t}^2}{a \sg_t}- \sum_{i=1}^{t} \frac{|g_i| G_i}{a (\sg_{i-1} + 1)}\right)~.
-\]
-
-Let's start calculating the value of the reward at time $t$.
-\begin{align*}
-\gain_{t} &= \gain_{t-1} (1+\beta_t g_t) \\
-&\geq \epsilon (1+\beta_t g_t)\exp\left(\frac{\theta_{t-1}^2}{a \sg_{t-1}}- \sum_{i=1}^{t-1} \frac{|g_i|}{a (\sg_{i-1} + 1) }\right) \\
-&=  \epsilon \exp\left(\frac{\theta_{t-1}^2}{a \sg_{t-1}}+\log(1+\beta_t g_t)- \sum_{i=1}^{t-1} \frac{|g_i| G_i}{a (\sg_{i-1} + 1)}\right)~.
-\end{align*}
-
-Now, consider the function 
-\[
-\phi(x)=-\log(1+\beta_t x) + \frac{(\theta_{t-1}+x)^2}{a (\sg_{t-1} + |x|)}~.
-\]
-We have that $\phi(x)$ is piece-wise convex on $[-\infty,0]$ and $[0,\infty]$. Hence, we have that
-\begin{align*}
-&\phi(x) \leq \phi(0)+x (\phi(1)-\phi(0)), \forall 0 \leq x\leq 1\\
-&\phi(x) \leq \phi(0)+x (\phi(0)-\phi(-1)), \forall -1 \leq x\leq 0~.
-\end{align*}
-Also, we set $\beta_t$ such that $\phi(1)=\phi(-1)$, that is
-\[
-\beta_t = \frac{A_{t-1}-1}{A_{t-1}+1} 
-= 2 \, S\left(\frac{4 \theta_{t-1}}{a (\sg_{t-1} + 1)}\right)-1
-\]
-where $A_{t-1}=\exp\left(\frac{4 \theta_{t-1}}{a (\sg_{t-1} + 1)}\right)$ and
-$S(x) =\frac{1}{1+\exp(-x)}$.
-Hence we have
-\[
-\phi(x) \leq \phi(0)+ |x| (\phi(1)-\phi(0)), \forall -1 \leq x\leq 1,
-\]
-that is
-\begin{align*}
-\frac{\theta_{t-1}^2}{a \sg_{t-1}}-\frac{(\theta_{t-1}+x)^2}{a (\sg_{t-1} +  |x|)} + \log(1+\beta_t g_t) 
-& = \phi(0) - \phi(x) \\
-& \geq |x| \left(\phi(0) - \phi(1)\right) \\
-&= |x| \left(\frac{\theta_{t-1}^2}{a \sg_{t-1}} - \frac{(\theta_{t-1}+G_t)^2}{a (\sg_{t-1} + 1)} + \log(1+\beta_t)\right), \forall -1 \leq x\leq 1~.
-\end{align*}
-
-Using this relation we have that
-\begin{align*}
-&-\frac{(\theta_{t-1}+g_t)^2}{a (\sg_{t-1}+|g_t|)} + \frac{\theta_{t-1}^2}{a \sg_{t-1}}+\log(1+\beta_t g_t)-\sum_{i=1}^{t-1} \frac{|g_i|}{a (\sg_{i-1} + 1)} \\
-&\qquad \geq |g_t| \left(\frac{\theta_{t-1}^2}{a \sg_{t-1}} - \frac{(\theta_{t-1}+1)^2}{a (\sg_{t-1} + 1)} + \log(1+\beta_t G_t)\right) - \sum_{i=1}^{t-1} \frac{|g_i|}{a (\sg_{i-1} + 1)}\\
-&\qquad = |g_t| \left(\frac{a \theta_{t-1}^2 -2 \theta_{t-1} \sg_{t-1} }{a^2 \sg_{t-1}(\sg_{t-1} + 1)} + \log(1+\beta_t G_t)\right) - \sum_{i=1}^{t} \frac{|g_i|}{a (\sg_{i-1} + 1)}\\
-&\qquad \geq |g_t| \left(\frac{a \theta_{t-1}^2}{a^2 \sg_{t-1}(\sg_{t-1} + 1)}-\frac{2 \theta_{t-1}}{a (\sg_{t-1} + 1)} + \log(1+\beta_t)\right) - \sum_{i=1}^{t} \frac{|g_i|}{a (\sg_{i-1} + 1)}~.
-\end{align*}
-We now use the Taylor expansion, to obtain
-\[
-\log\left(1+\frac{\exp(x)-1}{\exp(x)+1}\right) \geq \frac{x}{2} -\frac{x^2}{8} \qquad \forall x \in \R
-\]
-and, using the expression of $\beta_t$, have
-\[
-\log\left(1+\beta_t\right) 
-= \log\left(1+\frac{\exp\left(\frac{4 \theta_{t-1}}{a (\sg_{t-1} + 1)}\right)-1}{\exp\left(\frac{4 \theta_{t-1}}{a (\sg_{t-1} + 1)}\right)+1}\right) 
-\geq \frac{2 \theta_{t-1}}{a (\sg_{t-1} + 1)} -\frac{2 \theta_{t-1}^2}{a^2 (\sg_{t-1} + 1)^2}.
-\]
-Hence the expression 
-\[
-\frac{a \theta_{t-1}^2}{a^2 \sg_{t-1}(\sg_{t-1} + 1)}-\frac{2 \theta_{t-1}}{a (\sg_{t-1} + 1)} + \log(1+\beta_t))
-\]
-is greater than zero if $a \geq 2$, that is true by definition of $a$.
-
-Hence, by induction, the stated bound on $\gain_n$ is proved.
-\end{proof}
-
 
 \subsection{Proof of Theorem~\ref{theo:cocob}}
-\textbf{New version, for the assumptio}
-
 \begin{proof}
 We want to prove that, for any $t$
 \[
-b_t g_t 
-\leq \epsilon \exp\left(\frac{(x+g_t)^2}{a (\delta+\sum_{i=1}^{t} z_i)}- \sum_{i=1}^{t} \frac{z_i}{a (\delta+\sum_{j=1}^{i-1} z_j)}\right)- \epsilon \exp\left(\frac{x^2}{a (\delta+\sum_{i=1}^{t-1} z_i)}- \sum_{i=1}^{t-1} \frac{z_i}{a (\delta+\sum_{j=1}^{i-1} z_j)}\right)~.
+(1+b_t g_t) \epsilon \exp\left(\frac{x^2}{a (\delta+\sum_{i=1}^{t-1} z_i)}- \sum_{i=1}^{t-1} \frac{z_i}{a (\delta+\sum_{j=1}^{i-1} z_j)}\right)
+\leq \epsilon \exp\left(\frac{(x+g_t)^2}{a (\delta+\sum_{i=1}^{t} z_i)}- \sum_{i=1}^{t} \frac{z_i}{a (\delta+\sum_{j=1}^{i-1} z_j)}\right)~.
 \]
 The above is equivalent to prove
 \[
-\epsilon \exp\left(\frac{x^2}{a (\delta+\sum_{i=1}^{t-1} z_i)}- \sum_{i=1}^{t-1} \frac{z_i}{a (\delta+\sum_{j=1}^{i-1} z_j)}\right)
-\leq \epsilon \exp\left(\frac{(x+g_t)^2}{a (\delta+\sum_{i=1}^{t} z_i)}- \sum_{i=1}^{t} \frac{z_i}{a (\delta+\sum_{j=1}^{i-1} z_j)}\right)- b_t g_t ~.
+\ln(1+b_t g_t) + \frac{x^2}{a (\delta+\sum_{i=1}^{t-1} z_i)}- \sum_{i=1}^{t-1} \frac{z_i}{a (\delta+\sum_{j=1}^{i-1} z_j)}
+\leq \frac{(x+g_t)^2}{a (\delta+\sum_{i=1}^{t} z_i)}- \sum_{i=1}^{t} \frac{z_i}{a (\delta+\sum_{j=1}^{i-1} z_j)}~.
 \]
 
-Let's start calculating the value of the reward at time $t$.
-\begin{align*}
-\gain_{t} &= \gain_{t-1} (1+\beta_t g_t) \\
-&\geq \epsilon (1+\beta_t g_t)\exp\left(\frac{\theta_{t-1}^2}{a \sg_{t-1}}- \sum_{i=1}^{t-1} \frac{|g_i|}{a (\sg_{i-1} + 1) }\right) \\
-&=  \epsilon \exp\left(\frac{\theta_{t-1}^2}{a \sg_{t-1}}+\log(1+\beta_t g_t)- \sum_{i=1}^{t-1} \frac{|g_i| G_i}{a (\sg_{i-1} + 1)}\right)~.
-\end{align*}
-
-Now, consider the function 
+Denote by $\sg_{t-1}=\sum_{i=1}^{t-1} z_i$ and consider the function 
 \[
-\phi(x)=-\log(1+\beta_t x) + \frac{(\theta_{t-1}+x)^2}{a (\sg_{t-1} + |x|)}~.
+\phi(g)=-\log(1+\beta_t g) + \frac{(x+g)^2}{a (\sg_{t-1} + |g|)}~.
 \]
-We have that $\phi(x)$ is piece-wise convex on $[-\infty,0]$ and $[0,\infty]$. Hence, we have that
+We have that $\phi(g)$ is piece-wise convex on $[-\infty,0]$ and $[0,\infty]$. Hence, we have that
 \begin{align*}
-&\phi(x) \leq \phi(0)+x (\phi(1)-\phi(0)), \forall 0 \leq x\leq 1\\
-&\phi(x) \leq \phi(0)+x (\phi(0)-\phi(-1)), \forall -1 \leq x\leq 0~.
+&\phi(g) \leq \phi(0)+g (\phi(1)-\phi(0)), \forall 0 \leq g\leq 1\\
+&\phi(g) \leq \phi(0)+g (\phi(0)-\phi(-1)), \forall -1 \leq g\leq 0~.
 \end{align*}
 Also, we set $\beta_t$ such that $\phi(1)=\phi(-1)$, that is
 \[
 \beta_t = \frac{A_{t-1}-1}{A_{t-1}+1} 
-= 2 \, S\left(\frac{4 \theta_{t-1}}{a (\sg_{t-1} + 1)}\right)-1
+= 2 \, S\left(\frac{4 x}{a (\sg_{t-1} + 1)}\right)-1
 \]
-where $A_{t-1}=\exp\left(\frac{4 \theta_{t-1}}{a (\sg_{t-1} + 1)}\right)$ and
+where $A_{t-1}=\exp\left(\frac{4 x}{a (\sg_{t-1} + 1)}\right)$ and
 $S(x) =\frac{1}{1+\exp(-x)}$.
 Hence we have
 \[
-\phi(x) \leq \phi(0)+ |x| (\phi(1)-\phi(0)), \forall -1 \leq x\leq 1,
+\phi(g) \leq \phi(0)+ |g| (\phi(1)-\phi(0)), \forall -1 \leq g\leq 1,
 \]
 that is
 \begin{align*}
-\frac{\theta_{t-1}^2}{a \sg_{t-1}}-\frac{(\theta_{t-1}+x)^2}{a (\sg_{t-1} +  |x|)} + \log(1+\beta_t g_t) 
-& = \phi(0) - \phi(x) \\
-& \geq |x| \left(\phi(0) - \phi(1)\right) \\
-&= |x| \left(\frac{\theta_{t-1}^2}{a \sg_{t-1}} - \frac{(\theta_{t-1}+G_t)^2}{a (\sg_{t-1} + 1)} + \log(1+\beta_t)\right), \forall -1 \leq x\leq 1~.
+\frac{x^2}{a \sg_{t-1}}-\frac{(x+g)^2}{a (\sg_{t-1} +  |g|)} + \log(1+\beta_t g_t) 
+& = \phi(0) - \phi(g) \\
+& \geq |g| \left(\phi(0) - \phi(1)\right) \\
+&= |g| \left(\frac{x^2}{a \sg_{t-1}} - \frac{(x+1)^2}{a (\sg_{t-1} + 1)} + \log(1+\beta_t)\right), \forall -1 \leq g\leq 1~.
 \end{align*}
 
 Using this relation we have that
 \begin{align*}
-&-\frac{(\theta_{t-1}+g_t)^2}{a (\sg_{t-1}+|g_t|)} + \frac{\theta_{t-1}^2}{a \sg_{t-1}}+\log(1+\beta_t g_t)-\sum_{i=1}^{t-1} \frac{|g_i|}{a (\sg_{i-1} + 1)} \\
-&\qquad \geq |g_t| \left(\frac{\theta_{t-1}^2}{a \sg_{t-1}} - \frac{(\theta_{t-1}+1)^2}{a (\sg_{t-1} + 1)} + \log(1+\beta_t G_t)\right) - \sum_{i=1}^{t-1} \frac{|g_i|}{a (\sg_{i-1} + 1)}\\
-&\qquad = |g_t| \left(\frac{a \theta_{t-1}^2 -2 \theta_{t-1} \sg_{t-1} }{a^2 \sg_{t-1}(\sg_{t-1} + 1)} + \log(1+\beta_t G_t)\right) - \sum_{i=1}^{t} \frac{|g_i|}{a (\sg_{i-1} + 1)}\\
-&\qquad \geq |g_t| \left(\frac{a \theta_{t-1}^2}{a^2 \sg_{t-1}(\sg_{t-1} + 1)}-\frac{2 \theta_{t-1}}{a (\sg_{t-1} + 1)} + \log(1+\beta_t)\right) - \sum_{i=1}^{t} \frac{|g_i|}{a (\sg_{i-1} + 1)}~.
+&-\frac{(x+g_t)^2}{a (\sg_{t-1}+|g_t|)} + \frac{x^2}{a \sg_{t-1}}+\log(1+\beta_t g_t)-\sum_{i=1}^{t-1} \frac{|g_i|}{a (\sg_{i-1} + 1)} \\
+&\qquad \geq |g_t| \left(\frac{x^2}{a \sg_{t-1}} - \frac{(x+1)^2}{a (\sg_{t-1} + 1)} + \log(1+\beta_t G_t)\right) - \sum_{i=1}^{t-1} \frac{|g_i|}{a (\sg_{i-1} + 1)}\\
+&\qquad = |g_t| \left(\frac{a x^2 -2 x \sg_{t-1} }{a^2 \sg_{t-1}(\sg_{t-1} + 1)} + \log(1+\beta_t G_t)\right) - \sum_{i=1}^{t} \frac{|g_i|}{a (\sg_{i-1} + 1)}\\
+&\qquad \geq |g_t| \left(\frac{a x^2}{a^2 \sg_{t-1}(\sg_{t-1} + 1)}-\frac{2 x}{a (\sg_{t-1} + 1)} + \log(1+\beta_t)\right) - \sum_{i=1}^{t} \frac{|g_i|}{a (\sg_{i-1} + 1)}~.
 \end{align*}
 We now use the Taylor expansion, to obtain
 \[
@@ -382,14 +338,12 @@ We now use the Taylor expansion, to obtain
 and, using the expression of $\beta_t$, have
 \[
 \log\left(1+\beta_t\right) 
-= \log\left(1+\frac{\exp\left(\frac{4 \theta_{t-1}}{a (\sg_{t-1} + 1)}\right)-1}{\exp\left(\frac{4 \theta_{t-1}}{a (\sg_{t-1} + 1)}\right)+1}\right) 
-\geq \frac{2 \theta_{t-1}}{a (\sg_{t-1} + 1)} -\frac{2 \theta_{t-1}^2}{a^2 (\sg_{t-1} + 1)^2}.
+= \log\left(1+\frac{\exp\left(\frac{4 x}{a (\sg_{t-1} + 1)}\right)-1}{\exp\left(\frac{4 x}{a (\sg_{t-1} + 1)}\right)+1}\right) 
+\geq \frac{2 x}{a (\sg_{t-1} + 1)} -\frac{2 x^2}{a^2 (\sg_{t-1} + 1)^2}.
 \]
 Hence the expression 
 \[
-\frac{a \theta_{t-1}^2}{a^2 \sg_{t-1}(\sg_{t-1} + 1)}-\frac{2 \theta_{t-1}}{a (\sg_{t-1} + 1)} + \log(1+\beta_t))
+\frac{a x^2}{a^2 \sg_{t-1}(\sg_{t-1} + 1)}-\frac{2 x}{a (\sg_{t-1} + 1)} + \log(1+\beta_t)
 \]
 is greater than zero if $a \geq 2$, that is true by definition of $a$.
-
-Hence, by induction, the stated bound on $\gain_n$ is proved.
 \end{proof}
