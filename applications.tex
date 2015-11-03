@@ -12,11 +12,14 @@ In this section we will show the connection between portfolio selection, betting
 We will assume that a 1-dimensional algorithm exists, that satisfies the following assumption.
 \begin{assumption}
 \label{assumption:1-d_algo}
-Assume that there exists a sequence of functions $f:\R \times Set \rightarrow \R$ convex in the first argument and an algorithm, that we will denote by \ac{MBA}, that generates $b_t$, where $|b_t|\leq 1$, using in input $x_{t-1} \in \R$, $z_1, \ldots, z_{t-1} \in [-1,1]$, such that the following holds
-\begin{equation}
+Assume that there exists a sequence of functions $f:\R \times Set \rightarrow \R$ convex in the first argument and an algorithm, that we will denote by \ac{MBA}, that generates $b_t$, where $|b_t|\leq 1$, using in input $x_{t-1} \in \R$, $z_1, \ldots, z_{t-1} \in [-1,1]$, such that
+\begin{itemize}
+\item $f(0,\{\})=\epsilon>0$;
+\item  \begin{equation}
 \label{eq:1_d_hp}
 (1+b_t z_t) f\left( x_{t-1}^2, \{|z_1|, \ldots, |z_{t-1}|\} \right) \geq f\left( (x_{t-1}+z_t)^2, \{|z_1|, \ldots, |z_t|\}\right), \ \ \forall z_{t} \in [-1,1]~.
 \end{equation}
+\end{itemize}
 \end{assumption}
 
 By induction is easy to prove that such algorithm can indeed be used as a betting algorithm. 
@@ -25,7 +28,7 @@ By induction is easy to prove that such algorithm can indeed be used as a bettin
 Assume that Assumption \ref{assumption:1-d_algo} holds and use the \ac{MBA} with $x_{t-1}=|\sum_{i=1}^{t-1} g_i|$ and $z_t=g_t$.
 Then, for any sequence of outcomes $g_t \in [-1,1]$, the following holds
 \[
-\gain_n \geq f\left( \left(\sum_{i=1}^{t-1} g_i \right)^2, \left\{|z_1|, \ldots, |z_n|\right\}\right)~.
+\wealth_n = \sum_{t=1}^n g_t w_t \geq f\left( \left(\sum_{i=1}^{t-1} g_i \right)^2, \left\{|z_1|, \ldots, |z_n|\right\}\right)~.
 \]
 \end{theorem}
 
@@ -36,9 +39,9 @@ Even more importantly, the \ac{MBA} can also be used to prove lower bound on the
   Assume that \ref{assumption:1-d_algo} holds.
   Let $\bg_t \in \fH$ an arbitrary sequence of vector, such that $\norm{\bg_t} \leq 1$ and define the vector $\btheta_t=\sum_{i=1}^{t} \bg_i$.
   Use the Algorithm in \ref{assumption:1-d_algo} with the sequence $x_{t-1}= \norm{\btheta_{t-1}}$.
-  Define a vectorial algorithm that at each step outputs $\bw_t = b_t \frac{\btheta_{t-1}}{\norm{\btheta_{t-1}}} \gain_{t-1}$. Then the following holds
+  Define a vectorial algorithm that at each step outputs $\bw_t = b_t \frac{\btheta_{t-1}}{\norm{\btheta_{t-1}}} \wealth_{t-1}$. Then the following holds
   \[
-  \sum_{t=1}^n \langle \bg_t, \bw_t \rangle \geq f_n\left( \norm{\sum_{t=1}^n \bg_t}^2, \left\{\norm{\bg_1}, \ldots, \norm{\bg_n}\right\}\right)~.
+  \wealth_{n} = \sum_{t=1}^n \langle \bg_t, \bw_t \rangle \geq f_n\left( \norm{\sum_{t=1}^n \bg_t}^2, \left\{\norm{\bg_1}, \ldots, \norm{\bg_n}\right\}\right)~.
   \]
 \end{theorem}
 This theorem is useful to prove regret bounds in Hilbert spaces, as shown in the next part.
@@ -65,7 +68,7 @@ Coupling Theorem~\ref{thm:rrdual} with Theorem~\ref{theo:hilbert_reward}, we hav
 \label{theo:hilbert_regret}
 Assume that \ref{assumption:1-d_algo} holds. Then there exists a reduction of the \ac{MBA} that produces a sequence of vectors $\bw_t$ that satisfy
 \[
-Regret_n(\bu) \leq f^*\left( \norm{\sum_{i=1}^{t-1} \bg_i}^2, \left\{\norm{\bg_1}, \ldots, \norm{\bg_n}\right\}\right),
+Regret_n(\bu) \leq f^*\left( \norm{\sum_{i=1}^{t-1} \bg_i}^2, \left\{\norm{\bg_1}, \ldots, \norm{\bg_n}\right\}\right)+\epsilon,
 \]
 where the conjugation is taken w.r.t. the first argument of $f$.
 \end{cor}
@@ -126,8 +129,8 @@ Ignoring the fact that the bound in Theorem~\ref{theo:self_tune} is only in expe
 The only missing piece is to prove that the existence of the \ac{MBA} guarantees to have an algorithm that satisfies the regret guarantee in the hypothesis of Theorem~\ref{theo:self_tune}. Indeed, we have the following Theorem.
 \begin{theorem}
 \label{theo:regret_pistol}
-Assume that \ref{assumption:1-d_algo} holds and that the function $f$ is exponential in his first argument.
-Then there exists an algorithm, that uses the \ac{MBA} as a subroutine, that guarantees $Regret_n(\bu)=\scO\left(\norm{\bu}\sqrt{n \ln(n)}\right)$.
+Assume that \ref{assumption:1-d_algo} holds and there exist constants $A,B,C,D\geq0$ independent from $t$ such that the function $f(x,\{z_1, \ldots, z_t\}) \geq B t^{-C} \exp(\frac{x}{A t})-D$.
+Then there exists an algorithm, that uses the \ac{MBA} as a subroutine, that guarantees $Regret_n(\bu)=\scO\left(\norm{\bu}\sqrt{n \ln(n \norm{\bu}+1)}\right)$.
 \end{theorem}
 
 %In reality, the connection between betting and self-tuning regularized ERM is actually stronger. In fact, the following theorem can be proved.

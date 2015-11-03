@@ -10,10 +10,11 @@ D(p||q) := p \log\frac{p}{q} + (1-p) \log\frac{1-p}{1-q}~.
 
 \vspace{0.2cm}\noindent\textbf{Binary and Continuos Coin Betting.}
 The bettor starts with the amount of money $\epsilon$. 
-At the end of each bet in the time step $t$ we denote the amount of money he has by $\gain_t$.
-At each time step $t$, it has to bet a quantity of money $w_t$ equal to a fraction of his current money, $w_t:=\beta_t \, \gain_{t-1}$ where $\beta_t \in (-1,1)$. Note that here we consider only betting strategies that will never result in a negative quantity of money owned. Hence, $|\beta_t|$ must be strictly less than 1, otherwise the algorithm could lose all the money in one round.
+At the end of each bet in the time step $t$ we denote the amount of money he has by $\wealth_t$ and by $\gain_t$ the amount of money gained through the $t$ bets. Hence, $\wealth_t=\gain_t+\epsilon$.
+At each time step $t$, it has to bet a quantity of money $w_t$ equal to a fraction of his current money, $w_t:=\beta_t \, \wealth_{t-1}$ where $\beta_t \in (-1,1)$. Note that here we consider only betting strategies that will never result in a negative quantity of money owned. Hence, $|\beta_t|$ must be strictly less than 1, otherwise the algorithm could lose all the money in one round.
 After the bet, the outcome of the coin $g_t \in \{-1,1\}$ is revealed and the better wins (or loses) the quantity $w_t g_t$.
-Note that we will speak about a ``binary coin'' when the outcome of the coin is in $\{-1,1\}$, and ``continous coin'' when $g_t \in [-1,1]$. The latter case model the situation in there are different possible prizes with unknown probabilities to be won. In both cases, we have $\gain_t:=\gain_{t-1} + w_t g_t = \epsilon + \sum_{i=1}^t w_i g_i$, so that $\gain_0=\epsilon$.
+Note that we will speak about a ``binary coin'' when the outcome of the coin is in $\{-1,1\}$, and ``continous coin'' when $g_t \in [-1,1]$. The latter case model the situation in there are different possible prizes with unknown probabilities to be won. In both cases, we have $\wealth_t:=\gain_{t-1} + w_t g_t + \epsilon= \epsilon + \sum_{i=1}^t w_i g_i$, so that $\gain_0=\epsilon$ and $\wealth_0=\epsilon$.
+We will extend to above definitions also to the the case that $\bw_t$ and $\bg_t$ belongs to a Hilbert space $\fH$ and $\norm{\bg_t}\leq 1$. Hence, with a slight abuse of notation we will also define $\gain_n=\sum_{t=1}^n \langle \bw_t, \bg_t \rangle$, $\wealth_t=\gain_t + \epsilon$ and $\bw_t = \bbeta_t \, \wealth_{t-1}$, with $\norm{\bbeta_t}\leq 1$.
 
 \vspace{0.2cm}\noindent\textbf{\ac{OLO} and \ac{OCO}.}
 Let $\fH$ be a Hilber space. In the \ac{OLO} framework, at each round $t$ the algorithm receives a vector $\bx_t \in \fX$, picks a $\bw_t \in \fX \subset \fH$, and pays $-\langle \bw_t,\bx_t \rangle$.
