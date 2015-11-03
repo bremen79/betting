@@ -41,7 +41,7 @@ New York, NY, USA
 
 \begin{abstract}
 We prove non-asymptotic lower bounds on the expectation of the maximum of $d$
-independent Gaussian variables and expectation of the maximum of $d$
+independent Gaussian variables and the expectation of the maximum of $d$
 independent symmetric random walks. Both lower bounds recover the optimal
 leading constant in the limit.  A simple application of the lower bound for
 random walks is an (asymptotically optimal) non-asymptotic lower bound on the minimax regret of online
@@ -106,21 +106,21 @@ Crucial step towards lower bounding $\Exp \left[ \max_{1 \le i \le d} X_i
 \right]$ is a good lower bound on the tail $\Pr[X_i \ge x]$ of a single
 Gaussian. The standard way of deriving such bounds is via bounds on the so-called
 Mill's ratio.  Mill's ratio of a random variable $X$ with density function
-$f(x)$ is the ratio $\frac{\Pr[X > x]}{f(x)}$.~\footnote{Mill's ratio has
+$f(x)$ is the ratio $\frac{\Pr[X > x]}{f(x)}$.\footnote{Mill's ratio has
 applications in economics. A simple is problem where Mill's ratio shows up is
 the problem of setting optimal price for a product.  Given a distribution
 prices that customers are willing to pay, the goal is to choose the price that
 brings the most revenue.} It clear that a lower bound on the Mill's ratio
-yields a lower bound on the thail $\Pr[X > x]$.
+yields a lower bound on the tail $\Pr[X > x]$.
 
-Without loss of generality it suffices to lower bound Mill's ratio of $N(0,1)$,
-since Mill's ratio of $N(0,\sigma^2)$ can be obtained by rescaling.  Recal that
+Without loss of generality it suffices to lower bound the Mill's ratio of $N(0,1)$,
+since Mill's ratio of $N(0,\sigma^2)$ can be obtained by rescaling.  Recall that
 probability density of $N(0,1)$ is $\phi(x) = \frac{1}{\sqrt{2 \pi}}
 e^{-x^2/2}$ and its cumulative distribution function is $\Phi(x) =
-\int_{-\infty}^x \frac{1}{\sqrt{2 \pi}} e^{-t^2/2} dt$.  Mill's ratio for
+\int_{-\infty}^x \frac{1}{\sqrt{2 \pi}} e^{-t^2/2} dt$.  The Mill's ratio for
 $N(0,1)$ can be expressed as $\frac{1 - \Phi(x)}{\phi(x)}$. A lower bound on
 Mill's ratio of $N(0,1)$ was proved by~\cite{Boyd-1959}.
-
+%
 \begin{lemma}[Mill's ratio for standard Gaussian~\citep{Boyd-1959}]
 \label{lemma:boyd}
 For any $x \ge 0$,
@@ -135,27 +135,27 @@ The second inequality in Lemma~\ref{lemma:boyd} is our simplification of Boyd's
 bound.  It follows by setting $a=\sqrt{2 \pi}$ and $b=x$. By a simple algebra
 it is equivalent to the inequality $a + b \ge \sqrt{a^2 + b^2}$ which holds for
 any $a,b \ge 0$.
-
+%
 \begin{corollary}[Lower Bound on Gaussian Tail]
 Let $X \sim N(0, \sigma^2)$ and $x \ge 0$. Then,
 $$
 \Pr[X \ge x] \ge \exp\left(-\frac{x^2}{2 \sigma^2}\right) \frac{1}{\sqrt{2\pi}\frac{x}{\sigma}+2}.
 $$
 \end{corollary}
-
+%
 \begin{proof}
 We have
 \begin{align*}
 \Pr[X \ge x]
 & = \frac{1}{\sigma \sqrt{2 \pi}} \int_x^{\infty} \exp \left( -\frac{t^2}{2 \sigma^2} \right) d t \\
 & = \frac{1}{\sqrt{2 \pi}} \int_\frac{x}{\sigma}^{\infty} \exp \left( -\frac{t^2}{2} \right) d t \\
-& \ge \frac{1}{\sqrt{2 \pi}} \exp\left(-\frac{x^2}{2 \sigma^2}\right) \frac{\pi}{\pi\frac{x}{\sigma}+\sqrt{2 \pi}} & \text{(by Lemma~\ref{lemma:boyd})} \\
-& = \exp\left(-\frac{x^2}{2 \sigma^2}\right) \frac{1}{\sqrt{2\pi}\frac{x}{\sigma}+2} \; .
+& \ge \frac{1}{\sqrt{2 \pi}} \exp\left(-\frac{x^2}{2 \sigma^2}\right) \frac{\pi}{\pi\frac{x}{\sigma}+\sqrt{2 \pi}} & \text{(by Lemma~\ref{lemma:boyd})} \; .
+%& = \exp\left(-\frac{x^2}{2 \sigma^2}\right) \frac{1}{\sqrt{2\pi}\frac{x}{\sigma}+2} \; .
 \end{align*}
 \end{proof}
 
-Equipped with the lower bound on the tail, we prove an upper bound on the maximum of Gaussians.
-
+Equipped with the lower bound on the tail, we prove a lower bound on the maximum of Gaussians.
+%
 \begin{theorem}[Lower Bound on Maximum of Independent Gaussians]
 \label{theorem:maximum-of-gaussians}
 Let $X_1, X_2, \dots, X_d$ be independent Gaussian random variables $N(0,\sigma^2)$. For any $d \ge 2$,
@@ -165,7 +165,7 @@ Let $X_1, X_2, \dots, X_d$ be independent Gaussian random variables $N(0,\sigma^
 & \ge 0.13 \sigma \sqrt{\ln d} - 0.7 \sigma \label{equation:maximum-of-gaussians-lower-bound-2} \; .
 \end{align}
 \end{theorem}
-
+%
 \begin{proof}
 Let $A$ be the event that at least one of the $X_i$ is greater than $C \sigma
 \sqrt{\ln d}$ where $C = C(d) = \sqrt{2 - \frac{2 \ln \ln d}{\ln d}}$. We
@@ -194,7 +194,7 @@ It remains to lower bound $\Pr[A]$, which we do as follows
 \end{align}
 where in the first inequality we used the elementary inequality $1 - x \le \exp(-x)$ valid for all $x \in \R$.
 
-Since $C = \sqrt{2 - \frac{2 \ln \ln d}{\ln d}}$ we have $d^{1-\frac{C^2}{2}} = \ln d$. Subtistuting this into \eqref{equation:maximum-of-gaussians-lower-bound-4}, we get
+Since $C = \sqrt{2 - \frac{2 \ln \ln d}{\ln d}}$ we have $d^{1-\frac{C^2}{2}} = \ln d$. Substituting this into \eqref{equation:maximum-of-gaussians-lower-bound-4}, we get
 \begin{equation}
 \label{equation-maximum-of-gaussians-lower-bound-5}
 \Pr[A] \ge 1 - \exp\left(-\frac{\ln d}{C \sqrt{2\pi \ln d}+2}\right) = 1 - \exp\left(-\frac{\sqrt{\ln d}}{C \sqrt{2\pi}+2}\right) \; .
@@ -227,10 +227,8 @@ $n$.  Note that
 $$
 B_n = \frac{Z^{(n)} + n}{2}
 $$
-is a Binomial random variable $B(n,\frac{1}{2})$. Our starting point will be
-lower bound on the tail $\Pr[B_n \ge k]$ due to~\citet[Theorem 2]{McKay1989} in
-term's of the Mill's ratio of $N(0,1)$.
-
+is a Binomial random variable $B(n,\frac{1}{2})$. We follow the same approach used in~\cite{nOrabona13}.
+First we lower bound the tail $\Pr[B_n \ge k]$ with~\citet[Theorem 2]{McKay1989}.
 \begin{lemma}[Bound on Binomial Tail]
 \label{lemma:mckay}
 Let $n,k$ be integers satisfying $n \ge 1$ and $\frac{n}{2} \le k \le n$. Define $x = \frac{2k - n}{\sqrt{n}}$. Then, $B_n \sim B(n,\frac{1}{2})$ satisfies
@@ -239,7 +237,6 @@ $$
  \; \frac{1 - \Phi(x)}{\phi(x)} \; .
 $$
 \end{lemma}
-
 We lower bound the binomial coefficient
 $\binom{n-1}{k-1}$ using Stirling's approximation of the factorial. The lower
 bound on the binomial coefficient will be expressed in terms of
@@ -250,7 +247,6 @@ $$
 D(p\|q) = p \ln \left( \frac{p}{q} \right) + (1-p) \ln \left( \frac{1-p}{1-q} \right) \; .
 $$
 The result is the following lower bound on the tail of Binomial.
-
 \begin{theorem}[Bound on Binomial Tail]
 \label{theorem:binomial}
 Let $n,k$ be integers satisfying $n \ge 1$ and $\frac{n}{2} \le k \le n$. Define $x = \frac{2k - n}{\sqrt{n}}$. Then, $B_n \sim B(n,\frac{1}{2})$ satisfies
@@ -258,7 +254,7 @@ $$
 \Pr \left[ B_n \ge  k \right] \ge \frac{\exp\left(-n D \left(\frac{k}{n} \middle\| \frac{1}{2} \right)\right)}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \; \frac{1 - \Phi(x)}{\phi(x)} \; .
 $$
 \end{theorem}
-
+%
 \begin{proof}
 Lemma~\ref{lemma:mckay} implies that
 $$
@@ -286,14 +282,14 @@ where in the equality we used the definition of $D(p\|q)$. Combining all the ine
 \Pr \left[ B_n \ge 2k - n \right]
 & \ge \sqrt{n} \frac{k}{n} \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \ 2^n \exp\left(-n \cdot D\left(\frac{k}{n} \middle\| \frac{1}{2}\right)\right) \sqrt{\frac{n}{k(n-k)}} 2^{-n} \; \frac{1 - \Phi(x)}{\phi(x)} \\
 & = \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2\pi}} \exp\left(-n \cdot D\left(\frac{k}{n} \middle\| \frac{1}{2}\right)\right) \frac{1 - \Phi(x)}{\phi(x)} \sqrt{\frac{k}{n-k}} \\
-& = \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2\pi}} \exp\left(-n \cdot D\left(\frac{k}{n} \middle\| \frac{1}{2}\right)\right) \frac{1 - \Phi(x)}{\phi(x)}
+& \geq \frac{1}{\exp\left(\frac{1}{6}\right) \sqrt{2\pi}} \exp\left(-n \cdot D\left(\frac{k}{n} \middle\| \frac{1}{2}\right)\right) \frac{1 - \Phi(x)}{\phi(x)}
 \end{align*}
 for $\frac{n}{2} \le k \le n - 1$. For $k=n$, we verify the statement of the theorem by direct substitution. The left hand side is $\Pr[B^{(n)} \ge n] = 2^{-n}$.
 Since $e^{-nD(1\|\frac{1}{2})} = 2^{-n}$ and $x=\sqrt{n} \ge 1$, it's easy to see that the right hand side is smaller than $2^{-n}$.
 \end{proof}
 
 For $k=n/2 + xn$, the divergence $D \left( \frac{k}{n} \middle\| \frac{1}{2} \right) = D \left(\frac{1}{2} + x \| \frac{1}{2} \right)$ can be approximated by $2x^2$.
-We define function the $\psi:[-\frac{1}{2},\frac{1}{2}] \to \R$ as 
+We define the function $\psi:[-\frac{1}{2},\frac{1}{2}] \to \R$ as 
 $$
 \psi(x) = \frac{D \left(\frac{1}{2}+x \middle\| \frac{1}{2} \right)}{2 x^2} \; .
 $$
@@ -304,19 +300,17 @@ It is the ratio of the divergence and the approximation. The function $\psi(x)$ 
 \item minimum value is $\psi(0) = 1$
 \item maximum value is $\psi(\frac{1}{2}) = \psi(-\frac{1}{2}) = 2 \ln(2) \le 1.3863$
 \end{itemize}
-
-As in the Gaussian case, for the Binomial case we need lower bound on the
-probability tail.  We will use the next Theorem from \cite{nOrabona13}, whose
-proof is the Appendix for completeness.
-
+%
+Using the definition of $\psi(x)$ and Theorem~\ref{theorem:binomial}, we have the following Corollary.
+%
 \begin{corollary}
 \label{corollary:binomial}
 Let $n \ge 1$ be a positive integer and let $t \in [1, \frac{n}{2} + 1]$ be a real number. Then $B_n \sim B(n, \frac{1}{2})$ satisfies
 $$
-\Pr \left[ B_n \ge \frac{1}{2} n + t - 1 \right] \ge \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{t}{n}\right) \frac{t^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 t}{\sqrt{n}} + 2} \; .
+\Pr \left[ B_n \ge \frac{1}{2} n + t - 1 \right] \ge \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{t}{n}\right) \frac{t^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 t}{\sqrt{n}} + 2} \; . 
 $$
 \end{corollary}
-
+%
 \begin{proof}
 By Theorem~\ref{theorem:binomial} and Lemma~\ref{lemma:boyd}, we have
 \begin{align*}
@@ -325,40 +319,40 @@ By Theorem~\ref{theorem:binomial} and Lemma~\ref{lemma:boyd}, we have
 & \ge \frac{\exp\left(-n D \left(\frac{\lceil \frac{1}{2}n + t - 1 \rceil}{n} \middle\| \frac{1}{2} \right)\right)}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \cdot \frac{\pi}{\pi \frac{2\lceil \frac{1}{2}n + t - 1 \rceil - n}{\sqrt{n}} + \sqrt{2 \pi}} \\
 & \ge \frac{\exp\left(-n D \left(\frac{\frac{1}{2}n + t}{n} \middle\| \frac{1}{2} \right)\right)}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \cdot \frac{\pi}{\pi \frac{2 (\frac{1}{2}n + t) - n}{\sqrt{n}} + \sqrt{2 \pi}} \\
 & = \frac{\exp\left(-n D \left(\frac{1}{2} + \frac{t}{n} \middle\| \frac{1}{2} \right)\right)}{\exp\left(\frac{1}{6}\right) \sqrt{2 \pi}} \cdot \frac{\pi}{\pi \frac{2t}{\sqrt{n}} + \sqrt{2 \pi}} \\
-& = \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{t}{n}\right) \frac{t^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 t}{\sqrt{n}} + 2} \; .
+& = \exp\left(-\frac{1}{6}\right) \exp\left(- 2 \psi\left(\frac{t}{n}\right) \frac{t^2}{n} \right) \frac{1}{\sqrt{2\pi} \frac{2 t}{\sqrt{n}} + 2} \; . \qedhere
 \end{align*}
 \end{proof}
 
 \begin{theorem}[Lower Bound on Maximum of Independent Symmetric Random Walks]
 \label{theorem:maximum-of-random-walks}
-Let $Z^{(n)}_1, Z^{(n)}_2, \dots, Z^{(n)}_d$ be $d$ independent symmetric random walks of length $n$. If $2 \le d \le \exp(\frac{n}{3})$ and $n \ge 6$,
+Let $Z^{(n)}_1, Z^{(n)}_2, \dots, Z^{(n)}_d$ be $d$ independent symmetric random walks of length $n$. If $2 \le d \le \exp(\frac{n}{3})$ and $n \ge 7$,
 \begin{align*}
 \Exp \left[ \max_{1 \le i \le d} Z^{(n)}_i \right]
-& \ge \frac{1 - \exp\left(-\frac{\sqrt{\ln d}}{3.1 \sqrt{2\pi}}\right)}{\sqrt{\psi\left(\frac{1.6\sqrt{\ln d}}{2 \sqrt{n}}\right)}} \sqrt{n} \left(\sqrt{2 \ln d -\ln \ln d}-1\right) - \sqrt{n} \\
-& \ge 0.13 \sqrt{n \ln d} - 2 \sqrt{n} \; .
+& \ge \frac{1 - \exp\left(-\frac{\sqrt{\ln d}}{3.1 \sqrt{2\pi}}\right)}{\sqrt{\psi\left(\frac{1.6\sqrt{\ln d}}{2 \sqrt{n}}\right)}} \sqrt{n} \left(\sqrt{2 \ln d - 2 \ln \ln d}-1\right) - \sqrt{n} \\
+& \ge 0.09 \sqrt{n \ln d} - 2 \sqrt{n} \; .
 \end{align*}
 \end{theorem}
-
+%
 \begin{proof}
 Define the event $A$ equal to the case that at least one of the $Z^{(n)}_i$ is greater or equal to $C \sqrt{n \ln d}-2$ where
-$C = C(d,n) = \frac{1}{\sqrt{\psi\left(\frac{\sqrt{\ln d}}{2 \sqrt{n}}\right)}}\sqrt{2-\frac{\ln \ln d}{\ln d}}$.
+$C = C(d,n) = \frac{1}{\sqrt{\psi\left(\frac{1.6\sqrt{\ln d}}{2 \sqrt{n}}\right)}}\sqrt{2-\frac{2 \ln \ln d}{\ln d}}$.
 
-We upper and lower bound $C(d,n)$. Denote by $f(d)=\sqrt{2-\frac{\ln \ln d}{\ln d}}$
-and notice that $C(d,n) = \frac{1}{\sqrt{\psi\left( \frac{\sqrt{\ln d}}{2 \sqrt{n}}\right)}} f(d)$.  It
-suffices to bound $f(d)$ and $\psi( \frac{\sqrt{\ln d}}{2 \sqrt{n}})$.
+We upper and lower bound $C(d,n)$. Denote by $f(d)=\sqrt{2-\frac{2 \ln \ln d}{\ln d}}$
+and notice that $C(d,n) = \frac{1}{\sqrt{\psi\left( \frac{1.6\sqrt{\ln d}}{2 \sqrt{n}}\right)}} f(d)$.  It
+suffices to bound $f(d)$ and $\psi( \frac{1.6\sqrt{\ln d}}{2 \sqrt{n}})$.
 We already know that $1 \le \psi(x) \le 2 \ln(2)$ for all $x \in [-\frac{1}{2}, \frac{1}{2}]$
-and $\frac{\sqrt{\ln d}}{2\sqrt{n}} \in [0,\frac{1}{2}]$ for $n \ge \ln d > 0$.
+and $\frac{1.6\sqrt{\ln d}}{2\sqrt{n}} \in [0,\frac{1}{2}]$ for $d \leq \exp(n/3)$.
 The function $f(d)$ is decreasing on $(1,e^e]$,
 increasing on $[e^e, \infty)$, and $\lim_{d \to \infty} f(d) = \sqrt{2}$. It has
-unique minimum at $e^e$. Thefore, $f(d) \ge f(e^e) = \sqrt{2 - \frac{1}{e}} \ge 1.08$
+unique minimum at $e^e$. Therefore, $f(d) \ge f(e^e) = \sqrt{2 - \frac{2}{e}} \ge 1.12$
 for all $d \in (1,\infty)$.  Similarly, from unimodality of $f(d)$ we have that
 $f(d) \le \max\{\sqrt{2}, f(2)\} = f(2) \le 1.6$ for all $d \in [2, \infty)$.
 From this we can conclude that if $n \ge \ln d > 0$,
 \begin{equation}
 \label{equation:bound-on-constant}
-1.08 \le \frac{f(e^e)}{\sqrt{2 \ln 2}} \le C(d,n) \le f(2) \le 1.6 \; .
+0.95 \le \frac{f(e^e)}{\sqrt{2 \ln 2}} \le C(d,n) \le f(2) \le 1.6 \; .
 \end{equation}
-If $n \ge 6$ and $2 \le d \le \exp(n/3)$ this implies that
+If $n \ge 7$ and $2 \le d \le \exp(n/3)$ this implies that
 \begin{equation}
 \label{equation:conditions}
 1 < \frac{C \sqrt{n \ln d}}{2} < \frac{n}{2} + 1 \; .
@@ -401,7 +395,7 @@ Similar to the proof of Theorem~\ref{theorem:maximum-of-gaussians}, we can lower
 & \ge 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{C \sqrt{\ln d}}{2 \sqrt{n}}\right)}}{C \sqrt{2\pi} \sqrt{\ln d}+2}\right) & \text{(by Corollary \ref{corollary:binomial} and \eqref{equation:conditions})} \\
 & \ge 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\ln d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\ln d}+2}\right) & \text{(by \eqref{equation:bound-on-constant}).}
 \end{align*}
-We now use the fact that $C=\frac{1}{\sqrt{\psi\left(\frac{1.6 \sqrt{\ln d}}{2 \sqrt{n}}\right)}}\sqrt{2- \frac{\ln \ln d}{\ln d}}$ implies that $d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\ln d}}{2 \sqrt{n}}\right)}=\ln d$. Hence, we obtain
+We now use the fact that $C=\frac{1}{\sqrt{\psi\left(\frac{1.6 \sqrt{\ln d}}{2 \sqrt{n}}\right)}}\sqrt{2- \frac{2\ln \ln d}{\ln d}}$ implies that $d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\ln d}}{2 \sqrt{n}}\right)}=\ln d$. Hence, we obtain
 \begin{align*}
 \Pr[A]
 & \ge 1 - \exp\left(-\frac{\exp\left(-\frac{1}{6}\right) d^{1-\frac{C^2}{2} \psi\left(\frac{1.6 \sqrt{\ln d}}{2 \sqrt{n}}\right)}}{1.6 \sqrt{2\pi} \sqrt{\ln d}+2}\right) \\
@@ -429,10 +423,10 @@ There are algorithms that given the number of rounds $n$ as an input achieve reg
 for any sequence of losses.
 
 \begin{theorem}
-Let $n \ge 6$ and $2 \le d \le \exp(\frac{n}{3})$. For any algorithm for learning with expert advice there exists a sequence
+Let $n \ge 7$ and $2 \le d \le \exp(\frac{n}{3})$. For any algorithm for learning with expert advice there exists a sequence
 of losses $\ell_{t,i} \in \{0,1\}$, $1 \le i \le d$, $1 \le t \le n$, such that
 $$
-\Regret^{(d)}(n) \ge \frac{1 - \exp\left(-\frac{\sqrt{\ln d}}{3.1 \sqrt{2\pi}}\right)}{\sqrt{\psi\left(\frac{1.6 \sqrt{\ln d}}{2 \sqrt{n}}\right)}} \frac{\sqrt{n}}{2} \left(\sqrt{2 \ln d - \ln \ln d}-1\right) - \frac{\sqrt{n}}{2} \; .
+\Regret^{(d)}(n) \ge \frac{1 - \exp\left(-\frac{\sqrt{\ln d}}{3.1 \sqrt{2\pi}}\right)}{\sqrt{\psi\left(\frac{1.6 \sqrt{\ln d}}{2 \sqrt{n}}\right)}} \frac{\sqrt{n}}{2} \left(\sqrt{2 \ln d - 2 \ln \ln d}-1\right) - \frac{\sqrt{n}}{2} \; .
 $$
 \end{theorem}
 
