@@ -12,7 +12,7 @@ In this section we will show the connection between portfolio selection, betting
 We will assume that a 1-dimensional algorithm exists, that satisfies the following assumption.
 \begin{assumption}
 \label{assumption:1-d_algo}
-Assume that there exists a sequence of functions $f:\R \times Set \rightarrow \R$ convex in the first argument and an algorithm, that we will denote by \ac{MBA}, that generates $b_t$, where $|b_t|\leq 1$, using in input $x_{t-1} \in \R$, $z_1, \ldots, z_{t-1} \in [-1,1]$, such that
+Assume that there exists a sequence of functions $f:\R \times 2^\R \rightarrow \R$ convex in the first argument and an algorithm, that we will denote by \ac{MBA}, that generates $b_t$, where $|b_t|\leq 1$, using in input $x_{t-1} \in \R$, $z_1, \ldots, z_{t-1} \in [-1,1]$, such that
 \begin{itemize}
 \item $f(0,\{\})=\epsilon>0$;
 \item  \begin{equation}
@@ -28,7 +28,7 @@ By induction is easy to prove that such algorithm can indeed be used as a bettin
 Assume that Assumption \ref{assumption:1-d_algo} holds and use the \ac{MBA} with $x_{t-1}=|\sum_{i=1}^{t-1} g_i|$ and $z_t=g_t$.
 Then, for any sequence of outcomes $g_t \in [-1,1]$, the following holds
 \[
-\wealth_n = \sum_{t=1}^n g_t w_t \geq f\left( \left(\sum_{i=1}^{t-1} g_i \right)^2, \left\{|z_1|, \ldots, |z_n|\right\}\right)~.
+\wealth_n = \epsilon+\sum_{t=1}^n g_t w_t \geq f\left( \left(\sum_{i=1}^{t-1} g_i \right)^2, \left\{|z_1|, \ldots, |z_n|\right\}\right)~.
 \]
 \end{theorem}
 
@@ -41,7 +41,7 @@ Even more importantly, the \ac{MBA} can also be used to prove lower bound on the
   Use the Algorithm in \ref{assumption:1-d_algo} with the sequence $x_{t-1}= \norm{\btheta_{t-1}}$.
   Define a vectorial algorithm that at each step outputs $\bw_t = b_t \frac{\btheta_{t-1}}{\norm{\btheta_{t-1}}} \wealth_{t-1}$. Then the following holds
   \[
-  \wealth_{n} = \sum_{t=1}^n \langle \bg_t, \bw_t \rangle \geq f_n\left( \norm{\sum_{t=1}^n \bg_t}^2, \left\{\norm{\bg_1}, \ldots, \norm{\bg_n}\right\}\right)~.
+  \wealth_{n} = \epsilon + \sum_{t=1}^n \langle \bg_t, \bw_t \rangle \geq f\left( \norm{\sum_{t=1}^n \bg_t}^2, \left\{\norm{\bg_1}, \ldots, \norm{\bg_n}\right\}\right)~.
   \]
 \end{theorem}
 This theorem is useful to prove regret bounds in Hilbert spaces, as shown in the next part.
@@ -118,7 +118,7 @@ To better appreciate this bound, it is useful to compare it with a generalizatio
 There, they prove that, with probability at least $1-\delta$, we have
 \begin{equation}
 \label{eq:fast_rate_srebro}
-\RiskLoss\left(\hat{\bw}\right) \leq \tilde{\scO}\left(\inf_{\bu} \RiskLoss(\bu) + \lambda \norm{\bu}^2 +\frac{\ln \frac{1}{\delta}}{\lambda \, n} \right),
+\RiskLoss\left(\hat{\bw}\right) \leq \scO\left(\inf_{\bu} \RiskLoss(\bu) + \lambda \norm{\bu}^2 +\frac{\ln \frac{1}{\delta}}{\lambda \, n} \right),
 \end{equation}
 where 
 \begin{align*}

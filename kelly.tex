@@ -11,10 +11,10 @@ The following theorem is well-known, and it has been shown, for example, in \cit
 
 \begin{theorem}
 \label{thm:oracle_fraction}
-Let an algorithm bet a fixed fraction of his current reward, i.e. $w_t=\beta \gain_{t-1}$, where $0\leq\beta\leq1$. Then, for any sequence $g_1, \ldots, g_n \in \{-1,1\}$, we have
+Let an algorithm bet a fixed fraction of his current reward, i.e. $w_t=\beta \, \wealth_{t-1}$, where $0\leq\beta\leq1$. Then, for any sequence $g_1, \ldots, g_n \in \{-1,1\}$, we have
 \begin{equation}
 \label{eq:opt_fixed_reward}
-\max_{w_t: w_t=\beta \gain_{t-1}} \sum_{t=1}^n w_t g_t 
+\max_{\beta} \ \wealth_{n}
 = \epsilon \exp\left(n\, D\left(\frac{1}{2}+\frac{\sum_{t=1}^n g_t}{2 n}\middle\|\frac{1}{2}\right)\right)~. 
 %\leq \epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{2T}+\frac{(\sum_{t=1}^T z_t)^4}{5 T^3}\right).
 \end{equation}
@@ -28,8 +28,8 @@ One might ask if having a fraction of money that changes over time might help an
 \label{thm:oracle_fraction_changing}
 For $n \in \Nat$ even, any betting strategy $w_t$, and an initial amount of money equal to $\epsilon$, we have
 \[
-\sum_{t=1}^n w_t g_t 
-\leq \epsilon \min\left(\left(\exp\left(\frac{1}{6}\right)\sqrt{2 \pi}\frac{|\sum_{t=1}^n g_t|}{\sqrt{n}} +2\exp\left(\frac{1}{6}\right)-1\right) \exp\left(n\, D\left(\frac{1}{2}+\frac{|\sum_{t=1}^n g_t|}{2 n}\middle\|\frac{1}{2}\right)\right), 2^n\right).
+\wealth_{n}
+\leq \epsilon \min\left\{\left(\exp\left(\frac{1}{6}\right)\sqrt{2 \pi}\frac{|\sum_{t=1}^n g_t|}{\sqrt{n}} +2\exp\left(\frac{1}{6}\right)-1\right) \exp\left(n\, D\left(\frac{1}{2}+\frac{|\sum_{t=1}^n g_t|}{2 n}\middle\|\frac{1}{2}\right)\right), 2^n\right\}.
 \]
 \end{theorem}
 
