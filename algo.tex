@@ -5,7 +5,7 @@
   \begin{algorithmic}
   {
     \STATE{\bfseries Parameters:} $a>2,\delta>1$
-    \STATE{\bfseries Initialize:} $\gain_0=\epsilon,\sg_0=\delta$
+    \STATE{\bfseries Initialize:} $\wealth_0=\epsilon,\sg_0=\delta$
     \FOR{$t=1,2,\dots$}
     \STATE{Receive $\theta_{t-1}$ and $\sg_{t-1}$}
     \STATE{Calculate fraction and direction to bet: $\beta_t=2 \, S\left(\frac{4 \theta_{t-1}}{a (\sg_{t-1} + 1)}\right)-1$}
@@ -17,24 +17,25 @@
     \ENDFOR
   }
   \end{algorithmic}
-  \caption{COCOBA}
+  \caption{COCOB}
   \label{alg:cocob}
 \end{algorithm}
 
 As said in Section~\ref{sec:appl}, portfolio selection can only be used to optimally solve binary coin betting.
 Hence, in this section we show how a very simple algorithm that satisfies Assumption~\ref{assumption:1-d_algo}.
 
-The first observation is that the reward of the oracle fixed betting strategy in Theorem~\ref{oracle_fraction} grows exponential in time depending on $D\left(\frac{1}{2}+\frac{\sum_{t=1}^n g_t}{2 n}\middle\|\frac{1}{2}\right)$. If we try to achieve exactly this term, we are (probably) doomed to use the portfolio selection algorithm or to assume a binary coin.
+The first observation is that the wealth of the optimal strategy, as proved in Theorems~\ref{thm:oracle_fraction} and \ref{thm:oracle_fraction_changing}, is expected to grow exponential in time depending on $D\left(\frac{1}{2}+\frac{\sum_{t=1}^n g_t}{2 n}\middle\|\frac{1}{2}\right)$. If we try to achieve exactly this term, we are (probably) doomed to use the portfolio selection algorithm or to assume a binary coin.
 However, we might try to achieve something that is very close to that quantity.
-The idea is to sacrify a bit of the guaranteed growth of the wealth to gain in generality.
+The idea is to sacrify a bit of the guaranteed growth of the wealth to gain in order to gain generality. In particular we aim at designing a \ac{MBA}.
+
 It is easy to show that
 \[
 D\left(\frac{1}{2}+\frac{\sum_{t=1}^n g_t}{2 n}\middle\|\frac{1}{2}\right) \geq \frac{(\sum_{t=1}^n g_t)^2}{2 n^2},
 \]
-where the approximation is very good around $x=0$ and it is of the order of $\scO(\frac{(\sum_{t=1}^n g_t)^4}{ n^4})$. 
-We show below that it is possible to design a simple algorithm that has an exponential reward that depends on this quantity. Also, our guarantee will be data-dependent and the resulting algorithm will satisfy Assumption~\ref{assumption:1-d_algo}.
+where the approximation is very good around $\sum_{t=1}^n g_t=0$ and it is of the order of $\scO(\frac{(\sum_{t=1}^n g_t)^4}{ n^4})$. It was first proposed (but not solved) by~\cite{McMahanA13} to use the above approximation as a target wealth.
+Indeed, we show below that it is possible to design a simple algorithm that has an exponential reward that depends on this quantity. Also, our guarantee will be data-dependent and the resulting algorithm will satisfy Assumption~\ref{assumption:1-d_algo}.
 
-The \ac{COCOBA} is shown in Algorithm~\ref{alg:cocob} and we can prove the following guarantee for its performance.
+The \ac{COCOB} algorithm is shown in Algorithm~\ref{alg:cocob} and we can prove it is a \ac{MBA}.
 %Without loss of generality, we will assume that $g_t$ are between $[-1,1]$.
 %
 \begin{theorem}
@@ -58,7 +59,7 @@ satisfy Assumption~\ref{assumption:1-d_algo}.
 % \end{align*}
 \end{theorem}
 %
-Notice that the $a$ regolates the trade-off between the first and second term. When $a=2$, we have a \textbf{???}
+Notice that the $a$ regolates the trade-off between the first and second term. When $a=2$, we maximize the contribute of the first term.
 
 \begin{cor}
 Set $a=2$ in Algorithm~\ref{alg:cocob}. Then we have that the following hold

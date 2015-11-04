@@ -26,7 +26,7 @@ The above theorem tells us that any algorithms that keep the fraction of money t
 One might ask if having a fraction of money that changes over time might help and the answer is substantially negative. The next Theorem shows that we can only hope for logarithmic gain in the exponent w.r.t. \eqref{eq:opt_fixed_reward}.
 \begin{theorem}
 \label{thm:oracle_fraction_changing}
-For $n \in \Nat$ even, any betting strategy $w_t$, and an initial amount of money equal to $\epsilon$, we have
+For $n \in \Nat$ even and any betting strategy $w_t$ with an initial amount of money equal to $\epsilon$, there exists a sequence of $g_t\in\{-1,1\}$ such that
 \[
 \wealth_{n}
 \leq \epsilon \min\left\{\left(\exp\left(\frac{1}{6}\right)\sqrt{2 \pi}\frac{|\sum_{t=1}^n g_t|}{\sqrt{n}} +2\exp\left(\frac{1}{6}\right)-1\right) \exp\left(n\, D\left(\frac{1}{2}+\frac{|\sum_{t=1}^n g_t|}{2 n}\middle\|\frac{1}{2}\right)\right), 2^n\right\}.
@@ -43,7 +43,7 @@ Practically speaking, the Kelly criterion applied to a coin that has probability
 
 However, the Kelly criterion can be used only if the coin is stochastic and if we knew bias of the coin exactly. One might argue that this is equally unlikely as knowning beforehand the empirical frequencies of $1$ and $-1$ in the sequence.
 One might ask what is the optimal strategy in the case that the sequence of outcomes of the coin is non-stochastic.
-A little known result by Krichevsky and Trofimov~\cite{}, says that above procedure can still be used, substituiting the  unknown probability with a slightly biased running estimate. In particular, the probability of a face at time $t$ is estimated with 
+A little known result by Krichevsky and Trofimov~\cite{KrichevskyT81}, says that above procedure can still be used, substituiting the  unknown probability with a slightly biased running estimate. In particular, the probability of a face at time $t$ is estimated with 
 \[
 \hat{p_t}=\frac{\text{number of that face in the previous } t-1 \text{ rounds}}{t}~.
 \]
@@ -52,7 +52,7 @@ In particular the following Theorem holds for the Krichevsky and Trofimov algori
 Bet at each round a quantity equal to $\hat{p_t} \wealth_{t-1}$ on the face that appeared more in the past. Then
 \begin{align*}
 \wealth_{n}
-\geq \epsilon \exp\left(n\, D\left(\frac{1}{2}+\frac{\sum_{t=1}^n z_t}{2 n}\middle\|\frac{1}{2}\right) - \frac{1}{2} \ln n - \ln 2\right)~.
+\geq \epsilon \exp\left(n\, D\left(\frac{1}{2}+\frac{\sum_{t=1}^n g_t}{2 n}\middle\|\frac{1}{2}\right) - \frac{1}{2} \ln n - \ln 2\right)~.
 \end{align*}
 \end{theorem}
 
@@ -68,6 +68,7 @@ It is easy to see that with this reduction the wealth of the portfolio selection
 
 However, this reduction is not suited for our purpose.
 First, we cannot have an explicit lower bound on the reward. In fact, the Universal Portfolio algorithm only assures us that the wealth is close to the optimal one, but there is no closed formula for the optimal wealth.
-Also, the Universal Portfolio algorithm strategy itself cannot be computed in a closed formula and it has to be approximated~\cite{KalaiV03}. Finally, it is not known if the Universal Portfolio algorithm satisfies the Assumption~\ref{assumption:1-d_algo}, hence we cannot use it to solve \ac{OLO}/\ac{OCO} problems in Hilbert spaces.
+Also, the Universal Portfolio algorithm strategy itself cannot be computed in a closed formula and it has to be approximated~\cite{KalaiV03}. Note that $|g_t|$ can be equal to 1, so we cannot use the efficient algorithm in~\cite{HazanAK07}.
+Finally, it is not known if the Universal Portfolio algorithm satisfies the Assumption~\ref{assumption:1-d_algo}, hence we cannot use it to solve \ac{OLO}/\ac{OCO} problems in Hilbert spaces.
 
-To overcome these problems, in the next section, we will present a simple algorithm that satisfies Assumption~\ref{assumption:1-d_algo}.
+To overcome these problems, in the next section, we will present a simple algorithm that satisfies Assumption~\ref{assumption:1-d_algo} and it has $\scO(1)$ complexity per prediction.

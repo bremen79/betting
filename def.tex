@@ -17,14 +17,16 @@ Note that we will speak about a ``binary coin'' when the outcome of the coin is 
 We will extend to above definitions also to the the case that $\bw_t$ and $\bg_t$ belongs to a Hilbert space $\fH$ and $\norm{\bg_t}\leq 1$. Hence, with a slight abuse of notation we will also define $\gain_n=\sum_{t=1}^n \langle \bw_t, \bg_t \rangle$, $\wealth_t=\gain_t + \epsilon$ and $\bw_t = \bbeta_t \, \wealth_{t-1}$, with $\norm{\bbeta_t} < 1$.
 
 \vspace{0.2cm}\noindent\textbf{\ac{OLO} and \ac{OCO}.}
-Let $\fH$ be a Hilbert space. In the \ac{OLO} framework, at each round $t$ the algorithm receives a vector $\bx_t \in \fX$, picks a $\bw_t \in \fX \subset \fH$, and pays $-\langle \bw_t,\bx_t \rangle$.
-The aim of the algorithm is to minimize the \emph{regret}, that is the difference between the cumulative loss of the algorithm, $-\sum_{t=1}^n \langle \bw_t,\bx_t \rangle$, and the cumulative loss of an arbitrary and fixed competitor $\bu \in \fX$, $-\sum_{t=1}^n \langle \bu,\bx_t \rangle$.
+Let $\fH$ be a Hilbert space. In the \ac{OLO} framework, at each round $t$ the algorithm receives a vector $\bg_t \in \fX$, picks a $\bw_t \in \fX \subset \fH$, and gains $\langle \bw_t,\bg_t \rangle$ (or equivalently loses -$\langle \bw_t,\bg_t \rangle$).
+The aim of the algorithm is to minimize the \emph{regret}, that is the difference between the cumulative gains of the 
+of an arbitrary and fixed competitor $\bu \in \fX$, $\sum_{t=1}^n \langle \bu,\bg_t \rangle$, and 
+the cumulative gains of the algorithm, $\sum_{t=1}^n \langle \bw_t,\bg_t \rangle$.
 In particular, define
 \[
 Regret_n(\bu) := \sum_{t=1}^n \langle \bg_t , \bu - \bw_t \rangle~.
 \]
-Instead, in the \ac{OCO} setting, the algorithm receives convex functions $f_t$ rather than vectors.
-The regret in this case is defined as
+In the \ac{OCO} setting, instead, the algorithm receives convex loss functions $f_t$ rather than vectors.
+Again, the aim is to minimize rhe regret, that in this case is defined as
 \[
 Regret^{OCO}_n(\bu) := \sum_{t=1}^n \left(f_t(\bw_t) -f_t(\bu)\right)~.
 \]
@@ -39,7 +41,7 @@ Performance is measured w.r.t. a loss function $\ell: \R \times \R \rightarrow \
 Define the \emph{$\ell$-risk} of $f$, as $\RiskLoss(f):=\int_{\fX \times \fY} \ell(y f(x)) d \rho$.
 %Also, define $\flrho(x):=\argmin_{t \in \R} \int_\fY \ell(y t) d \rho(y|x)$, that gives the \emph{optimal $\ell$-risk}, $\RiskLoss(\flrho)=\inf_{\f \in \Ltworho} \RiskLoss(\f)$.
 %, \ \forall x,x' \in \R$, and \emph{$H$-smooth} losses, that is differentiable losses with the first derivative $H$-Lipschitz. Note that a loss can be both Lipschitz and smooth.
-Given a training set $\{\bx_t,y_t\}_{t=1}^n$ of samples drawn \ac{IID} from $\rho$, the regularized \ac{ERM} strategy finds a predictor $\hat{f}$ in a functional space $\fH$, such that
+Given a training set $\{\bx_t,y_t\}_{t=1}^n$ of samples drawn \ac{IID} from $\rho$, the regularized \ac{ERM} strategy finds a predictor $\hat{f}$ in a functional space $\mathcal{F}$, such that
 \[
 \hat{f}= \argmin_{f \in \mathcal{F}} \ \lambda\, R(f) + \frac{1}{n} \sum_{t=1}^n \ell(f(\bx_t),y_t),
 \]

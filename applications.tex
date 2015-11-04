@@ -58,7 +58,7 @@ The reward and regret view on online learning are equivalent: an algorithm guara
   for a constant $\epsilon \in \R$ if and only if it
   guarantees
   \begin{equation}\label{eq:regb}
-  \qquad Regret_n(\bu) \leq \Psi^*(\bu) + \epsilon \quad \quad \quad \textnormal{ for all } \bu \in \mathcal{H}~.
+  \qquad Regret_n(\bu) \leq \Psi^*(\bu) + \epsilon \quad \quad \quad \textnormal{ for all } \bu \in \fH \textnormal{ and } \bg_t \in \fH, \forall 1\leq t\leq n~.
   \end{equation}
 \end{theorem}
 So, a betting algorithm can be used for online learning and vice-versa. However, as it was already stressed in \citet{McMahanO14}, the reward view has the big advantage of having one variable less, the competitor $\bu$.
@@ -68,7 +68,7 @@ Coupling Theorem~\ref{thm:rrdual} with Theorem~\ref{theo:hilbert_reward}, we hav
 \label{theo:hilbert_regret}
 Assume that \ref{assumption:1-d_algo} holds. Then there exists a reduction of the \ac{MBA} that produces a sequence of vectors $\bw_t$ that satisfy
 \[
-Regret_n(\bu) \leq f^*\left( \norm{\sum_{i=1}^{t-1} \bg_i}^2, \left\{\norm{\bg_1}, \ldots, \norm{\bg_n}\right\}\right)+\epsilon,
+Regret_n(\bu) \leq f^*\left( \norm{\sum_{t=1}^{n} \bg_t}^2, \left\{\norm{\bg_1}, \ldots, \norm{\bg_n}\right\}\right)+\epsilon \quad \quad \quad \textnormal{ for all } \bu \in \fH \textnormal{ and } \bg_t \in \fH, \forall 1\leq t\leq n,
 \]
 where the conjugation is taken w.r.t. the first argument of $f$.
 \end{cor}
@@ -106,10 +106,10 @@ In particular, instead of solving a series of regularized ERM problems, with dif
 More rigorously, the follwing theorem holds.
 \begin{theorem}
 \label{theo:self_tune}
-Assume that there is an online algorithm whose $Regret_n(\bu)$ is $\scO\left(\norm{\bu}\sqrt{n \ln(n)}\right)$. Then the following holds
+Assume that there is an online algorithm whose $Regret_n(\bu)$ is $\scO\left(\norm{\bu}\sqrt{n} (\ln(n))^\alpha\right)$. Then the following holds
 \begin{equation}
 \label{eq:self_tune}
-\E\left[\RiskLoss\left(\frac{1}{T} \sum_{t=1}^n \bw_t\right)\right] \leq \tilde{\scO}\left(\inf_{\bu} \min_{\lambda>0} \RiskLoss(\bu) + \lambda \norm{\bu}^2 +\frac{1}{n \, \lambda} \right)~.
+\E\left[\RiskLoss\left(\frac{1}{T} \sum_{t=1}^n \bw_t\right)\right] \leq \scO\left(\inf_{\bu} \min_{\lambda>0} \RiskLoss(\bu) + \lambda \norm{\bu}^2 +\frac{(\ln(n))^{2 \alpha}}{\lambda \, n} \right)~.
 \end{equation}
 % Let $\bw_1, \cdots, \bw_n \in \fH$ the vector produced by the PiSTOL algorithm.
 % Let $\ell:\R\rightarrow\R$ a convex and Lipschitz function, and fix the vectors $\bg_t$ to be unbiased estimate of the gradient of $F$ in $\bw_t$. Then, the rate of convergence of $\E\left[Risk_F\left(\frac{1}{n} \bw_t\right)\right]$ is the same of regularized ERM algorithm with the (unknown) optimal amount of regularization.
@@ -139,5 +139,5 @@ Then there exists an algorithm, that uses the \ac{MBA} as a subroutine, that gua
 %\end{theorem}
 
 
-To summarize, the existence of a simple 1-d algorithm guarantees, though a straighforward reduction, the possibility of learning in Hilbert spaces, in the online setting and stochastic setting, with optimal rates.
+To summarize, the existence of a simple 1-d algorithm guarantees, though a straighforward reduction, the possibility of learning in Hilbert spaces, in the online setting and stochastic setting. Moreover, if the algorithm guarantees an exponential growth of the wealth, a reduction allows to use it for obtain optimal rates of convergence to best risk in a function class, without having to choose the regularization parameter.
 In the next section we will explain what are the difficulties in designing such 1-d algorithm and in Section~\ref{sec:algo} we will present our solution.

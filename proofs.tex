@@ -176,17 +176,17 @@ Also, for any $-\frac{1}{2} \leq x\leq \frac{1}{2}$ we have
 \begin{proof}[Proof of Theorem~\ref{thm:oracle_fraction}]
 From the betting strategy we have
 \[
-\gain_t=\gain_{t-1} + w_t \, g_t = \gain_{t-1} + \beta \, \gain_{t-1} \, g_t = \gain_{t-1} (1+\beta \, g_t)~.
+\wealth_t=\wealth_{t-1} + w_t \, g_t = \wealth_{t-1} + \beta \, \wealth_{t-1} \, g_t = \wealth_{t-1} (1+\beta \, g_t)~.
 \]
 Hence
 \[
-\gain_n=\epsilon \prod_{t=1}^n (1+\beta g_t) = \epsilon (1+\beta)^\frac{n+Z}{2} (1-\beta)^\frac{n-Z}{2},
+\wealth_n=\epsilon \prod_{t=1}^n (1+\beta g_t) = \epsilon (1+\beta)^\frac{n+Z}{2} (1-\beta)^\frac{n-Z}{2},
 \]
 where $G=\sum_{t=1}^n g_t$.
-It is easy to show that the maximum value of $\gain_n$ w.r.t. $\beta$ is in $\beta=\frac{G}{n}$. 
+It is easy to show that the maximum value of $\wealth_n$ w.r.t. $\beta$ is in $\beta=\frac{G}{n}$. 
 Hence, we have
 \[
-\gain_n = \epsilon \left(1+\frac{G}{n}\right)^\frac{n+G}{2} \left(1-\frac{G}{n}\right)^\frac{n-G}{2} 
+\wealth_n = \epsilon \left(1+\frac{G}{n}\right)^\frac{n+G}{2} \left(1-\frac{G}{n}\right)^\frac{n-G}{2} 
 = \epsilon \left[\left(1+\frac{G}{n}\right)^\frac{1+\frac{G}{n}}{2} \left(1-\frac{G}{n}\right)^\frac{1-\frac{G}{n}}{2}\right]^n = \exp\left( D\left(\frac{1}{2}+\frac{G}{2n}\middle\|\frac{1}{2}\right) \right),
 %\leq \epsilon \exp \left(\frac{Z^2}{2 n} + \frac{Z^4}{5 n^3}\right),
 \]
@@ -198,6 +198,7 @@ where in the last equality we used \eqref{eq:div_2}.
 %where the lhs is given by Taylor expansion.
 \end{proof}
 
+The following tail bound for Binomial variables is from~\cite{Orabona13} and we report here the proof for completeness.
 \begin{theorem}
 \label{lemma:bin}
 Let $n\geq2$ an even number of Bernoulli random variables $b_i$. Then for any $k \in \Nat_0$ such that $k\leq \frac{1}{2}n-1$, we have
