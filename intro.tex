@@ -1,29 +1,14 @@
 \section{Introduction}
 \label{sec:intro}
 
-\ac{OLO} is a problem where an algorithm repeatedly
-chooses a point $w_t$ from a convex decision set $K$, observes an arbitrary, or
-even adversarially chosen, loss vector $\ell_t$ and suffers loss $\langle
-\ell_t, w_t \rangle$.  The goal of the algorithm is to have a small cumulative
-loss. Performance of an algorithm is evaluated by the so-called regret, which
-is the difference of cumulative losses of the algorithm and of the
-(hypothetical) strategy that would choose in every round the same best point in
-hindsight.
+\ac{OCO} is a problem where an algorithm repeatedly chooses a point $\bw_t$ from a convex decision set $K$, observes an arbitrary, or even adversarially chosen, loss function $\bg_t$ and suffers loss $\langle \bg_t, \bw_t \rangle$.  The goal of the algorithm is to have a small cumulative loss. Performance of an algorithm is evaluated by the so-called regret, which is the difference of cumulative losses of the algorithm and of the (hypothetical) strategy that would choose in every round the same best point in hindsight.
 Typically, one tries to prove that the regret grows at most sub-linearly in time, that is, the average regret vanishes over time.
 
-\ac{OLO} is a fundamental problem in machine
-learning~\cite{Cesa-BianchiL06,Shalev-Shwartz-2011}.  Many learning
-problems can be directly phrased as \ac{OLO}, e.g., learning with expert
-advice~\cite{Littlestone-Warmuth-1994,Vovk-1998,Cesa-Bianchi-Haussler-Helmbold-Schapire-Warmuth-1997}, online combinatorial
-optimization~\cite{Koolen-Warmuth-Kivinen-2010}. Other
-problems can be reduced to \ac{OLO}, e.g. online convex
-optimization~\cite[Chapter~2]{Shalev-Shwartz-2011}, online classification and
-regression~\cite[Chapters~11~and~12]{Cesa-Bianchi-Lugosi-2006}, multi-armed
-problems~\cite[Chapter~6]{Cesa-Bianchi-Lugosi-2006}, and batch and stochastic
-optimization of convex functions~\cite{NemirovskyY83}.  Hence, a result in \ac{OLO}
-immediately implies other results in all these domains.
+\ac{OLO} is a fundamental problem in machine learning~\citep{Cesa-BianchiL06,Shalev-Shwartz12}.  Many learning problems can be directly phrased as \ac{OLO}, e.g., learning with expert advice~\citep{LittlestoneW94,Vovk98,Cesa-BianchiFHHSW97}, online combinatorial optimization~\cite{KoolenWK10}. Other problems can be reduced to \ac{OLO}, e.g. \ac{OCO}~\citep[Chapter~2]{Shalev-Shwartz12}, online classification and regression~\citep[Chapters~11~and~12]{Cesa-BianchiL06}, multi-armed problems~\citep[Chapter~6]{Cesa-BianchiL06}, and batch and stochastic optimization of convex functions~\cite{NemirovskyY83}.  Hence, a result in \ac{OLO} immediately implies other results in all these domains.
 
-The regret minimization view on online learning is the prevalent one, however in \cite{}, it was proven that achieving a small regret is equivalent to have an algorithm that can guarantee a minimum \emph{reward}, that is a small cumulative loss.
-This alternative view proves that it is striclty non-necessary to consider an hypothetical optimal strategy to compare with. On the other hand, it becomes important to guarantee a reward that depends on the characteristics on the sequence.
+However, as essential as it is, being able to solve an optimization problem is only half of the problem in machine learning. In fact, we are often interested in the generalization performance of a predictor trained from data. This depends not only on the ability to optimize a loss but also on constraining the complexity of the predictor. This is usually achieved through the use an regularized objective function, that biases the solution towards a small region of the space. However, choosing the size of this region is usually a problem by itself, that is solved by practitiones with a variety of more or less theoretical principled tools.
 
-In this paper, we will use this alternative interpretation to argue that a recent class of adaptive online learning algorithms has a much more natural interpretation in terms of reward. In particular, we will show that an algorithm that guarantees a reward close to the optimal sequence of bets also guarantees optimal regret in \ac{OLO} and automatic model selection in regularized \ac{ERM}. Moreover, we will show connections between the optimal Kelly-betting strategy \cite{} and online learning, and hence indirectly with stochastic optimization and statistical learning.
+In this paper, we claim that a more fundamental notion subsumes both \ac{OLO} and \ac{OCO}. This notion is linked to the ability of an algorithm to bet optimal on an arbitrary sequence of outcomes from a coin. We will define the notion of \ac{MBA} that not only will allow us to solve \ac{OLO} and \ac{OCO}, but to design algorithm that do not require any explicit form of regularization nor any hyper-parameter to tune, yet are able to achieve optimal worst case guarantees. 
+In particular, we will show that an algorithm that guarantees a reward close to the optimal sequence of bets also guarantees optimal regret in \ac{OLO}/\ac{OCO} and automatic model selection in regularized \ac{ERM}.
+
+We will also show connections between the optimal the betting strategy known in economics as Kelly-betting \cite{} and online learning, and hence indirectly with stochastic optimization and statistical learning.

@@ -1,1 +1,8 @@
-Bla bla bla
+\ac{OLO} is a basic building block for optimization and machine learning problems. It allows to reduce the design of learning algorithms to design of simple online algorithms for linear losses.
+In particular, \ac{OCO}, stochastic optimization, batch optimization, (convex) machine learning algorithms are simple instantiation of \ac{OLO} algorithms.
+
+Yet, some critical issues are currently mostly ignored by theoretical researchers.
+In particular, the adaptation to the norm of the optimal solution is not taked into account in optimization algorithm andthe model selection phase is often ignored in theoretical algorithms for machine learning.
+In fact, in theoretical works most of the time assumptions are made, for example, on the prior knowledge of the norm of the optimal solution, while in the practical world validation methods remain the only viable approach.
+
+In this paper, we propose to use betting as a starting principle, instead of \ac{OLO}. We will prove that an optimal betting algorithm can be used to have optimal guarantees in \ac{OLO}, \ac{OCO} and regularized ERM. Hence, this work prove novel connections between these areas.
