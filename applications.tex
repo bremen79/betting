@@ -88,7 +88,7 @@ In particular, we have the following Theorem from~\citet{Cesa-BianchiCG04}.
 Let $\bw_1, \cdots, \bw_n \in \fH$ the vector produced by an OLO algorithm with a regret guarantee $Regret_n(\bu)$.
 Let $F:\fH\rightarrow\R$ a convex function, and fix the vectors $\bg_t$ to be unbiased estimate of the gradient of $F$ in $\bw_t$. Then, the following holds
 \[
-\E\left[F\left(\frac{1}{n} \bw_t\right)\right] \leq \frac{\E[Regret_n(\bu)]}{n}~.
+\E\left[F\left(\frac{1}{n} \bw_t\right)\right] \leq \min_{\bu} \ F\left(\bu\right) + \frac{\E[Regret_n(\bu)]}{n}~.
 \]
 \end{theorem}
 

@@ -279,9 +279,9 @@ For any $k\geq 0$, it follows that
 0&=\E\left[\sum_{t=1}^n w_t r_t \right] 
 = \E\left[\sum_{t=1}^n w_t r_t \bigg| \left|\sum_{t=1}^n r_t \right|< 2 k\right] P\left(\left|\sum_{t=1}^n r_t\right|< 2k \right)\\
 &\qquad+\E\left[\sum_{t=1}^n w_t r_t \bigg| \left|\sum_{t=1}^n r_t \right| \geq 2 k\right] P\left(\left|\sum_{t=1}^n r_t\right|\geq 2 k\right) \\
-&=\E\left[\sum_{t=1}^n w_t r_t \bigg| \left|\sum_{t=1}^n r_t \right|< 2 k\right] (1-P\left(\left|\sum_{t=1}^n r_t\right|\geq 2 k\right))\\
+&=\E\left[\sum_{t=1}^n w_t r_t \bigg| \left|\sum_{t=1}^n r_t \right|< 2 k\right] \left(1-P\left(\left|\sum_{t=1}^n r_t\right|\geq 2 k\right)\right)\\
 &\qquad+\E\left[\sum_{t=1}^n w_t r_t \bigg| \left|\sum_{t=1}^n r_t \right| \geq 2 k\right] P\left(\left|\sum_{t=1}^n r_t\right|\geq 2 k\right) \\
-&\geq -\epsilon (1-P\left(\left|\sum_{t=1}^n r_t\right|\geq 2 k\right))+\E\left[\sum_{t=1}^n w_t r_t \bigg| \left|\sum_{t=1}^n r_t\right| \geq 2 k\right] P\left(\left|\sum_{t=1}^n r_t \right|\geq 2 k\right),
+&\geq -\epsilon \left(1-P\left(\left|\sum_{t=1}^n r_t\right|\geq 2 k\right)\right)+\E\left[\sum_{t=1}^n w_t r_t \bigg| \left|\sum_{t=1}^n r_t\right| \geq 2 k\right] P\left(\left|\sum_{t=1}^n r_t \right|\geq 2 k\right),
 \end{align*}
 hence
 \begin{align*}
