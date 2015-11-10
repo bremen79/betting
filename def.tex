@@ -3,17 +3,18 @@ These papers deals with three different settings, hence we will fist describe th
 
 Real number variable will denoted by italic letters, e.g. $x,y$, while vectors will be denoted by bold letters, $\bw,\bu$.
 Random variables will be indicated by capital italic letters, e.g. $X \sim N(0,\sigma^2)$.
+A vector $\bx$ is a subgradient of a convex function $\ell$ at $\bv$ iff $\ell(\bu) - \ell(\bv) \ge \langle \bu - \bv, \bx \rangle$ for any $\bu$ in the domain of $\ell$. The differential set of $\ell$ at $\bv$, denoted by $\partial \ell(\bv)$, is the set of all the subgradients of $\ell$ at $\bv$.
 We define the KL divergence between two Bernoulli distributions with parameters $p$ and $q$ as
 \[
 D(p||q) := p \log\frac{p}{q} + (1-p) \log\frac{1-p}{1-q}~.
 \]
 
-\vspace{0.2cm}\noindent\textbf{Binary and Continuos Coin Betting.}
+\vspace{0.2cm}\noindent\textbf{Binary and Continuous Coin Betting.}
 The bettor starts with the amount of money $\epsilon$. 
 At the end of each bet in the time step $t$ we denote the amount of money he has by $\wealth_t$ and by $\gain_t$ the amount of money gained through the $t$ bets. Hence, $\wealth_t=\gain_t+\epsilon$.
-At each time step $t$, it has to bet a quantity of money $w_t$ equal to a fraction of his current money, $w_t:=\beta_t \, \wealth_{t-1}$ where $\beta_t \in (-1,1)$. Note that here we consider only betting strategies that will never result in a negative quantity of money owned. Hence, $|\beta_t|$ must be strictly less than 1, otherwise the algorithm could lose all the money in one round.
-After the bet, the outcome of the coin $g_t \in \{-1,1\}$ is revealed and the better wins (or loses) the quantity $w_t g_t$.
-Note that we will speak about a ``binary coin'' when the outcome of the coin is in $\{-1,1\}$, and ``continous coin'' when $g_t \in [-1,1]$. The latter case model the situation in there are different possible prizes with unknown probabilities to be won. In both cases, we have $\wealth_t:=\gain_{t-1} + w_t g_t + \epsilon= \epsilon + \sum_{i=1}^t w_i g_i$, so that $\gain_0=0$ and $\wealth_0=\epsilon$.
+At each time step $t$, it has to bet a quantity of money $w_t$ equal to a fraction of his current money, $w_t:=b_t \, \wealth_{t-1}$ where $b_t \in (-1,1)$. Note that here we consider only betting strategies that will never result in a negative quantity of money owned. Hence, $|b_t|$ must be strictly less than 1, otherwise the algorithm could lose all the money in one round.
+After the bet, the outcome of the coin $g_t \in \{-1,1\}$ is revealed and the bettor wins (or loses) the quantity $w_t g_t$.
+Note that we will speak about a ``binary coin'' when the outcome of the coin is in $\{-1,1\}$, and ``continuous coin'' when $g_t \in [-1,1]$. The latter case model the situation in there are different possible prizes with unknown probabilities to be won. In both cases, we have $\wealth_t:=\gain_{t-1} + w_t g_t + \epsilon= \epsilon + \sum_{i=1}^t w_i g_i$, so that $\gain_0=0$ and $\wealth_0=\epsilon$.
 We will extend to above definitions also to the the case that $\bw_t$ and $\bg_t$ belongs to a Hilbert space $\fH$ and $\norm{\bg_t}\leq 1$. Hence, with a slight abuse of notation we will also define $\gain_n=\sum_{t=1}^n \langle \bw_t, \bg_t \rangle$, $\wealth_t=\gain_t + \epsilon$ and $\bw_t = \bbeta_t \, \wealth_{t-1}$, with $\norm{\bbeta_t} < 1$.
 
 \vspace{0.2cm}\noindent\textbf{\ac{OLO} and \ac{OCO}.}
@@ -26,11 +27,10 @@ In particular, define
 Regret_n(\bu) := \sum_{t=1}^n \langle \bg_t , \bu - \bw_t \rangle~.
 \]
 In the \ac{OCO} setting, instead, the algorithm receives convex loss functions $f_t$ rather than vectors.
-Again, the aim is to minimize rhe regret, that in this case is defined as
+Again, the aim is to minimize the regret, that in this case is defined as
 \[
 Regret^{OCO}_n(\bu) := \sum_{t=1}^n \left(f_t(\bw_t) -f_t(\bu)\right)~.
 \]
-A vector $\bx$ is a subgradient of a convex function $\ell$ at $\bv$ iff $\ell(\bu) - \ell(\bv) \ge \langle \bu - \bv, \bx \rangle$ for any $\bu$ in the domain of $\ell$. The differential set of $\ell$ at $\bv$, denoted by $\partial \ell(\bv)$, is the set of all the subgradients of $\ell$ at $\bv$.
 
 \vspace{0.2cm}\noindent\textbf{Regularized ERM.}
 Let $\rho$ a fixed but unknown distribution on $\fX \times \fY$, where $\fY \subset \R$.

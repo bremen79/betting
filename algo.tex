@@ -1,4 +1,4 @@
-\section{COCOB: A Master Betting Algorithm for Continous Coins}
+\section{COCOB: A Master Betting Algorithm for Continuous Coins}
 \label{sec:algo}
 
 \begin{algorithm}[ht]
@@ -21,12 +21,12 @@
   \label{alg:cocob}
 \end{algorithm}
 
-As said in Section~\ref{sec:appl}, portfolio selection can only be used to optimally solve binary coin betting.
+As said in Section~\ref{sec:appl}, we need an efficient \ac{MBA} algorithm for continuous coin betting.
 Hence, in this section we show how a very simple algorithm that satisfies Assumption~\ref{assumption:1-d_algo}.
 
-The first observation is that the wealth of the optimal strategy, as proved in Theorems~\ref{thm:oracle_fraction} and \ref{thm:oracle_fraction_changing}, is expected to grow exponential in time depending on $D\left(\frac{1}{2}+\frac{\sum_{t=1}^n g_t}{2 n}\middle\|\frac{1}{2}\right)$. If we try to achieve exactly this term, we are (probably) doomed to use the portfolio selection algorithm or to assume a binary coin.
+The first observation is that the wealth of the optimal strategy, as proved in Theorems~\ref{thm:oracle_fraction} and \ref{thm:oracle_fraction_changing}, is expected to grow exponential in time depending on $D\left(\frac{1}{2}+\frac{\sum_{t=1}^n g_t}{2 n}\middle\|\frac{1}{2}\right)$. If we try to achieve exactly this term, we are (probably) doomed to use the universal portfolio selection algorithm or to assume a binary coin.
 However, we might try to achieve something that is very close to that quantity.
-The idea is to sacrify a bit of the guaranteed growth of the wealth to gain in order to gain generality. In particular we aim at designing a \ac{MBA}.
+The idea is to sacrifice a bit of the guaranteed growth of the wealth in order to gain generality. In particular we aim at designing a \ac{MBA}.
 
 It is easy to show that
 \[
@@ -59,7 +59,7 @@ satisfy Assumption~\ref{assumption:1-d_algo}.
 % \end{align*}
 \end{theorem}
 %
-Notice that the $a$ regolates the trade-off between the first and second term. When $a=2$, we maximize the contribute of the first term.
+Notice that the $a$ regulates the trade-off between the first and second term. When $a=2$, we maximize the contribute of the first term.
 
 \begin{cor}
 Set $a=2$ in Algorithm~\ref{alg:cocob}. Then we have that the following hold

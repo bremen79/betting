@@ -5,23 +5,23 @@ Before trying to design the \ac{MBA}, we will explore what are the theoretical l
 
 \textbf{Betting on a binary coin.}
 Given the link with betting and \ac{MBA}, exploring the limits of the reward obtainable with betting will imply limits on the \ac{MBA}.
-We will considere the case that the outcomes are binary, i.e. $g_t \in \{-1,1\}$.
+We will consider the case that the outcomes are binary, i.e. $g_t \in \{-1,1\}$.
 First, we will analyze the class of betting strategy that bets a fixed amount of the current reward for the entire game.
-The following theorem is well-known, and it has been shown, for example, in \cite{}.
+The following theorem is well-known and it has been shown, for example, in \cite{McMahanA13}.
 
 \begin{theorem}
 \label{thm:oracle_fraction}
-Let an algorithm bet a fixed fraction of his current reward, i.e. $w_t=\beta \, \wealth_{t-1}$, where $0\leq\beta\leq1$. Then, for any sequence $g_1, \ldots, g_n \in \{-1,1\}$, we have
+Let an algorithm bet a fixed fraction of his current reward, i.e. $w_t=b \, \wealth_{t-1}$, where $0\leq b \leq1$. Then, for any sequence $g_1, \ldots, g_n \in \{-1,1\}$, we have
 \begin{equation}
 \label{eq:opt_fixed_reward}
-\max_{\beta} \ \wealth_{n}
+\max_{b} \ \wealth_{n}
 = \epsilon \exp\left(n\, D\left(\frac{1}{2}+\frac{\sum_{t=1}^n g_t}{2 n}\middle\|\frac{1}{2}\right)\right)~. 
 %\leq \epsilon \exp\left(\frac{(\sum_{t=1}^T z_t)^2}{2T}+\frac{(\sum_{t=1}^T z_t)^4}{5 T^3}\right).
 \end{equation}
-Moreover the optimal $\beta$ is $\frac{\sum_{t=1}^n g_t}{n}$.
+Moreover the optimal $b$ is $\frac{\sum_{t=1}^n g_t}{n}$.
 \end{theorem}
 
-The above theorem tells us that any algorithms that keep the fraction of money to bet at each round fixed cannot gain more that the quantity on the r.h.s. of $\eqref{eq:opt_fixed_reward}$. Moreover, the optimal fraction is nothing else the empirical estimate of the frequencies of 1 vs -1.
+The above theorem tells us that any algorithms that keeps the fraction of money to bet at each round fixed cannot gain more that the quantity on the r.h.s. of $\eqref{eq:opt_fixed_reward}$. Moreover, the optimal fraction is proportional to the empirical estimate of the probability that $g_t=1$.
 
 One might ask if having a fraction of money that changes over time might help and the answer is substantially negative. The next Theorem shows that we can only hope for logarithmic gain in the exponent w.r.t. \eqref{eq:opt_fixed_reward}.
 \begin{theorem}
@@ -36,38 +36,40 @@ For $n \in \Nat$ even and any betting strategy $w_t$ with an initial amount of m
 These last two theorems suggest that we should aim at obtaining an exponential gain, up to logarithmic terms in the exponent.
 
 Notice that, if we knew that the setting is stochastic, the optimal fraction of money in Theorem~\ref{eq:opt_fixed_reward} is nothing else than the Kelly criterion, that is derived with the objective of maximizing the expectation of the logarithm of the reward, rather than the expected profit from each bet~\citep{Kelly56}.
-In the latter case, one would be led to gamble all he had when presented with a favorable bet, and, in the case of a lost, one would have no capital with which to place subsequent bets. Kelly realized that it was the logarithm of the gambler's capital which is additive in sequential bets, and "to which the law of large numbers applies."
-In most gambling scenarios, the Kelly strategy will do better than any essentially different strategy in the long run \cite{}. %The formula has also a practical use [2][3][4].
+In the latter case, one would be led to gamble all he had when presented with a favorable bet, and, in the case of a lost, one would have no capital with which to place subsequent bets.
+%Kelly realized that it was the logarithm of the gambler's capital which is additive in sequential bets, and "to which the law of large numbers applies."
+In most gambling scenarios, the Kelly strategy will do better than any essentially different strategy in the long run. %The formula has also a practical use [2][3][4].
 
-Practically speaking, the Kelly criterion applied to a coin that has probability $p$ for one of the faces, with $p> \frac{1}{2}$, and with equal wins, corresponds in betting on that face on each round a fraction of the current money equal to $2p-1$. This simple rule assures that in expectation the growth rate will be exponential \textbf{In expectation?}.
+Practically speaking, w.l.o.g. assume that the probability of tail is $p$, $p> \frac{1}{2}$.
+The Kelly criterion applied to this coin and with equal wins, corresponds in betting on that tail on each round a fraction of the current money equal to $2p-1$. This simple rule assures that in expectation the growth rate will be exponential.
 
-However, the Kelly criterion can be used only if the coin is stochastic and if we knew bias of the coin exactly. One might argue that this is equally unlikely as knowning beforehand the empirical frequencies of $1$ and $-1$ in the sequence.
+However, the Kelly criterion can be used only if the coin is stochastic and if we knew the bias of the coin exactly. One might argue that this is equally unlikely as knowing beforehand the empirical frequencies of $1$ and $-1$ in the sequence.
 One might ask what is the optimal strategy in the case that the sequence of outcomes of the coin is non-stochastic.
-A little known result by Krichevsky and Trofimov~\cite{KrichevskyT81}, says that above procedure can still be used, substituiting the  unknown probability with a slightly biased running estimate. In particular, the probability of a face at time $t$ is estimated with 
+A little known result by Krichevsky and Trofimov~\cite{KrichevskyT81}, says that above procedure can still be used, substituting the unknown probability with a slightly biased running estimate. In particular, the fraction to bet is set to
 \[
-\hat{p_t}=\frac{\text{number of that face in the previous } t-1 \text{ rounds}}{t}~.
+\hat{b}_t=\frac{|\sum_{i=1}^{t-1} g_t|}{t},
 \]
+and we bet on the faces that appeared more in the past.
 In particular the following Theorem holds for the \ac{KT} algorithm.
 \begin{theorem}
-Bet at each round a quantity equal to $\hat{p_t} \wealth_{t-1}$ on the face that appeared more in the past. Then
+Bet at each round a quantity equal to $\hat{b}_t \, \wealth_{t-1}$ on the face that appeared more in the past. Then
 \begin{align*}
 \wealth_{n}
 \geq \epsilon \exp\left(n\, D\left(\frac{1}{2}+\frac{\sum_{t=1}^n g_t}{2 n}\middle\|\frac{1}{2}\right) - \frac{1}{2} \ln n - \ln 2\right)~.
 \end{align*}
 \end{theorem}
+That is, this simple procedure guarantees an exponential reward as well, only a factor $\sqrt{n}$ less than having known in advance the total number of heads in the sequence of $n$ rounds. It is also known that this factor cannot be improved.
 
-They proved that this simple procedure guarantees an exponential reward as well, only a factor $\sqrt{n}$ less than having known in advance the total number of heads in the sequence of $n$ rounds. It is also known that this factor cannot be improved.
-
-\textbf{Betting on a continuos coin.}
-Hence, the problem of betting on a binary coin is solved. However, the following problem cannot be solved with the Krichevsky-Trofimov forecaster. Consider the same betting scenario as before, with the only difference that the outcome of the coin is now a real number between $+1$ and $-1$. We can interpret this as a betting scenario in which the maximum amount of money that can be won or lost in each bet is fixed, but the actual winnings is shown only after the bet is done. The formalism is still the same, because $w_t g_t$ is still the amount of money won. However, the simple change makes this problem much harder than before. Indeed, to solve it we now have to use a Universal Portfolio algorithm. In fact, it is possible to consider the following equivalent problem. On each time step, we have to divide our wealth between two stocks. The gains given by the market are coded in the vector $m_t$ that are equal to $[1+g_t, 1-g_t]$. The algorithm will return a division of the wealth of the form $[a_t, 1-a_t]$. Then this can be used to bet on the continuos coin using $\beta_t=2 a_t-1$.
-It is easy to see that with this reduction the wealth of the portfolio selection is equal to the reward on the continuos coin, that is
+\textbf{Betting on a continuous coin.}
+Hence, the problem of betting on a binary coin is solved. However, the following problem cannot be solved with the Krichevsky-Trofimov forecaster. Consider the same betting scenario as before, with the only difference that the outcome of the coin is now a real number between $+1$ and $-1$. We can interpret this as a betting scenario in which the maximum amount of money that can be won or lost in each bet is fixed, but revealed to the bettor only after the bet is done. The formalism is still the same, because $w_t g_t$ is still the amount of money won. However, the simple change makes this problem much harder than before. Indeed, to solve it we now have to use a Portfolio Selection algorithm. In fact, it is possible to consider the following equivalent problem. On each time step, we have to divide our wealth between two stocks. The gains given by the market are coded in the vector $m_t$ that are equal to $[1+g_t, 1-g_t]$. The algorithm will return a division of the wealth of the form $[a_t, 1-a_t]$. Then this can be used to bet on the continuous coin using $\beta_t=2 a_t-1$.
+It is easy to see that with this reduction the wealth of the portfolio selection is equal to the reward on the continuous coin, that is
 \[
 \wealth_{t-1} \left((1+g_t) a_t+(1-g_t)(1-a_t)\right)=\wealth_{t-1}+\wealth_{t-1} \beta_t g_t~.
 \]
 %stocks as $[\frac{1+\beta_t}{2},\frac{1-\beta_t}{2}]$. It is immediate to show that in this way the wealth is multiplied by $1+\beta_t g_t$, as in \eqref{}.
 
-However, this reduction is not suited for our purpose.
-First, we cannot have an explicit lower bound on the reward. In fact, the Universal Portfolio algorithm only assures us that the wealth is close to the optimal one, but there is no closed formula for the optimal wealth.
+However, this reduction will not solve our problem.
+The reasons are that, even using the optimal algorithm for portfolio selection~\cite{CoverO96}, we do not have an explicit lower bound on the reward. In fact, the Universal Portfolio algorithm~\cite{CoverO96} only assures us that the wealth is close to the optimal one, but there is no closed formula for the optimal wealth.
 Also, the Universal Portfolio algorithm strategy itself cannot be computed in a closed formula and it has to be approximated~\cite{KalaiV03}. Note that $|g_t|$ can be equal to 1, so we cannot use the efficient algorithm in~\cite{HazanAK07}.
 Finally, it is not known if the Universal Portfolio algorithm satisfies the Assumption~\ref{assumption:1-d_algo}, hence we cannot use it to solve \ac{OLO}/\ac{OCO} problems in Hilbert spaces.
 
