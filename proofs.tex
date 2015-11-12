@@ -112,23 +112,25 @@ f^*(y) \leq  \norm{\btheta} \sqrt{\alpha \log \left(\frac{\alpha \norm{\btheta}^
   For simplicity denote by $f_t(\cdot)=f\left(\cdot, \{\norm{\bg_1}, \ldots, \norm{\bg_t}\}\right)$.
   We will prove the thesis by induction. The base case is verified from the first point of Assumption~\ref{assumption:1-d_algo}. The, we assume that 
   \[
-  \epsilon + \sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle \geq f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}^2\right),
+  \epsilon + \sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle \geq f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}\right),
   \]
   and we want to prove that 
   \[
-  \epsilon + \sum_{t=1}^{n} \langle \bg_t, \bw_t \rangle \geq f_{n}\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)~.
+  \epsilon + \sum_{t=1}^{n} \langle \bg_t, \bw_t \rangle \geq f_{n}\left( \norm{\sum_{t=1}^{n} \bg_t}\right)~.
   \]
   We have that
   \begin{align*}
-  \epsilon + \sum_{t=1}^{n} &\langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right) \\
-  &= \langle \bg_n, \bw_n \rangle + \epsilon + \sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
-  &= \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right)\left(\sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle +\epsilon \right) - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
-  &\geq \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right) f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}^2\right) - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}^2\right)\\
-  &= \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right) f_{n-1}\left( \norm{\btheta_{n-1}}^2\right) - f_n\left( \norm{\btheta_{n-1}}^2 + \norm{\bg_n}^2 + 2 \langle \btheta_{n-1}, \bg_n \rangle \right)\\
-  &\geq \min_{r\in \{-1,1\}} \left(1+ r\, b_n \norm{\bg_n} \right) f_{n-1}\left( \norm{\btheta_{n-1}}^2\right) - f_n\left(( \norm{\btheta_{n-1}} + r \norm{\bg_n})^2\right)\\
+  \epsilon + \sum_{t=1}^{n} &\langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}\right) \\
+  &= \langle \bg_n, \bw_n \rangle + \epsilon + \sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}\right)\\
+  &= \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right)\left(\sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle +\epsilon \right) - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}\right)\\
+  &\geq \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right) f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}\right) - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}\right)\\
+  &= \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right) f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}\right) - f_n\left( \norm{\bg_n + \sum_{t=1}^{n-1} \bg_t}\right)\\
+  %&= \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right) f_{n-1}\left( \norm{\btheta_{n-1}}\right) - f_n\left( \sqrt{\norm{\btheta_{n-1}}^2 + \norm{\bg_n}^2 + 2 \langle \btheta_{n-1}, \bg_n \rangle} \right)\\
+  &\geq \min_{r\in \{-1,1\}} \left(1+ r\, b_n \norm{\bg_n} \right) f_{n-1}\left( \norm{\btheta_{n-1}}\right) - f_n\left(\left| \norm{\btheta_{n-1}} + r \norm{\bg_n}\right|\right)\\
+  &= \min_{r\in \{-1,1\}} \left(1+ r\, b_n \norm{\bg_n} \right) f_{n-1}\left( \norm{\btheta_{n-1}}\right) - f_n\left( \norm{\btheta_{n-1}} + r \norm{\bg_n}\right)\\
   &\geq 0,
   \end{align*}
-  where the first inequality comes from the induction hypothesis, the second one because we take the minimum of a concave function and the last one by the hypothesis on the \ac{MBA}.
+  where the first inequality comes from the induction hypothesis, the second one using Lemma~8 in \citet{McMahanO14} and the last one by the hypothesis on the \ac{MBA}.
 \end{proof}
 
 
