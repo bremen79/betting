@@ -76,11 +76,11 @@ where the conjugation is taken w.r.t. the first argument of $f$.
 \end{cor}
 
 \vspace{0.2cm}\noindent\textbf{\ac{OLO}, \ac{OCO} and Stochastic Convex Optimization.}
-From the property of the sub-gradient of a convex function we have that, for any sequence of convex functions $f_1, \ldots, f_n$, vectors $\bw_1,\ldots, \bw_n$, and $\bg_t \in \partial f_t(\bw_t)$, we have
+From the property of the sub-gradient of a convex function we have that, for any sequence of convex functions $\ell_1, \ldots, \ell_n$, vectors $\bw_1,\ldots, \bw_n$, and $\bg_t \in \partial \ell_t(\bw_t)$, we have
 \[
-Regret^{OCO}_n(\bu) = \sum_{t=1}^n \left( f_t(\bw_t) -f_t(\bu)\right) \leq \sum_{t=1}^n \langle \bw_t-\bu, \bg_t\rangle = Regret_n(\bu)~.
+Regret^{OCO}_n(\bu) = \sum_{t=1}^n \left( \ell_t(\bw_t) -\ell_t(\bu)\right) \leq \sum_{t=1}^n \langle \bw_t-\bu, \bg_t\rangle = Regret_n(\bu)~.
 \]
-Hence, the regret w.r.t. to arbitrary convex functions is upper bounded by the linear regret. This means that an \ac{OLO} algorithm can be used to solve an \ac{OCO} problem, just feeding the algorithm with loss vectors $g_t$ equal to the subgradients of the functions $f_t$.
+Hence, the regret w.r.t. to arbitrary convex functions is upper bounded by the linear regret. This means that an \ac{OLO} algorithm can be used to solve an \ac{OCO} problem, just feeding the algorithm with loss vectors $\bg_t$ equal to the subgradients of the functions $\ell_t$.
 
 Also, a regret bound can be transformed into a convergence guarantee for optimization of convex functions.
 In particular, we have the following Theorem from~\citet{Cesa-BianchiCG04}.
@@ -88,13 +88,13 @@ In particular, we have the following Theorem from~\citet{Cesa-BianchiCG04}.
 \begin{theorem}
 \label{theo:online_to_batch}
 Let $\bw_1, \cdots, \bw_n \in \fH$ the vector produced by an OLO algorithm with a regret guarantee $Regret_n(\bu)$.
-Let $F:\fH\rightarrow\R$ a convex function, and fix the vectors $\bg_t$ to be unbiased estimate of the gradient of $F$ in $\bw_t$. Then, the following holds
+Let $\ell:\fH\rightarrow\R$ a convex function, and fix the vectors $\bg_t$ to be unbiased estimate of the gradient of $\ell$ in $\bw_t$. Then, the following holds
 \[
-\E\left[F\left(\frac{1}{n} \bw_t\right)\right] \leq \min_{\bu} \ F\left(\bu\right) + \frac{\E[Regret_n(\bu)]}{n}~.
+\E\left[\ell\left(\frac{1}{n} \sum_{t=1}^n \bw_t\right)\right] \leq \min_{\bu} \ \ell\left(\bu\right) + \frac{\E[Regret_n(\bu)]}{n}~.
 \]
 \end{theorem}
 
-High probability bounds can be also easily obtained, assuming more on the function $F$~\citep{Cesa-BianchiCG04}.
+High probability bounds can be also easily obtained, assuming more on the function $\ell$~\citep{Cesa-BianchiCG04}.
 The above theorem says that, if the regret grows, for example, as $\scO(\sqrt{n})$, the OLO algorithm can be used as a stochastic optimization algorithm with convergence in expectation $\scO(\frac{1}{\sqrt{n}})$.
 
 
@@ -111,7 +111,7 @@ More rigorously, the following theorem holds.
 Assume that there is an online algorithm whose $Regret_n(\bu)$ is $\scO\left(\norm{\bu}\sqrt{n} (\ln(n))^\alpha\right)$. Then the following holds
 \begin{equation}
 \label{eq:self_tune}
-\E\left[\RiskLoss\left(\frac{1}{T} \sum_{t=1}^n \bw_t\right)\right] \leq \scO\left(\inf_{\bu} \min_{\lambda>0} \RiskLoss(\bu) + \lambda \norm{\bu}^2 +\frac{(\ln(n))^{2 \alpha}}{\lambda \, n} \right)~.
+\E\left[\RiskLoss\left(\frac{1}{n} \sum_{t=1}^n \bw_t\right)\right] \leq \scO\left(\inf_{\bu} \min_{\lambda>0} \RiskLoss(\bu) + \lambda \norm{\bu}^2 +\frac{(\ln(n))^{2 \alpha}}{\lambda \, n} \right)~.
 \end{equation}
 % Let $\bw_1, \cdots, \bw_n \in \fH$ the vector produced by the PiSTOL algorithm.
 % Let $\ell:\R\rightarrow\R$ a convex and Lipschitz function, and fix the vectors $\bg_t$ to be unbiased estimate of the gradient of $F$ in $\bw_t$. Then, the rate of convergence of $\E\left[Risk_F\left(\frac{1}{n} \bw_t\right)\right]$ is the same of regularized ERM algorithm with the (unknown) optimal amount of regularization.
@@ -124,7 +124,7 @@ There, they prove that, with probability at least $1-\delta$, we have
 \end{equation}
 where 
 \begin{align*}
-\hat{\bw}=\argmin_{\bw} \frac{\lambda}{2}\norm{\bw}^2 + \sum_{t=1}^n f_t(\bw_t)~.
+\hat{\bw}=\argmin_{\bw} \frac{\lambda}{2}\norm{\bw}^2 + \sum_{t=1}^n \ell(\bw_t, z_t)~.
 \end{align*}
 Ignoring the fact that the bound in Theorem~\ref{theo:self_tune} is only in expectation, the bound in \eqref{eq:fast_rate_srebro} is missing the minimum over $\lambda$, that is present in \eqref{eq:self_tune}. Hence, to obtain the optimal performance in the regularized \ac{ERM} setting we have to use different values of $\lambda$, while in Theorem~\ref{theo:self_tune} the tuning is automatic. This is particular important in infinite dimensional Hilbert spaces, where the infimum could not be attained by a vector in the space~\cite{Orabona14}.
 

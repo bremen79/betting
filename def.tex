@@ -1,13 +1,14 @@
 \section{Setting and Notation}
 These papers deals with three different settings, hence we will fist describe the common notation and then each of one them separately, trying to show the similarities between them.
 
-Real number variable will denoted by italic letters, e.g. $x,y$, while vectors will be denoted by bold letters, $\bw,\bu$.
+Real number variable and elements of arbitrary sets will be denoted by italic letters, e.g. $x,y$, while vectors will be denoted by bold letters, $\bw,\bu$.
 Random variables will be indicated by capital italic letters, e.g. $X \sim N(0,\sigma^2)$.
 A vector $\bx$ is a subgradient of a convex function $\ell$ at $\bv$ iff $\ell(\bu) - \ell(\bv) \ge \langle \bu - \bv, \bx \rangle$ for any $\bu$ in the domain of $\ell$. The differential set of $\ell$ at $\bv$, denoted by $\partial \ell(\bv)$, is the set of all the subgradients of $\ell$ at $\bv$.
 We define the KL divergence between two Bernoulli distributions with parameters $p$ and $q$ as
 \[
 D(p||q) := p \log\frac{p}{q} + (1-p) \log\frac{1-p}{1-q}~.
 \]
+We will denote by $\fH$ an Hilbert space with inner product $\langle \cdot, \cdot\rangle$.
 
 \vspace{0.2cm}\noindent\textbf{Binary and Continuous Coin Betting.}
 The bettor starts with the amount of money $\epsilon$. 
@@ -26,23 +27,25 @@ In particular, define
 \[
 Regret_n(\bu) := \sum_{t=1}^n \langle \bg_t , \bu - \bw_t \rangle~.
 \]
-In the \ac{OCO} setting, instead, the algorithm receives convex loss functions $f_t$ rather than vectors.
+In the \ac{OCO} setting, instead, the algorithm receives convex loss functions $\ell_t$ rather than vectors.
 Again, the aim is to minimize the regret, that in this case is defined as
 \[
-Regret^{OCO}_n(\bu) := \sum_{t=1}^n \left(f_t(\bw_t) -f_t(\bu)\right)~.
+Regret^{OCO}_n(\bu) := \sum_{t=1}^n \left(\ell_t(\bw_t) -\ell_t(\bu)\right)~.
 \]
 
 \vspace{0.2cm}\noindent\textbf{Regularized ERM.}
-Let $\rho$ a fixed but unknown distribution on $\fX \times \fY$, where $\fY \subset \R$.
+Let $P$ a fixed but unknown distribution on $\fZ$, where $\fZ$ is an arbitrary set.
 %Denote by $\frho(x):= \int_\fY y d\rho(y|x)$ the \emph{regression function}, where $\rho(\cdot|x)$ is the conditional probability measure at $x$ induced by $\rho$. 
 %Denote by $\rho_\fX$ the marginal probability measure on $\fX$ and let $\Ltworho$ be the space of square integrable functions with respect to $\rho_\fX$, whose norm is denoted by $\normL{\f}:=\sqrt{\int_\fX \f^2(x) d \rho_\fX}$. Note that $\frho \in \Ltworho$.
-Performance is measured w.r.t. a loss function $\ell: \R \times \R \rightarrow \R_+$, convex and \emph{$L$-Lipschitz} w.r.t. the first argument.
+We introduce a loss function  $\ell: \fH \times \fZ \rightarrow \R_+$, convex and \emph{$L$-Lipschitz} w.r.t. the first argument.
+Note that this generalizes the case where we have the composition of a predictor parametrized by a vector $\bw$ and a loss function. Hence, for example, in the case of logistic regression define $\fZ= \fH \times [0,1]$ and $z=(\bx,\by)$ so that
+$\ell(\bw,z)=\ln\left(1+\exp(- y \langle \bw, \bx\rangle)\right)$.
 % We will consider \emph{$L$-Lipschitz} losses, that is $|\ell(x)-\ell(x')| \leq L |x-x'|$.
-Define the \emph{$\ell$-risk} of $f$, as $\RiskLoss(f):=\int_{\fX \times \fY} \ell(y f(x)) d \rho$.
+Define the \emph{$\ell$-risk} of $\bw \in \fH$, as $\RiskLoss(\bw):=\E_{Z \sim P} [\ell(\bw,Z)]$.
 %Also, define $\flrho(x):=\argmin_{t \in \R} \int_\fY \ell(y t) d \rho(y|x)$, that gives the \emph{optimal $\ell$-risk}, $\RiskLoss(\flrho)=\inf_{\f \in \Ltworho} \RiskLoss(\f)$.
 %, \ \forall x,x' \in \R$, and \emph{$H$-smooth} losses, that is differentiable losses with the first derivative $H$-Lipschitz. Note that a loss can be both Lipschitz and smooth.
-Given a training set $\{\bx_t,y_t\}_{t=1}^n$ of samples drawn \ac{IID} from $\rho$, the regularized \ac{ERM} strategy finds a predictor $\hat{f}$ in a functional space $\mathcal{F}$, such that
+Given a training set $\{z_t\}_{t=1}^n$ of samples drawn \ac{IID} from $P$, the regularized \ac{ERM} strategy finds a predictor $\hat{\bw}$ in a subset $\mathcal{S} \subseteq \fH$, such that
 \[
-\hat{f}= \argmin_{f \in \mathcal{F}} \ \lambda\, R(f) + \frac{1}{n} \sum_{t=1}^n \ell(f(\bx_t),y_t),
+\hat{f}= \argmin_{\bw \in \mathcal{S}} \ \lambda\, R(\bw) + \frac{1}{n} \sum_{t=1}^n \ell(\bw,z_t),
 \]
-where $R(f)$ is the regularizer and $\mathcal{F}$ is a function class.
+where $R(\bw)$ is the regularizer.
