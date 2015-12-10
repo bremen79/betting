@@ -68,8 +68,8 @@ Set $a=2$ in Algorithm~\ref{alg:cocob}. Then we have that the following hold
 \item Feed Algorithm~\ref{alg:cocob} with $\sg_{t-1}=\sum_{i=1}^{t-1} |g_t| + \delta + 1$ and $\theta_{t-1}=|\sum_{i=1}^{t-1} g_i|$.
 Algorithm~\ref{alg:cocob} guarantees an exponential reward in $\frac{(\sum_{t=1}^n g_t)^2}{2 \sum_{t=1}^n |g_t|}$ and a regret w.r.t. any real number $u$ of $\tilde{\scO}(|u| \sqrt{\sum_{t=1}^n |g_t|})$.
 
-\item Feed Algorithm~\ref{alg:cocob} with $\sg_{t-1}=\sum_{i=1}^{t-1} \norm{\bg_t} + \delta + 1$ and $\theta_{t-1}=\norm{\btheta_{t-1}}$.
-Predicting with $\bw_t=b_t \frac{\sum_{i=1}^t \bg_t}{\norm{\sum_{i=1}^t \bg_t}}$ guarantees a regret w.r.t. any $\bu \in \fH$ of $\tilde{\scO}(\norm{\bu} \sqrt{\sum_{t=1}^n \norm{\bg_t}})$ and an exponential reward in $\frac{(\sum_{t=1}^n \bg_t)^2}{2 \sum_{t=1}^n \norm{\bg_t}}$.
+\item Feed Algorithm~\ref{alg:cocob} with $\sg_{t-1}=\sum_{i=1}^{t-1} \norm{g_t} + \delta + 1$ and $\theta_{t-1}=\norm{\theta_{t-1}}$.
+Predicting with $w_t=b_t \frac{\sum_{i=1}^t g_t}{\norm{\sum_{i=1}^t g_t}}$ guarantees a regret w.r.t. any $u \in \fH$ of $\tilde{\scO}(\norm{u} \sqrt{\sum_{t=1}^n \norm{g_t}})$ and an exponential reward in $\frac{(\sum_{t=1}^n g_t)^2}{2 \sum_{t=1}^n \norm{g_t}}$.
 
 \end{itemize}
 \end{cor}

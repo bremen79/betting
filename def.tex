@@ -1,9 +1,8 @@
 \section{Setting and Notation}
 These papers deals with three different settings, hence we will fist describe the common notation and then each of one them separately, trying to show the similarities between them.
 
-Real number variable and elements of arbitrary sets will be denoted by italic letters, e.g. $x,y$, while vectors will be denoted by bold letters, $\bw,\bu$.
 Random variables will be indicated by capital italic letters, e.g. $X \sim N(0,\sigma^2)$.
-A vector $\bx$ is a subgradient of a convex function $\ell$ at $\bv$ iff $\ell(\bu) - \ell(\bv) \ge \langle \bu - \bv, \bx \rangle$ for any $\bu$ in the domain of $\ell$. The differential set of $\ell$ at $\bv$, denoted by $\partial \ell(\bv)$, is the set of all the subgradients of $\ell$ at $\bv$.
+A vector $x$ is a subgradient of a convex function $\ell$ at $v$ iff $\ell(u) - \ell(v) \ge \langle u - v, x \rangle$ for any $u$ in the domain of $\ell$. The differential set of $\ell$ at $v$, denoted by $\partial \ell(v)$, is the set of all the subgradients of $\ell$ at $v$.
 We define the KL divergence between two Bernoulli distributions with parameters $p$ and $q$ as
 \[
 D(p||q) := p \log\frac{p}{q} + (1-p) \log\frac{1-p}{1-q}~.
@@ -16,21 +15,21 @@ At the end of each bet in the time step $t$ we denote the amount of money he has
 At each time step $t$, it has to bet a quantity of money $w_t$ equal to a fraction of his current money, $w_t:=b_t \, \wealth_{t-1}$ where $b_t \in (-1,1)$. Note that here we consider only betting strategies that will never result in a negative quantity of money owned. Hence, $|b_t|$ must be strictly less than 1, otherwise the algorithm could lose all the money in one round.
 After the bet, the outcome of the coin $g_t \in \{-1,1\}$ is revealed and the bettor wins (or loses) the quantity $w_t g_t$.
 Note that we will speak about a ``binary coin'' when the outcome of the coin is in $\{-1,1\}$, and ``continuous coin'' when $g_t \in [-1,1]$. The latter case model the situation in there are different possible prizes with unknown probabilities to be won. In both cases, we have $\wealth_t:=\gain_{t-1} + w_t g_t + \epsilon= \epsilon + \sum_{i=1}^t w_i g_i$, so that $\gain_0=0$ and $\wealth_0=\epsilon$.
-We will extend to above definitions also to the the case that $\bw_t$ and $\bg_t$ belongs to a Hilbert space $\fH$ and $\norm{\bg_t}\leq 1$. Hence, with a slight abuse of notation we will also define $\gain_n=\sum_{t=1}^n \langle \bw_t, \bg_t \rangle$, $\wealth_t=\gain_t + \epsilon$ and $\bw_t = \bbeta_t \, \wealth_{t-1}$, with $\norm{\bbeta_t} < 1$.
+We will extend to above definitions also to the the case that $w_t$ and $g_t$ belongs to a Hilbert space $\fH$ and $\norm{g_t}\leq 1$. Hence, with a slight abuse of notation we will also define $\gain_n=\sum_{t=1}^n \langle w_t, g_t \rangle$, $\wealth_t=\gain_t + \epsilon$ and $w_t = \beta_t \, \wealth_{t-1}$, with $\norm{\beta_t} < 1$.
 
 \vspace{0.2cm}\noindent\textbf{\ac{OLO} and \ac{OCO}.}
-Let $\fH$ be a Hilbert space. In the \ac{OLO} framework, at each round $t$ the algorithm receives a vector $\bg_t \in \fX$, picks a $\bw_t \in \fX \subset \fH$, and gains $\langle \bw_t,\bg_t \rangle$ (or equivalently loses -$\langle \bw_t,\bg_t \rangle$).
+Let $\fH$ be a Hilbert space. In the \ac{OLO} framework, at each round $t$ the algorithm receives a vector $g_t \in \fX$, picks a $w_t \in \fS \subseteq \fH$, and gains $\langle w_t,g_t \rangle$ (or equivalently loses -$\langle w_t,g_t \rangle$).
 The aim of the algorithm is to minimize the \emph{regret}, that is the difference between the cumulative gains of the 
-of an arbitrary and fixed competitor $\bu \in \fX$, $\sum_{t=1}^n \langle \bu,\bg_t \rangle$, and 
-the cumulative gains of the algorithm, $\sum_{t=1}^n \langle \bw_t,\bg_t \rangle$.
+of an arbitrary and fixed competitor $u \in \fX$, $\sum_{t=1}^n \langle u,g_t \rangle$, and 
+the cumulative gains of the algorithm, $\sum_{t=1}^n \langle w_t,g_t \rangle$.
 In particular, define
 \[
-Regret_n(\bu) := \sum_{t=1}^n \langle \bg_t , \bu - \bw_t \rangle~.
+Regret_n(u) := \sum_{t=1}^n \langle g_t , u - w_t \rangle~.
 \]
 In the \ac{OCO} setting, instead, the algorithm receives convex loss functions $\ell_t$ rather than vectors.
 Again, the aim is to minimize the regret, that in this case is defined as
 \[
-Regret^{OCO}_n(\bu) := \sum_{t=1}^n \left(\ell_t(\bw_t) -\ell_t(\bu)\right)~.
+Regret^{OCO}_n(u) := \sum_{t=1}^n \left(\ell_t(w_t) -\ell_t(u)\right)~.
 \]
 
 \vspace{0.2cm}\noindent\textbf{Regularized ERM.}
@@ -38,14 +37,14 @@ Let $P$ a fixed but unknown distribution on $\fZ$, where $\fZ$ is an arbitrary s
 %Denote by $\frho(x):= \int_\fY y d\rho(y|x)$ the \emph{regression function}, where $\rho(\cdot|x)$ is the conditional probability measure at $x$ induced by $\rho$. 
 %Denote by $\rho_\fX$ the marginal probability measure on $\fX$ and let $\Ltworho$ be the space of square integrable functions with respect to $\rho_\fX$, whose norm is denoted by $\normL{\f}:=\sqrt{\int_\fX \f^2(x) d \rho_\fX}$. Note that $\frho \in \Ltworho$.
 We introduce a loss function  $\ell: \fH \times \fZ \rightarrow \R_+$, convex and \emph{$L$-Lipschitz} w.r.t. the first argument.
-Note that this generalizes the case where we have the composition of a predictor parametrized by a vector $\bw$ and a loss function. Hence, for example, in the case of logistic regression define $\fZ= \fH \times [0,1]$ and $z=(\bx,\by)$ so that
-$\ell(\bw,z)=\ln\left(1+\exp(- y \langle \bw, \bx\rangle)\right)$.
+Note that this generalizes the case where we have the composition of a predictor parametrized by a vector $w$ and a loss function. Hence, for example, in the case of logistic regression define $\fZ= \fH \times [0,1]$ and $z=(x,y)$ so that
+$\ell(w,z)=\ln\left(1+\exp(- y \langle w, x\rangle)\right)$.
 % We will consider \emph{$L$-Lipschitz} losses, that is $|\ell(x)-\ell(x')| \leq L |x-x'|$.
-Define the \emph{$\ell$-risk} of $\bw \in \fH$, as $\RiskLoss(\bw):=\E_{Z \sim P} [\ell(\bw,Z)]$.
+Define the \emph{$\ell$-risk} of $w \in \fH$, as $\RiskLoss(w):=\E_{Z \sim P} [\ell(w,Z)]$.
 %Also, define $\flrho(x):=\argmin_{t \in \R} \int_\fY \ell(y t) d \rho(y|x)$, that gives the \emph{optimal $\ell$-risk}, $\RiskLoss(\flrho)=\inf_{\f \in \Ltworho} \RiskLoss(\f)$.
 %, \ \forall x,x' \in \R$, and \emph{$H$-smooth} losses, that is differentiable losses with the first derivative $H$-Lipschitz. Note that a loss can be both Lipschitz and smooth.
-Given a training set $\{z_t\}_{t=1}^n$ of samples drawn \ac{IID} from $P$, the regularized \ac{ERM} strategy finds a predictor $\hat{\bw}$ in a subset $\mathcal{S} \subseteq \fH$, such that
+Given a training set $\{z_t\}_{t=1}^n$ of samples drawn \ac{IID} from $P$, the regularized \ac{ERM} strategy finds a predictor $\hat{w}$ in a subset $\fS \subseteq \fH$, such that
 \[
-\hat{f}= \argmin_{\bw \in \mathcal{S}} \ \lambda\, R(\bw) + \frac{1}{n} \sum_{t=1}^n \ell(\bw,z_t),
+\hat{f}= \argmin_{w \in \fS} \ \lambda\, R(w) + \frac{1}{n} \sum_{t=1}^n \ell(w,z_t),
 \]
-where $R(\bw)$ is the regularizer.
+where $R(w)$ is the regularizer.

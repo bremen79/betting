@@ -100,34 +100,34 @@ Let $\phi:\R \rightarrow (-\infty, +\infty]$ be even. Then $(\phi \ast \norm{\cd
 
 \begin{cor}
 \label{cor:dual_exp_square}
-Define $f(\btheta)= \beta \exp\frac{\norm{\btheta}^2}{2 \alpha}$, for $\alpha,\beta>0$. Then
+Define $f(\theta)= \beta \exp\frac{\norm{\theta}^2}{2 \alpha}$, for $\alpha,\beta>0$. Then
 \[
-f^*(y) \leq  \norm{\btheta} \sqrt{\alpha \log \left(\frac{\alpha \norm{\btheta}^2}{\beta^2} +1 \right)} - \beta.
+f^*(y) \leq  \norm{\theta} \sqrt{\alpha \log \left(\frac{\alpha \norm{\theta}^2}{\beta^2} +1 \right)} - \beta.
 \]
 \end{cor}
 
 
 \subsection{Proof of Theorem~\ref{theo:hilbert_reward}}
 \begin{proof}
-  For simplicity denote by $f_t(\cdot)=f\left(\cdot, \{\norm{\bg_1}, \ldots, \norm{\bg_t}\}\right)$.
+  For simplicity denote by $f_t(\cdot)=f\left(\cdot, \{\norm{g_1}, \ldots, \norm{g_t}\}\right)$.
   We will prove the thesis by induction. The base case is verified from the first point of Assumption~\ref{assumption:1-d_algo}. The, we assume that 
   \[
-  \epsilon + \sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle \geq f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}\right),
+  \epsilon + \sum_{t=1}^{n-1} \langle g_t, w_t \rangle \geq f_{n-1}\left( \norm{\sum_{t=1}^{n-1} g_t}\right),
   \]
   and we want to prove that 
   \[
-  \epsilon + \sum_{t=1}^{n} \langle \bg_t, \bw_t \rangle \geq f_{n}\left( \norm{\sum_{t=1}^{n} \bg_t}\right)~.
+  \epsilon + \sum_{t=1}^{n} \langle g_t, w_t \rangle \geq f_{n}\left( \norm{\sum_{t=1}^{n} g_t}\right)~.
   \]
   We have that
   \begin{align*}
-  \epsilon + \sum_{t=1}^{n} &\langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}\right) \\
-  &= \langle \bg_n, \bw_n \rangle + \epsilon + \sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}\right)\\
-  &= \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right)\left(\sum_{t=1}^{n-1} \langle \bg_t, \bw_t \rangle +\epsilon \right) - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}\right)\\
-  &\geq \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right) f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}\right) - f_n\left( \norm{\sum_{t=1}^{n} \bg_t}\right)\\
-  &= \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right) f_{n-1}\left( \norm{\sum_{t=1}^{n-1} \bg_t}\right) - f_n\left( \norm{\bg_n + \sum_{t=1}^{n-1} \bg_t}\right)\\
-  %&= \left(1+\frac{b_n}{\norm{\btheta_{n-1}}}\langle \btheta_{n-1},\bg_n \rangle \right) f_{n-1}\left( \norm{\btheta_{n-1}}\right) - f_n\left( \sqrt{\norm{\btheta_{n-1}}^2 + \norm{\bg_n}^2 + 2 \langle \btheta_{n-1}, \bg_n \rangle} \right)\\
-  &\geq \min_{r\in \{-1,1\}} \left(1+ r\, b_n \norm{\bg_n} \right) f_{n-1}\left( \norm{\btheta_{n-1}}\right) - f_n\left(\left| \norm{\btheta_{n-1}} + r \norm{\bg_n}\right|\right)\\
-  &= \min_{r\in \{-1,1\}} \left(1+ r\, b_n \norm{\bg_n} \right) f_{n-1}\left( \norm{\btheta_{n-1}}\right) - f_n\left( \norm{\btheta_{n-1}} + r \norm{\bg_n}\right)\\
+  \epsilon + \sum_{t=1}^{n} &\langle g_t, w_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} g_t}\right) \\
+  &= \langle g_n, w_n \rangle + \epsilon + \sum_{t=1}^{n-1} \langle g_t, w_t \rangle - f_n\left( \norm{\sum_{t=1}^{n} g_t}\right)\\
+  &= \left(1+\frac{b_n}{\norm{\theta_{n-1}}}\langle \theta_{n-1},g_n \rangle \right)\left(\sum_{t=1}^{n-1} \langle g_t, w_t \rangle +\epsilon \right) - f_n\left( \norm{\sum_{t=1}^{n} g_t}\right)\\
+  &\geq \left(1+\frac{b_n}{\norm{\theta_{n-1}}}\langle \theta_{n-1},g_n \rangle \right) f_{n-1}\left( \norm{\sum_{t=1}^{n-1} g_t}\right) - f_n\left( \norm{\sum_{t=1}^{n} g_t}\right)\\
+  &= \left(1+\frac{b_n}{\norm{\theta_{n-1}}}\langle \theta_{n-1},g_n \rangle \right) f_{n-1}\left( \norm{\sum_{t=1}^{n-1} g_t}\right) - f_n\left( \norm{g_n + \sum_{t=1}^{n-1} g_t}\right)\\
+  %&= \left(1+\frac{b_n}{\norm{\theta_{n-1}}}\langle \theta_{n-1},g_n \rangle \right) f_{n-1}\left( \norm{\theta_{n-1}}\right) - f_n\left( \sqrt{\norm{\theta_{n-1}}^2 + \norm{g_n}^2 + 2 \langle \theta_{n-1}, g_n \rangle} \right)\\
+  &\geq \min_{r\in \{-1,1\}} \left(1+ r\, b_n \norm{g_n} \right) f_{n-1}\left( \norm{\theta_{n-1}}\right) - f_n\left(\left| \norm{\theta_{n-1}} + r \norm{g_n}\right|\right)\\
+  &= \min_{r\in \{-1,1\}} \left(1+ r\, b_n \norm{g_n} \right) f_{n-1}\left( \norm{\theta_{n-1}}\right) - f_n\left( \norm{\theta_{n-1}} + r \norm{g_n}\right)\\
   &\geq 0,
   \end{align*}
   where the first inequality comes from the induction hypothesis, the second one using Lemma~8 in \citet{McMahanO14} and the last one by the hypothesis on the \ac{MBA}.
@@ -143,11 +143,11 @@ The statement is readily proved using the inequality $a\,b \leq \frac{a^2}{\lamb
 \begin{proof}
 From Theorem~\ref{theo:hilbert_reward} we have that
 \[
-\gain_n = \wealth_n - \epsilon  \geq B n^{-C} \exp\left(\frac{\norm{\sum_{t=1}^n \bg_t}^2}{A n}\right)-D - \epsilon~.
+\gain_n = \wealth_n - \epsilon  \geq B n^{-C} \exp\left(\frac{\norm{\sum_{t=1}^n g_t}^2}{A n}\right)-D - \epsilon~.
 \]
 We now apply Theorem~\ref{thm:rrdual} and Corollary~\ref{cor:dual_exp_square} to have that 
 \[
-Regret_n(\bu) \leq \norm{\bu} \sqrt{\frac{A T}{2} \log \left(\frac{\frac{A}{2} T^{2C+1} \norm{\bu}^2}{B^2} +1 \right)} - \frac{B}{T^{C}} + \epsilon+D~. \qedhere
+Regret_n(u) \leq \norm{u} \sqrt{\frac{A T}{2} \log \left(\frac{\frac{A}{2} T^{2C+1} \norm{u}^2}{B^2} +1 \right)} - \frac{B}{T^{C}} + \epsilon+D~. \qedhere
 \]
 \end{proof}
 
