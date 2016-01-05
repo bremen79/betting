@@ -182,15 +182,15 @@ From the betting strategy we have
 \]
 Hence
 \[
-\wealth_n=\epsilon \prod_{t=1}^n (1+\beta g_t) = \epsilon (1+\beta)^\frac{n+Z}{2} (1-\beta)^\frac{n-Z}{2},
+\wealth_n=\epsilon \prod_{t=1}^n (1+\beta g_t) = \epsilon (1+\beta)^\frac{n+\theta}{2} (1-\beta)^\frac{n-\theta}{2},
 \]
-where $G=\sum_{t=1}^n g_t$.
-It is easy to show that the maximum value of $\wealth_n$ w.r.t. $\beta$ is in $\beta=\frac{G}{n}$. 
+where $\theta:=\sum_{t=1}^n g_t$.
+It is easy to show that the maximum value of $\wealth_n$ w.r.t. $\beta$ is in $\beta=\frac{\theta}{n}$. 
 Hence, we have
 \[
-\wealth_n = \epsilon \left(1+\frac{G}{n}\right)^\frac{n+G}{2} \left(1-\frac{G}{n}\right)^\frac{n-G}{2} 
-= \epsilon \left[\left(1+\frac{G}{n}\right)^\frac{1+\frac{G}{n}}{2} \left(1-\frac{G}{n}\right)^\frac{1-\frac{G}{n}}{2}\right]^n 
-= \epsilon \exp\left( n \, D\left(\frac{1}{2}+\frac{G}{2n}\middle\|\frac{1}{2}\right) \right),
+\wealth_n = \epsilon \left(1+\frac{\theta}{n}\right)^\frac{n+\theta}{2} \left(1-\frac{\theta}{n}\right)^\frac{n-\theta}{2} 
+= \epsilon \left[\left(1+\frac{\theta}{n}\right)^\frac{1+\frac{\theta}{n}}{2} \left(1-\frac{\theta}{n}\right)^\frac{1-\frac{\theta}{n}}{2}\right]^n 
+= \epsilon \exp\left( n \, D\left(\frac{1}{2}+\frac{\theta}{2n}\middle\|\frac{1}{2}\right) \right),
 %\leq \epsilon \exp \left(\frac{Z^2}{2 n} + \frac{Z^4}{5 n^3}\right),
 \]
 where in the last equality we used \eqref{eq:div_2}.
