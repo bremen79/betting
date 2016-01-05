@@ -30,7 +30,7 @@ By induction is easy to prove that such algorithm can indeed be used as a bettin
 Assume that Assumption \ref{assumption:1-d_algo} holds and use the \ac{MBA} with $x_{t-1}=|\sum_{i=1}^{t-1} g_i|$ and $z_t=g_t$.
 Then, for any sequence of outcomes $g_t \in [-1,1]$, the following holds
 \[
-\wealth_n = \epsilon+\sum_{t=1}^n g_t w_t \geq f\left( \sum_{i=1}^{t-1} g_i , \left\{|z_1|, \ldots, |z_n|\right\}\right)~.
+\wealth_n = \epsilon+\sum_{t=1}^n g_t w_t \geq f\left( \sum_{i=1}^{n} g_i , \left\{|g_1|, \ldots, |g_n|\right\}\right)~.
 \]
 \end{theorem}
 

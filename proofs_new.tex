@@ -306,63 +306,59 @@ Using Theorem~\ref{lemma:bin}, we have
 \begin{proof}
 We want to prove that, for any $t$
 \[
-(1+b_t z_t) \epsilon \exp\left(\frac{x^2}{a (\delta+\sum_{i=1}^{t-1} z_i)}- \sum_{i=1}^{t-1} \frac{z_i}{a (\delta+\sum_{j=1}^{i-1} z_j)}\right)
-\leq \epsilon \exp\left(\frac{(x+z_t)^2}{a (\delta+\sum_{i=1}^{t} z_i)}- \sum_{i=1}^{t} \frac{z_i}{a (\delta+\sum_{j=1}^{i-1} z_j)}\right)~.
+(1+b_t z_t) \epsilon \exp\left( F(x,\delta+\sum_{i=1}^{t-1} z_i) - \sum_{i=1}^{t-1} \frac{z_i}{a (\delta+\sum_{j=1}^{i-1} z_j)}\right)
+\leq \epsilon \exp\left(F(x+z_t,\delta+\sum_{i=1}^{t} z_i) - \sum_{i=1}^{t} \frac{z_i}{a (\delta+\sum_{j=1}^{i-1} z_j)}\right)~.
 \]
 The above is equivalent to prove
 \[
-\ln(1+b_t z_t) + \frac{x^2}{a (\delta+\sum_{i=1}^{t-1} z_i)}- \sum_{i=1}^{t-1} \frac{z_i}{a (\delta+\sum_{j=1}^{i-1} z_j)}
-\leq \frac{(x+z_t)^2}{a (\delta+\sum_{i=1}^{t} z_i)}- \sum_{i=1}^{t} \frac{z_i}{a (\delta+\sum_{j=1}^{i-1} z_j)}~.
+\ln(1+b_t z_t) + F(x,\delta+\sum_{i=1}^{t-1} z_i)- \sum_{i=1}^{t-1} \frac{z_i}{a (\delta+\sum_{j=1}^{i-1} z_j)}
+\leq F(x+z_t,\delta+\sum_{i=1}^{t} z_i)- \sum_{i=1}^{t} \frac{z_i}{a (\delta+\sum_{j=1}^{i-1} z_j)}~.
 \]
 
 Denote by $\sg_{t-1}=\sum_{i=1}^{t-1} z_i$ and consider the function 
 \[
-\phi(z)=-\log(1+b_t z) + \frac{(x+z)^2}{a (\sg_{t-1} + |z|)}~.
+\phi(z)=-\log(1+b_t z) + F(x+z,\sg_{t-1} + |z|)~.
 \]
-We have that $\phi(z)$ is piece-wise convex on $[-\infty,0]$ and $[0,\infty]$. Hence, we have that
+Assume that $\phi(z)$ is piece-wise convex on $[-\infty,0]$ and $[0,\infty]$. Hence, we have that
 \begin{align*}
 &\phi(z) \leq \phi(0)+z (\phi(1)-\phi(0)), \forall 0 \leq z\leq 1\\
 &\phi(z) \leq \phi(0)+z (\phi(0)-\phi(-1)), \forall -1 \leq z\leq 0~.
 \end{align*}
 Also, we set $b_t$ such that $\phi(1)=\phi(-1)$, that is
 \[
-b_t = \frac{A_{t-1}-1}{A_{t-1}+1} 
-= 2 \, S\left(\frac{4 x}{a (\sg_{t-1} + 1)}\right)-1
+b_t = \frac{\exp(A_{t-1})-1}{\exp(A_{t-1})+1},
+%= 2 \, S\left(\frac{4 x}{a (\sg_{t-1} + 1)}\right)-1
 \]
-where $A_{t-1}=\exp\left(\frac{4 x}{a (\sg_{t-1} + 1)}\right)$ and
-$S(x) =\frac{1}{1+\exp(-x)}$.
+where $A_{t-1}=F(x+1,\sg_{t-1} + 1)-F(x-1,\sg_{t-1} + 1)$.
 Hence we have
 \[
 \phi(z) \leq \phi(0)+ |z| (\phi(1)-\phi(0)), \forall -1 \leq z\leq 1,
 \]
 that is
 \begin{align*}
-\frac{x^2}{a \sg_{t-1}}-\frac{(x+z)^2}{a (\sg_{t-1} +  |z|)} + \log(1+b_t z_t) 
+F(x,\sg_{t-1})-F(x+z,\sg_{t-1}+|z|) + \log(1+b_t z_t) 
 & = \phi(0) - \phi(z) \\
 & \geq |z| \left(\phi(0) - \phi(1)\right) \\
-&= |z| \left(\frac{x^2}{a \sg_{t-1}} - \frac{(x+1)^2}{a (\sg_{t-1} + 1)} + \log(1+b_t)\right), \forall -1 \leq z\leq 1~.
+&= |z| \left(F(x,\sg_{t-1}) - F(x+1,\sg_{t-1}+1) + \log(1+b_t)\right), \forall -1 \leq z\leq 1~.
 \end{align*}
 
 Using this relation we have that
 \begin{align*}
-&-\frac{(x+z_t)^2}{a (\sg_{t-1}+|z_t|)} + \frac{x^2}{a \sg_{t-1}}+\log(1+b_t z_t)-\sum_{i=1}^{t-1} \frac{|z_i|}{a (\sg_{i-1} + 1)} \\
-&\qquad \geq |z_t| \left(\frac{x^2}{a \sg_{t-1}} - \frac{(x+1)^2}{a (\sg_{t-1} + 1)} + \log(1+b_t)\right) - \sum_{i=1}^{t-1} \frac{|z_i|}{a (\sg_{i-1} + 1)}\\
-&\qquad = |z_t| \left(\frac{(\sg_{t-1} + 1) x^2 - (x^2+2 x )\sg_{t-1} }{a \sg_{t-1}(\sg_{t-1} + 1)} + \log(1+b_t)\right) - \sum_{i=1}^{t} \frac{|z_i|}{a (\sg_{i-1} + 1)}\\
-&\qquad = |z_t| \left(\frac{x^2}{a \sg_{t-1}(\sg_{t-1} + 1)}-\frac{2 x}{a (\sg_{t-1} + 1)} + \log(1+b_t)\right) - \sum_{i=1}^{t} \frac{|z_i|}{a (\sg_{i-1} + 1)}~.
+&-F(x+z,\sg_{t-1}+|z|) + F(x,\sg_{t-1})+\log(1+b_t z_t)-\sum_{i=1}^{t-1} \frac{|z_i|}{a (\sg_{i-1} + 1)} \\
+&\qquad \geq |z_t| \left(F(x,\sg_{t-1}) - F(x+1,\sg_{t-1}+1) + \log(1+b_t)\right) - \sum_{i=1}^{t-1} \frac{|z_i|}{a (\sg_{i-1} + 1)} \\
+&\qquad = |z_t| \left(F(x,\sg_{t-1}) - F(x+1,\sg_{t-1}+1) + \log(1+\frac{\exp(A_{t-1})-1}{\exp(A_{t-1})+1})\right) - \sum_{i=1}^{t-1} \frac{|z_i|}{a (\sg_{i-1} + 1)}~.
+%&\qquad = |z_t| \left(\frac{(\sg_{t-1} + 1) x^2 - (x^2+2 x )\sg_{t-1} }{a \sg_{t-1}(\sg_{t-1} + 1)} + \log(1+b_t)\right) - \sum_{i=1}^{t} \frac{|z_i|}{a (\sg_{i-1} + 1)}\\
+%&\qquad = |z_t| \left(\frac{x^2}{a \sg_{t-1}(\sg_{t-1} + 1)}-\frac{2 x}{a (\sg_{t-1} + 1)} + \log(1+b_t)\right) - \sum_{i=1}^{t} \frac{|z_i|}{a (\sg_{i-1} + 1)}~.
 \end{align*}
-We now use the Taylor expansion, to obtain
-\[
-\log\left(1+\frac{\exp(x)-1}{\exp(x)+1}\right) \geq \frac{x}{2} -\frac{x^2}{8} \qquad \forall x \in \R
-\]
-and, using the expression of $b_t$, have
-\[
-\log\left(1+b_t\right) 
-= \log\left(1+\frac{\exp\left(\frac{4 x}{a (\sg_{t-1} + 1)}\right)-1}{\exp\left(\frac{4 x}{a (\sg_{t-1} + 1)}\right)+1}\right) 
-\geq \frac{2 x}{a (\sg_{t-1} + 1)} -\frac{2 x^2}{a^2 (\sg_{t-1} + 1)^2}.
-\]
-Hence the expression 
-\[
-\frac{x^2}{a \sg_{t-1}(\sg_{t-1} + 1)}-\frac{2 x}{a (\sg_{t-1} + 1)} + \log(1+b_t)
-\]
-is greater than zero if $a \geq 2$, that is true by definition of $a$.
+
+If $A_{t-1}<0$, that is $F(x+1,\sg_{t-1}+1) \leq F(x-1,\sg_{t-1}+1)$, we have that 
+\begin{align*}
+&F(x,\sg_{t-1}) - F(x+1,\sg_{t-1}+1) + \log(1+\frac{\exp(A_{t-1})-1}{\exp(A_{t-1})+1})\\
+&\qquad = F(x,\sg_{t-1}) - F(x-1,\sg_{t-1}+1) + F(x-1,\sg_{t-1}+1) - F(x+1,\sg_{t-1}+1) + \log(1+\frac{\exp(A_{t-1})-1}{\exp(A_{t-1})+1})\\
+&\qquad \geq F(x,\sg_{t-1}) - F(x-1,\sg_{t-1}+1) -A_{t-1} + \log(1+\frac{\exp(A_{t-1})-1}{\exp(A_{t-1})+1})\\
+\end{align*}
+
+Consider the function $\phi(x)=\log(1+\frac{\exp(x)-1}{\exp(x)+1})$. We have $\phi(-x)=\phi(x)-x$.
+
+
 \end{proof}
